@@ -159,8 +159,8 @@ class WWplot(object):
         self.fit_listbox.add(row)
 
         for n in range(0, len(result)):
-            label = "P[" + str(n) + "] = " + '{:.3}'.format(result[n]) + " +- "
-            label = label + '{:.3}'.format(result_err[n])
+            label = "P[" + str(n) + "] = " + '{:.6}'.format(result[n]) + " +- "
+            label = label + '{:.6}'.format(result_err[n])
 
             row = Gtk.ListBoxRow()
             row.add(Gtk.Label(label))
