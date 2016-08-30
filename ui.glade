@@ -15,6 +15,9 @@
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
         <signal name="clicked" handler="onFit" swapped="no"/>
+        <style>
+          <class name="suggested-action"/>
+        </style>
       </object>
     </child>
     <child>
