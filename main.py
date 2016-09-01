@@ -29,9 +29,7 @@ class WWplot(object):
             "onRemove": self.onRemove,
             "onSelectionChanged": self.onSelectionChanged,
             "onFitFunctionChanged": self.onFitFunctionChanged,
-            "onFit": self.onFit,
-            "onXtitleChanged": self.onXtitleChanged,
-            "onYtitleChanged": self.onYtitleChanged
+            "onFit": self.onFit
         }
 
         builder.connect_signals(handlers)
@@ -39,8 +37,12 @@ class WWplot(object):
         # getting main window from glade ui file
         window = builder.get_object("MainWindow")
         headerbar = builder.get_object("headerbar")
+        popover_button = builder.get_object("popover_button")
 
         window.set_titlebar(headerbar)
+
+        self.init_menu(popover_button)
+
         window.show_all()
 
         self.liststore = builder.get_object("liststore")
@@ -90,11 +92,6 @@ class WWplot(object):
 
     def init_plot(self, window, builder):
         plot_box = builder.get_object("plot")
-        xtitle = builder.get_object("xtitle")
-        ytitle = builder.get_object("ytitle")
-
-        self.xtitle = xtitle.get_text()
-        self.ytitle = ytitle.get_text()
 
         self.x = np.array([])
         self.xerr = np.array([])
@@ -194,6 +191,37 @@ class WWplot(object):
         self.ytitle = button.get_text()
         self.plot.set_ylabel(self.ytitle)
         self.plot.update()
+
+    def init_menu(self, button):
+        builder = Gtk.Builder()
+        builder.add_from_file("menu.glade")
+
+        handlers = {
+            "onXtitleChanged": self.onXtitleChanged,
+            "onYtitleChanged": self.onYtitleChanged
+        }
+
+        builder.connect_signals(handlers)
+
+        menu = builder.get_object("menu")
+        xtitle = builder.get_object("xtitle")
+        ytitle = builder.get_object("ytitle")
+
+        self.xtitle = xtitle.get_text()
+        self.ytitle = ytitle.get_text()
+
+        popover = Gtk.Popover.new(button)
+        popover.props.transitions_enabled = True
+        popover.add(menu)
+
+        def on_click(arg):
+            if popover.get_visible():
+                popover.hide()
+            else:
+                popover.show_all()
+
+        button.connect("clicked", on_click)
+
 
 if __name__ == "__main__":
     w = WWplot()
