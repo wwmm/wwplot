@@ -27,7 +27,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="text" translatable="yes">x</property>
-            <signal name="activate" handler="onXtitleChanged" swapped="no"/>
+            <signal name="changed" handler="onXtitleChanged" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -63,7 +63,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="text" translatable="yes">y</property>
-            <signal name="activate" handler="onYtitleChanged" swapped="no"/>
+            <signal name="changed" handler="onYtitleChanged" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>

@@ -168,6 +168,8 @@ class WWplot(object):
 
     def onFit(self, button):
         if len(self.x) > 1:
+            self.updatePlot()
+
             self.fit.set_data(self.x, self.y, self.xerr, self.yerr)
 
             self.fit.run()

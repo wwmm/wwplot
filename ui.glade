@@ -223,7 +223,7 @@
                     <property name="can_focus">True</property>
                     <property name="text" translatable="yes">P[0] * x + P[1]</property>
                     <property name="placeholder_text" translatable="yes">Example: P[0] * x + P[1]</property>
-                    <signal name="activate" handler="onFitFunctionChanged" swapped="no"/>
+                    <signal name="changed" handler="onFitFunctionChanged" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

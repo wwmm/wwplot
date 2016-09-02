@@ -1,5 +1,5 @@
-import numpy as np
 import scipy.odr
+from numpy import *
 
 
 class Fit(object):
@@ -36,6 +36,6 @@ class Fit(object):
 
         out = odr.run()
 
-        self.output_err = np.sqrt(np.diag(out.cov_beta))
+        self.output_err = sqrt(diag(out.cov_beta))
 
         self.output = out.beta
