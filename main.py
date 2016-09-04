@@ -1,8 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import sys
+
 import gi
 import numpy as np
+
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
@@ -10,14 +13,22 @@ from fit import Fit
 from plot import Plot
 
 
-class WWplot(object):
+class WWplot(Gtk.Application):
     """Main class."""
 
     def __init__(self):
-        super(WWplot, self).__init__()
+        Gtk.Application.__init__(self, application_id="wwmm.wwplot")
 
-        builder = Gtk.Builder()
-        builder.add_from_file("ui.glade")
+        self.selected_row = None
+
+    def do_startup(self):
+        Gtk.Application.do_startup(self)
+
+        main_ui_builder = Gtk.Builder()
+        menu_builder = Gtk.Builder()
+
+        main_ui_builder.add_from_file("ui.glade")
+        menu_builder.add_from_file("menu.glade")
 
         handlers = {
             "onQuit": self.onQuit,
@@ -32,29 +43,33 @@ class WWplot(object):
             "onFit": self.onFit
         }
 
-        builder.connect_signals(handlers)
+        menu_handlers = {
+            "onXtitleChanged": self.onXtitleChanged,
+            "onYtitleChanged": self.onYtitleChanged
+        }
 
-        # getting main window from glade ui file
-        window = builder.get_object("MainWindow")
-        headerbar = builder.get_object("headerbar")
-        popover_button = builder.get_object("popover_button")
+        main_ui_builder.connect_signals(handlers)
+        menu_builder.connect_signals(menu_handlers)
 
-        window.set_titlebar(headerbar)
+        self.window = main_ui_builder.get_object("MainWindow")
 
-        self.init_menu(popover_button)
+        headerbar = main_ui_builder.get_object("headerbar")
 
-        window.show_all()
+        self.window.set_titlebar(headerbar)
+        self.window.show_all()
 
-        self.liststore = builder.get_object("liststore")
+        self.liststore = main_ui_builder.get_object("liststore")
 
-        self.selected_row = None
+        self.init_menu(main_ui_builder, menu_builder)
+        self.init_plot(main_ui_builder)
+        self.init_fit(main_ui_builder)
 
-        self.init_plot(window, builder)
-
-        self.init_fit(builder)
+    def do_activate(self):
+        self.add_window(self.window)
+        self.window.present()
 
     def onQuit(self, event, data):
-        Gtk.main_quit()
+        self.quit()
 
     def onXEdited(self, renderer, row_id, value):
         self.liststore[row_id][0] = float(value.replace(',', '.'))
@@ -90,8 +105,29 @@ class WWplot(object):
     def onSelectionChanged(self, selection):
         model, self.selected_row = selection.get_selected()
 
-    def init_plot(self, window, builder):
-        plot_box = builder.get_object("plot")
+    def init_menu(self, main_ui_builder, menu_builder):
+        button = main_ui_builder.get_object("popover_button")
+        menu = menu_builder.get_object("menu")
+        xtitle = menu_builder.get_object("xtitle")
+        ytitle = menu_builder.get_object("ytitle")
+
+        self.xtitle = xtitle.get_text()
+        self.ytitle = ytitle.get_text()
+
+        popover = Gtk.Popover.new(button)
+        popover.props.transitions_enabled = True
+        popover.add(menu)
+
+        def on_click(arg):
+            if popover.get_visible():
+                popover.hide()
+            else:
+                popover.show_all()
+
+        button.connect("clicked", on_click)
+
+    def init_plot(self, main_ui_builder):
+        plot_box = main_ui_builder.get_object("plot")
 
         self.x = np.array([])
         self.xerr = np.array([])
@@ -99,7 +135,7 @@ class WWplot(object):
         self.yerr = np.array([])
 
         # setting plot
-        self.plot = Plot(window, plot_box)
+        self.plot = Plot(self.window, plot_box)
         self.plot.set_grid(True)
         self.plot.set_xlabel(self.xtitle)
         self.plot.set_ylabel(self.ytitle)
@@ -133,9 +169,19 @@ class WWplot(object):
         self.plot.errorbar(self.x, self.xerr, self.y, self.yerr, 'bo')
         self.plot.update()
 
-    def init_fit(self, builder):
-        fitfunc = builder.get_object("fitfunc")
-        self.fit_listbox = builder.get_object("fit_listbox")
+    def onXtitleChanged(self, button):
+        self.xtitle = button.get_text()
+        self.plot.set_xlabel(self.xtitle)
+        self.plot.update()
+
+    def onYtitleChanged(self, button):
+        self.ytitle = button.get_text()
+        self.plot.set_ylabel(self.ytitle)
+        self.plot.update()
+
+    def init_fit(self, main_ui_builder):
+        fitfunc = main_ui_builder.get_object("fitfunc")
+        self.fit_listbox = main_ui_builder.get_object("fit_listbox")
 
         self.fit = Fit()
         self.fit.init_function(fitfunc.get_text())
@@ -184,48 +230,10 @@ class WWplot(object):
             self.plot.plot(self.x, func(result, self.x), "r-")
             self.plot.update()
 
-    def onXtitleChanged(self, button):
-        self.xtitle = button.get_text()
-        self.plot.set_xlabel(self.xtitle)
-        self.plot.update()
-
-    def onYtitleChanged(self, button):
-        self.ytitle = button.get_text()
-        self.plot.set_ylabel(self.ytitle)
-        self.plot.update()
-
-    def init_menu(self, button):
-        builder = Gtk.Builder()
-        builder.add_from_file("menu.glade")
-
-        handlers = {
-            "onXtitleChanged": self.onXtitleChanged,
-            "onYtitleChanged": self.onYtitleChanged
-        }
-
-        builder.connect_signals(handlers)
-
-        menu = builder.get_object("menu")
-        xtitle = builder.get_object("xtitle")
-        ytitle = builder.get_object("ytitle")
-
-        self.xtitle = xtitle.get_text()
-        self.ytitle = ytitle.get_text()
-
-        popover = Gtk.Popover.new(button)
-        popover.props.transitions_enabled = True
-        popover.add(menu)
-
-        def on_click(arg):
-            if popover.get_visible():
-                popover.hide()
-            else:
-                popover.show_all()
-
-        button.connect("clicked", on_click)
-
 
 if __name__ == "__main__":
     w = WWplot()
 
-    Gtk.main()
+    exit_status = w.run(None)
+
+    sys.exit(exit_status)

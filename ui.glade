@@ -38,7 +38,7 @@
                 <property name="valign">center</property>
                 <property name="spacing">12</property>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="add_row">
                     <property name="label">gtk-add</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -56,7 +56,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="remove_row">
                     <property name="label">gtk-remove</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
