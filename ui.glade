@@ -99,6 +99,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn">
+                        <property name="resizable">True</property>
                         <property name="sizing">autosize</property>
                         <property name="title" translatable="yes">x</property>
                         <child>
@@ -114,6 +115,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn">
+                        <property name="resizable">True</property>
                         <property name="sizing">autosize</property>
                         <property name="title" translatable="yes">x_err</property>
                         <child>
@@ -129,6 +131,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn">
+                        <property name="resizable">True</property>
                         <property name="sizing">autosize</property>
                         <property name="title" translatable="yes">y</property>
                         <child>
@@ -144,6 +147,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn">
+                        <property name="resizable">True</property>
                         <property name="sizing">autosize</property>
                         <property name="title" translatable="yes">y_err</property>
                         <child>
@@ -185,7 +189,7 @@
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
@@ -226,7 +230,7 @@
                     <signal name="changed" handler="onFitFunctionChanged" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
+                    <property name="expand">True</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
@@ -245,14 +249,14 @@
                 <property name="selection_mode">none</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">2</property>
           </packing>

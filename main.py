@@ -144,6 +144,7 @@ class WWplot(Gtk.Application):
     def updatePlot(self):
         self.plot.axes.clear()
         self.plot.set_grid(True)
+        self.plot.set_margins(0.03)
         self.plot.set_xlabel(self.xtitle)
         self.plot.set_ylabel(self.ytitle)
 

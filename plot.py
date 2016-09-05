@@ -32,7 +32,7 @@ class Plot():
 
     def errorbar(self, x, x_err, y, y_err, config_str):
         line_obj, caplines, barlinecols = self.axes.errorbar(
-            x, y, yerr=y_err, xerr=x_err, fmt=config_str)
+            x, y, yerr=y_err, xerr=x_err, fmt=config_str, clip_on=False)
 
         return line_obj, caplines, barlinecols
 
@@ -44,6 +44,9 @@ class Plot():
 
     def set_grid(self, value):
         self.axes.grid(value)
+
+    def set_margins(self, value):
+        self.axes.margins(value)
 
     def tight_layout(self):
         self.f.tight_layout()
