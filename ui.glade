@@ -270,7 +270,7 @@
   <object class="GtkImage" id="popover_button_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-justify-fill</property>
+    <property name="icon_name">format-justify-fill-symbolic</property>
     <property name="icon_size">1</property>
   </object>
   <object class="GtkHeaderBar" id="headerbar">
