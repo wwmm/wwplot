@@ -7,7 +7,7 @@ import gi
 import numpy as np
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gio, Gtk
 
 from fit import Fit
 from plot import Plot
@@ -56,6 +56,10 @@ class WWplot(Gtk.Application):
         headerbar = main_ui_builder.get_object("headerbar")
 
         self.window.set_titlebar(headerbar)
+        self.window.set_application(self)
+
+        self.create_appmenu()
+
         self.window.show_all()
 
         self.liststore = main_ui_builder.get_object("liststore")
@@ -65,8 +69,25 @@ class WWplot(Gtk.Application):
         self.init_fit(main_ui_builder)
 
     def do_activate(self):
-        self.add_window(self.window)
         self.window.present()
+
+    def create_appmenu(self):
+        menu = Gio.Menu()
+
+        menu.append("About", "app.about")
+        menu.append("Quit", "app.quit")
+
+        self.set_app_menu(menu)
+
+        # option "about"
+        about_action = Gio.SimpleAction.new("about", None)
+        about_action.connect("activate", self.onAbout)
+        self.add_action(about_action)
+
+        # option "quit"
+        quit_action = Gio.SimpleAction.new("quit", None)
+        quit_action.connect("activate", self.onQuit)
+        self.add_action(quit_action)
 
     def onQuit(self, event, data):
         self.quit()
@@ -231,10 +252,12 @@ class WWplot(Gtk.Application):
             self.plot.plot(self.x, func(result, self.x), "r-")
             self.plot.update()
 
+    def onAbout(self, action, parameter):
+        print("about")
 
 if __name__ == "__main__":
     w = WWplot()
 
-    exit_status = w.run(None)
+    exit_status = w.run(sys.argv)
 
     sys.exit(exit_status)
