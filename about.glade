@@ -8,7 +8,7 @@
     <property name="type_hint">dialog</property>
     <property name="program_name">WWplot</property>
     <property name="comments" translatable="yes">A simple plotting tool for experimental physics classes</property>
-    <property name="website">https://bitbucket.org/wellingtonwallace/wwplot</property>
+    <property name="website">https://github.com/wwmm/wwplot</property>
     <property name="website_label" translatable="yes">WWplot Website</property>
     <property name="authors">wellingtonwallace@gmail.com</property>
     <property name="logo">about_icon.png</property>
