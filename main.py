@@ -253,7 +253,15 @@ class WWplot(Gtk.Application):
             self.plot.update()
 
     def onAbout(self, action, parameter):
-        print("about")
+        builder = Gtk.Builder()
+
+        builder.add_from_file("about.glade")
+
+        dialog = builder.get_object("about_dialog")
+
+        dialog.set_transient_for(self.window)
+
+        dialog.show()
 
 if __name__ == "__main__":
     w = WWplot()
