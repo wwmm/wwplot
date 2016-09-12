@@ -1,0 +1,9 @@
+[Desktop Entry]
+Comment=Data Plotting Tool
+Terminal=false
+Name=WWplot
+Exec=/home/user/Desktop/wwplot/main.py
+Path=/home/user/Desktop/wwplot
+Type=Application
+Icon=/home/user/Desktop/wwplot/icon.png
+StartupNotify=true
