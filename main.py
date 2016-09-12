@@ -45,7 +45,8 @@ class WWplot(Gtk.Application):
 
         menu_handlers = {
             "onXtitleChanged": self.onXtitleChanged,
-            "onYtitleChanged": self.onYtitleChanged
+            "onYtitleChanged": self.onYtitleChanged,
+            "onTitleChanged": self.onTitleChanged
         }
 
         main_ui_builder.connect_signals(handlers)
@@ -131,9 +132,11 @@ class WWplot(Gtk.Application):
         menu = menu_builder.get_object("menu")
         xtitle = menu_builder.get_object("xtitle")
         ytitle = menu_builder.get_object("ytitle")
+        plot_title = menu_builder.get_object("plot_title")
 
         self.xtitle = xtitle.get_text()
         self.ytitle = ytitle.get_text()
+        self.plot_title = plot_title.get_text()
 
         popover = Gtk.Popover.new(button)
         popover.props.transitions_enabled = True
@@ -160,6 +163,7 @@ class WWplot(Gtk.Application):
         self.plot.set_grid(True)
         self.plot.set_xlabel(self.xtitle)
         self.plot.set_ylabel(self.ytitle)
+        self.plot.set_title(self.plot_title)
         self.plot.tight_layout()
 
     def updatePlot(self):
@@ -168,6 +172,7 @@ class WWplot(Gtk.Application):
         self.plot.set_margins(0.03)
         self.plot.set_xlabel(self.xtitle)
         self.plot.set_ylabel(self.ytitle)
+        self.plot.set_title(self.plot_title)
 
         row_iter = self.liststore.get_iter_first()
 
@@ -199,6 +204,11 @@ class WWplot(Gtk.Application):
     def onYtitleChanged(self, button):
         self.ytitle = button.get_text()
         self.plot.set_ylabel(self.ytitle)
+        self.plot.update()
+
+    def onTitleChanged(self, button):
+        self.plot_title = button.get_text()
+        self.plot.set_title(self.plot_title)
         self.plot.update()
 
     def init_fit(self, main_ui_builder):

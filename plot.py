@@ -42,6 +42,9 @@ class Plot():
     def set_ylabel(self, value):
         self.axes.set_ylabel(value)
 
+    def set_title(self, value):
+        self.axes.set_title(value)
+
     def set_grid(self, value):
         self.axes.grid(value)
 
