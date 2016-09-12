@@ -9,7 +9,7 @@
     <property name="program_name">WWplot</property>
     <property name="comments" translatable="yes">A simple plotting tool for experimental physics classes</property>
     <property name="website">https://github.com/wwmm/wwplot</property>
-    <property name="website_label" translatable="yes">WWplot Website</property>
+    <property name="website_label" translatable="yes">https://github.com/wwmm/wwplot</property>
     <property name="authors">wellington.melo@cefet-rj.br</property>
     <property name="logo">about_icon.png</property>
     <child internal-child="vbox">
