@@ -2,8 +2,8 @@
 
 A simple plotting tool for experimental physics classes.
 
-![](wwplot_adapta_theme.png) 
-
+![](wwplot_adapta_theme.png)
+![](wwplot_menu.png) 
 
 In order to run this program you will need:
 
