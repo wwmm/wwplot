@@ -36,6 +36,11 @@ class Plot():
 
         return line_obj, caplines, barlinecols
 
+    def hist(self, x):
+        obj = self.axes.hist(x, facecolor="green", alpha=0.8, align="left")
+
+        return obj
+
     def set_xlabel(self, value):
         self.axes.set_xlabel(value)
 

@@ -20,6 +20,7 @@ class WWplot(Gtk.Application):
         Gtk.Application.__init__(self, application_id="wwmm.wwplot")
 
         self.selected_row = None
+        self.do_histogram = False
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -40,7 +41,8 @@ class WWplot(Gtk.Application):
             "onRemove": self.onRemove,
             "onSelectionChanged": self.onSelectionChanged,
             "onFitFunctionChanged": self.onFitFunctionChanged,
-            "onFit": self.onFit
+            "onFit": self.onFit,
+            "onModeChanged": self.onModeChanged
         }
 
         menu_handlers = {
@@ -59,11 +61,17 @@ class WWplot(Gtk.Application):
         self.window.set_titlebar(headerbar)
         self.window.set_application(self)
 
+        self.xerr_column = main_ui_builder.get_object("xerr_column")
+        self.y_column = main_ui_builder.get_object("y_column")
+        self.yerr_column = main_ui_builder.get_object("yerr_column")
+
+        self.liststore = main_ui_builder.get_object("liststore")
+
+        self.fitfunc = main_ui_builder.get_object("fitfunc")
+
         self.create_appmenu()
 
         self.window.show_all()
-
-        self.liststore = main_ui_builder.get_object("liststore")
 
         self.init_menu(main_ui_builder, menu_builder)
         self.init_plot(main_ui_builder)
@@ -169,7 +177,6 @@ class WWplot(Gtk.Application):
     def updatePlot(self):
         self.plot.axes.clear()
         self.plot.set_grid(True)
-        self.plot.set_margins(0.03)
         self.plot.set_xlabel(self.xtitle)
         self.plot.set_ylabel(self.ytitle)
         self.plot.set_title(self.plot_title)
@@ -193,7 +200,15 @@ class WWplot(Gtk.Application):
         self.y = np.array(y)
         self.yerr = np.array(yerr)
 
-        self.plot.errorbar(self.x, self.xerr, self.y, self.yerr, 'bo')
+        if self.do_histogram:
+            self.plot.set_margins(0.0)
+
+            self.hist_count, self.hist_bin, patches = self.plot.hist(self.x)
+        else:
+            self.plot.set_margins(0.03)
+
+            self.plot.errorbar(self.x, self.xerr, self.y, self.yerr, 'bo')
+
         self.plot.update()
 
     def onXtitleChanged(self, button):
@@ -221,7 +236,7 @@ class WWplot(Gtk.Application):
     def onFitFunctionChanged(self, button):
         self.fit.init_function(button.get_text())
 
-    def build_fitlog(self, result, result_err):
+    def build_fitlog(self, result, result_err, stopreason):
         # First we clear the listbox
         children = self.fit_listbox.get_children()
 
@@ -242,25 +257,69 @@ class WWplot(Gtk.Application):
 
             self.fit_listbox.add(row)
 
+        row = Gtk.ListBoxRow()
+        row.add(Gtk.Label())
+
+        self.fit_listbox.add(row)
+
+        for reason in stopreason:
+            row = Gtk.ListBoxRow()
+            row.add(Gtk.Label(reason))
+
+            self.fit_listbox.add(row)
+
         self.fit_listbox.show_all()
 
     def onFit(self, button):
         if len(self.x) > 1:
             self.updatePlot()
 
-            self.fit.set_data(self.x, self.y, self.xerr, self.yerr)
+            if self.do_histogram is False:
+                self.fit.set_data(self.x, self.y, self.xerr, self.yerr)
+            else:
+                self.fit.set_data(self.hist_bin[:-1], self.hist_count)
 
-            self.fit.run()
+            stopreason = self.fit.run()
 
             result = self.fit.output
             result_err = self.fit.output_err
 
-            self.build_fitlog(result, result_err)
+            self.build_fitlog(result, result_err, stopreason)
 
             func = self.fit.fit_function
 
-            self.plot.plot(self.x, func(result, self.x), "r-")
+            if self.do_histogram is False:
+                self.plot.plot(self.x, func(result, self.x), "r-")
+            else:
+                self.plot.plot(
+                    self.hist_bin[:-1], func(result, self.hist_bin[:-1]), "r-")
+
             self.plot.update()
+
+    def onModeChanged(self, button, state):
+        if state is True:  # do histogram
+            self.do_histogram = True
+
+            self.xerr_column.set_visible(False)
+            self.y_column.set_visible(False)
+            self.yerr_column.set_visible(False)
+
+            equation = "(P[0] / (P[1] * sqrt(2 * pi))) * "
+            equation = equation + "exp(- (x - P[2])**2 / (2 * P[1]**2))"
+
+            self.fitfunc.set_text(equation)
+        else:  # do xy plot
+            self.do_histogram = False
+
+            self.xerr_column.set_visible(True)
+            self.y_column.set_visible(True)
+            self.yerr_column.set_visible(True)
+
+            equation = "P[0] * x + P[1]"
+
+            self.fitfunc.set_text(equation)
+
+        self.updatePlot()
 
     def onAbout(self, action, parameter):
         builder = Gtk.Builder()

@@ -98,7 +98,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkTreeViewColumn">
+                      <object class="GtkTreeViewColumn" id="x_column">
                         <property name="resizable">True</property>
                         <property name="sizing">autosize</property>
                         <property name="title" translatable="yes">x</property>
@@ -114,7 +114,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkTreeViewColumn">
+                      <object class="GtkTreeViewColumn" id="xerr_column">
                         <property name="resizable">True</property>
                         <property name="sizing">autosize</property>
                         <property name="title" translatable="yes">x_err</property>
@@ -130,7 +130,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkTreeViewColumn">
+                      <object class="GtkTreeViewColumn" id="y_column">
                         <property name="resizable">True</property>
                         <property name="sizing">autosize</property>
                         <property name="title" translatable="yes">y</property>
@@ -146,7 +146,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkTreeViewColumn">
+                      <object class="GtkTreeViewColumn" id="yerr_column">
                         <property name="resizable">True</property>
                         <property name="sizing">autosize</property>
                         <property name="title" translatable="yes">y_err</property>
@@ -280,6 +280,26 @@
     <property name="has_subtitle">False</property>
     <property name="show_close_button">True</property>
     <child>
+      <object class="GtkLabel">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Switch to Histogram Mode</property>
+      </object>
+      <packing>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkSwitch">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <signal name="state-set" handler="onModeChanged" swapped="no"/>
+      </object>
+      <packing>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
       <object class="GtkButton" id="popover_button">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
@@ -289,6 +309,7 @@
       </object>
       <packing>
         <property name="pack_type">end</property>
+        <property name="position">2</property>
       </packing>
     </child>
   </object>

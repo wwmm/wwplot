@@ -28,14 +28,21 @@ class Fit(object):
 
         self.model = scipy.odr.Model(self.fit_function)
 
-    def set_data(self, x, y, xerr, yerr):
-        self.fit_data = scipy.odr.RealData(x, y, sx=xerr, sy=yerr)
+    def set_data(self, x, y, xerr=None, yerr=None):
+        if xerr is not None and yerr is not None:
+            self.fit_data = scipy.odr.RealData(x, y, sx=xerr, sy=yerr)
+        else:
+            self.fit_data = scipy.odr.RealData(x, y)
 
     def run(self):
         odr = scipy.odr.ODR(self.fit_data, self.model, beta0=self.initial_P)
 
         out = odr.run()
 
+        out.pprint()
+
         self.output_err = sqrt(diag(out.cov_beta))
 
         self.output = out.beta
+
+        return out.stopreason
