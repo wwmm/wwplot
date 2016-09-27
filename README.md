@@ -1,6 +1,6 @@
 # WWplot
 
-A simple plotting tool for experimental physics classes.
+A simple plotting tool for experimental physics classes. It is being developed for use at the didactic labs of [http://www.cefet-rj.br/index.php/nova-iguacu](http://www.cefet-rj.br/index.php/nova-iguacu).
 
 ![](wwplot_main_window.png)
 ![](wwplot_histogram.png)
