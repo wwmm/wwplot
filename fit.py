@@ -5,8 +5,10 @@ from numpy import *
 class Fit(object):
     """docstring for Fit."""
 
-    def __init__(self):
+    def __init__(self, maxit=100):
         super(Fit, self).__init__()
+
+        self.maxit = maxit
 
         self.x, self.xerr = [], []
         self.y, self.yerr = [], []
@@ -17,7 +19,14 @@ class Fit(object):
         self.fit_function = None
 
     def init_function(self, equation_str):
-        n_free = equation_str.count("P[")
+        N = equation_str.count("P[")
+        n_free = 0
+
+        for n in range(0, N):
+            test_str = "P[" + str(n) + "]"
+
+            if equation_str.count(test_str) > 0:
+                n_free = n_free + 1
 
         self.initial_P = []
 
@@ -35,7 +44,8 @@ class Fit(object):
             self.fit_data = scipy.odr.RealData(x, y)
 
     def run(self):
-        odr = scipy.odr.ODR(self.fit_data, self.model, beta0=self.initial_P)
+        odr = scipy.odr.ODR(self.fit_data, self.model,
+                            maxit=self.maxit, beta0=self.initial_P)
 
         out = odr.run()
 

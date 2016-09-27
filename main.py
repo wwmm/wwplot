@@ -230,7 +230,7 @@ class WWplot(Gtk.Application):
         fitfunc = main_ui_builder.get_object("fitfunc")
         self.fit_listbox = main_ui_builder.get_object("fit_listbox")
 
-        self.fit = Fit()
+        self.fit = Fit(maxit=200)
         self.fit.init_function(fitfunc.get_text())
 
     def onFitFunctionChanged(self, button):
@@ -304,8 +304,8 @@ class WWplot(Gtk.Application):
             self.y_column.set_visible(False)
             self.yerr_column.set_visible(False)
 
-            equation = "(P[0] / (P[1] * sqrt(2 * pi))) * "
-            equation = equation + "exp(- (x - P[2])**2 / (2 * P[1]**2))"
+            equation = "(1.0 / (P[0] * sqrt(2 * pi))) * "
+            equation = equation + "exp(- (x - P[1])**2 / (2 * P[0]**2))"
 
             self.fitfunc.set_text(equation)
         else:  # do xy plot
