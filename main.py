@@ -6,8 +6,9 @@ import sys
 import gi
 import numpy as np
 
+gi.require_version('Gdk', '3.0')
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gio, Gtk
+from gi.repository import Gdk, Gio, Gtk
 
 from fit import Fit
 from plot import Plot
@@ -21,6 +22,7 @@ class WWplot(Gtk.Application):
 
         self.selected_row = None
         self.do_histogram = False
+        self.copied_row = []
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -43,7 +45,8 @@ class WWplot(Gtk.Application):
             "onSelectionChanged": self.onSelectionChanged,
             "onFitFunctionChanged": self.onFitFunctionChanged,
             "onFit": self.onFit,
-            "onModeChanged": self.onModeChanged
+            "onModeChanged": self.onModeChanged,
+            "onKeyPressed": self.onKeyPressed
         }
 
         menu_handlers = {
@@ -62,11 +65,11 @@ class WWplot(Gtk.Application):
         self.window.set_titlebar(headerbar)
         self.window.set_application(self)
 
+        self.liststore = main_ui_builder.get_object("liststore")
+
         self.xerr_column = main_ui_builder.get_object("xerr_column")
         self.y_column = main_ui_builder.get_object("y_column")
         self.yerr_column = main_ui_builder.get_object("yerr_column")
-
-        self.liststore = main_ui_builder.get_object("liststore")
 
         self.fitfunc = main_ui_builder.get_object("fitfunc")
 
@@ -80,6 +83,10 @@ class WWplot(Gtk.Application):
         self.init_plot(main_ui_builder)
         self.init_fit(main_ui_builder)
 
+        self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+
+        # self.clipboard.set_text("clip", -1)
+
     def do_activate(self):
         self.window.present()
 
@@ -91,12 +98,10 @@ class WWplot(Gtk.Application):
 
         self.set_app_menu(menu)
 
-        # option "about"
         about_action = Gio.SimpleAction.new("about", None)
         about_action.connect("activate", self.onAbout)
         self.add_action(about_action)
 
-        # option "quit"
         quit_action = Gio.SimpleAction.new("quit", None)
         quit_action.connect("activate", self.onQuit)
         self.add_action(quit_action)
@@ -106,34 +111,30 @@ class WWplot(Gtk.Application):
 
     def onXEdited(self, renderer, row_id, value):
         self.liststore[row_id][0] = float(value.replace(',', '.'))
-
         self.updatePlot()
 
     def onXerrEdited(self, renderer, row_id, value):
         self.liststore[row_id][1] = float(value.replace(',', '.'))
-
         self.updatePlot()
 
     def onYEdited(self, renderer, row_id, value):
         self.liststore[row_id][2] = float(value.replace(',', '.'))
-
         self.updatePlot()
 
     def onYerrEdited(self, renderer, row_id, value):
         self.liststore[row_id][3] = float(value.replace(',', '.'))
-
         self.updatePlot()
 
     def onAdd(self, button):
         self.liststore.append([0, 0, 0, 0])
-
         self.updatePlot()
+        self.clear_fitlog()
 
     def onRemove(self, button):
         if self.selected_row is not None:
             self.liststore.remove(self.selected_row)
-
             self.updatePlot()
+            self.clear_fitlog()
 
     def onSwapColumns(self, button):
         row_iter = self.liststore.get_iter_first()
@@ -150,6 +151,29 @@ class WWplot(Gtk.Application):
 
     def onSelectionChanged(self, selection):
         model, self.selected_row = selection.get_selected()
+
+    def onKeyPressed(self, widget, event):
+        if event.keyval == Gdk.keyval_from_name("c"):
+            if (event.state == Gdk.ModifierType.CONTROL_MASK or
+                    Gdk.ModifierType.MOD2_MASK):
+
+                if self.selected_row is not None:
+                    idx = self.selected_row
+
+                    c0, c1, c2, c3 = self.liststore.get(idx, 0, 1, 2, 3)
+
+                    self.copied_row = [c0, c1, c2, c3]
+
+        if event.keyval == Gdk.keyval_from_name("v"):
+            if (event.state == Gdk.ModifierType.CONTROL_MASK or
+                    Gdk.ModifierType.MOD2_MASK):
+
+                if self.selected_row is not None:
+                    idx = self.selected_row
+
+                    x, xerr, y, yerr = self.copied_row
+
+                    self.liststore.set(idx, 0, x, 1, xerr, 2, y, 3, yerr)
 
     def init_menu(self, main_ui_builder, menu_builder):
         button = main_ui_builder.get_object("popover_button")

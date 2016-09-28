@@ -19,6 +19,7 @@
     <property name="resizable">False</property>
     <property name="icon">icon.png</property>
     <signal name="delete-event" handler="onQuit" swapped="no"/>
+    <signal name="key-press-event" handler="onKeyPressed" swapped="no"/>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
