@@ -9,7 +9,7 @@ A simple plotting tool for experimental physics classes. It is being developed f
 In order to run this program you will need:
 
 - Python 3 with Numpy, Scipy, PyGobject 3, cairocffi, Matplotlib
-- Gtk 3
+- Gtk 3.18 or above
 
 After installing the required libraries execute the main.py script in a
 terminal:

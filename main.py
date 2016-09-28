@@ -39,6 +39,7 @@ class WWplot(Gtk.Application):
             "onYerrEdited": self.onYerrEdited,
             "onAdd": self.onAdd,
             "onRemove": self.onRemove,
+            "onSwapColumns": self.onSwapColumns,
             "onSelectionChanged": self.onSelectionChanged,
             "onFitFunctionChanged": self.onFitFunctionChanged,
             "onFit": self.onFit,
@@ -68,6 +69,8 @@ class WWplot(Gtk.Application):
         self.liststore = main_ui_builder.get_object("liststore")
 
         self.fitfunc = main_ui_builder.get_object("fitfunc")
+
+        self.button_switch_xy = main_ui_builder.get_object("button_switch_xy")
 
         self.create_appmenu()
 
@@ -131,6 +134,19 @@ class WWplot(Gtk.Application):
             self.liststore.remove(self.selected_row)
 
             self.updatePlot()
+
+    def onSwapColumns(self, button):
+        row_iter = self.liststore.get_iter_first()
+
+        while row_iter is not None:
+            y, yerr, x, xerr = self.liststore.get(row_iter, 0, 1, 2, 3)
+
+            self.liststore.set(row_iter, 0, x, 1, xerr, 2, y, 3, yerr)
+
+            row_iter = self.liststore.iter_next(row_iter)
+
+        self.updatePlot()
+        self.clear_fitlog()
 
     def onSelectionChanged(self, selection):
         model, self.selected_row = selection.get_selected()
@@ -236,12 +252,14 @@ class WWplot(Gtk.Application):
     def onFitFunctionChanged(self, button):
         self.fit.init_function(button.get_text())
 
-    def build_fitlog(self, result, result_err, stopreason):
-        # First we clear the listbox
+    def clear_fitlog(self):
         children = self.fit_listbox.get_children()
 
         for child in children:
             self.fit_listbox.remove(child)
+
+    def build_fitlog(self, result, result_err, stopreason):
+        self.clear_fitlog()
 
         row = Gtk.ListBoxRow()
         row.add(Gtk.Label("Fit Output"))
@@ -308,6 +326,8 @@ class WWplot(Gtk.Application):
             equation = equation + "exp(- (x - P[1])**2 / (2 * P[0]**2))"
 
             self.fitfunc.set_text(equation)
+
+            self.button_switch_xy.hide()
         else:  # do xy plot
             self.do_histogram = False
 
@@ -319,7 +339,10 @@ class WWplot(Gtk.Application):
 
             self.fitfunc.set_text(equation)
 
+            self.button_switch_xy.show_all()
+
         self.updatePlot()
+        self.clear_fitlog()
 
     def onAbout(self, action, parameter):
         builder = Gtk.Builder()
