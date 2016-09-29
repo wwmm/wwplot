@@ -27,12 +27,14 @@ class WWplot(Gtk.Application):
         Gtk.Application.do_startup(self)
 
         main_ui_builder = Gtk.Builder()
+        headerbar_builder = Gtk.Builder()
         menu_builder = Gtk.Builder()
 
         main_ui_builder.add_from_file("ui.glade")
+        headerbar_builder.add_from_file("headerbar.glade")
         menu_builder.add_from_file("menu.glade")
 
-        handlers = {
+        main_ui_handlers = {
             "onQuit": self.onQuit,
             "onXEdited": self.onXEdited,
             "onXerrEdited": self.onXerrEdited,
@@ -44,8 +46,11 @@ class WWplot(Gtk.Application):
             "onSelectionChanged": self.onSelectionChanged,
             "onFitFunctionChanged": self.onFitFunctionChanged,
             "onFit": self.onFit,
-            "onModeChanged": self.onModeChanged,
             "onKeyPressed": self.onKeyPressed
+        }
+
+        headerbar_handlers = {
+            "onModeChanged": self.onModeChanged
         }
 
         menu_handlers = {
@@ -54,12 +59,13 @@ class WWplot(Gtk.Application):
             "onTitleChanged": self.onTitleChanged
         }
 
-        main_ui_builder.connect_signals(handlers)
+        main_ui_builder.connect_signals(main_ui_handlers)
+        headerbar_builder.connect_signals(headerbar_handlers)
         menu_builder.connect_signals(menu_handlers)
 
         self.window = main_ui_builder.get_object("MainWindow")
 
-        headerbar = main_ui_builder.get_object("headerbar")
+        headerbar = headerbar_builder.get_object("headerbar")
 
         self.window.set_titlebar(headerbar)
         self.window.set_application(self)
@@ -78,7 +84,7 @@ class WWplot(Gtk.Application):
 
         self.window.show_all()
 
-        self.init_menu(main_ui_builder, menu_builder)
+        self.init_menu(headerbar_builder, menu_builder)
         self.init_plot(main_ui_builder)
         self.init_fit(main_ui_builder)
 
@@ -184,8 +190,8 @@ class WWplot(Gtk.Application):
                         self.updatePlot()
                         self.clear_fitlog()
 
-    def init_menu(self, main_ui_builder, menu_builder):
-        button = main_ui_builder.get_object("popover_button")
+    def init_menu(self, headerbar_builder, menu_builder):
+        button = headerbar_builder.get_object("popover_button")
         menu = menu_builder.get_object("menu")
         xtitle = menu_builder.get_object("xtitle")
         ytitle = menu_builder.get_object("ytitle")
