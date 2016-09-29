@@ -22,7 +22,6 @@ class WWplot(Gtk.Application):
 
         self.selected_row = None
         self.do_histogram = False
-        self.copied_row = []
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -84,8 +83,6 @@ class WWplot(Gtk.Application):
         self.init_fit(main_ui_builder)
 
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
-
-        # self.clipboard.set_text("clip", -1)
 
     def do_activate(self):
         self.window.present()
@@ -162,7 +159,11 @@ class WWplot(Gtk.Application):
 
                     c0, c1, c2, c3 = self.liststore.get(idx, 0, 1, 2, 3)
 
-                    self.copied_row = [c0, c1, c2, c3]
+                    row = [str(c0), str(c1), str(c2), str(c3)]
+
+                    text = "\t".join(row)
+
+                    self.clipboard.set_text(text, -1)
 
         if event.keyval == Gdk.keyval_from_name("v"):
             if (event.state == Gdk.ModifierType.CONTROL_MASK or
@@ -171,9 +172,17 @@ class WWplot(Gtk.Application):
                 if self.selected_row is not None:
                     idx = self.selected_row
 
-                    x, xerr, y, yerr = self.copied_row
+                    text = self.clipboard.wait_for_text()
 
-                    self.liststore.set(idx, 0, x, 1, xerr, 2, y, 3, yerr)
+                    row = text.replace(',', '.').split("\t")
+
+                    if len(row) == 4:
+                        x, xerr, y, yerr = [float(i) for i in row]
+
+                        self.liststore.set(idx, 0, x, 1, xerr, 2, y, 3, yerr)
+
+                        self.updatePlot()
+                        self.clear_fitlog()
 
     def init_menu(self, main_ui_builder, menu_builder):
         button = main_ui_builder.get_object("popover_button")
