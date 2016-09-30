@@ -11,6 +11,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk, Gio, Gtk
 
 from fit import Fit
+from import_table import ImportTable
 from plot import Plot
 
 
@@ -50,7 +51,8 @@ class WWplot(Gtk.Application):
         }
 
         headerbar_handlers = {
-            "onModeChanged": self.onModeChanged
+            "onModeChanged": self.onModeChanged,
+            "onImportTable": self.onImportTable
         }
 
         menu_handlers = {
@@ -136,6 +138,24 @@ class WWplot(Gtk.Application):
     def onRemove(self, button):
         if self.selected_row is not None:
             self.liststore.remove(self.selected_row)
+            self.updatePlot()
+            self.clear_fitlog()
+
+    def onImportTable(self, button):
+        it = ImportTable(self.window)
+
+        if it.table is not None:
+            self.liststore.clear()
+
+            if len(it.table.shape) == 2:
+                n_rows, n_cols = it.table.shape
+
+                for row in it.table:
+                    self.liststore.append([row[0], row[1], row[2], row[3]])
+            elif len(it.table.shape) == 1:
+                for row in it.table:
+                    self.liststore.append([row, 0, 0, 0])
+
             self.updatePlot()
             self.clear_fitlog()
 

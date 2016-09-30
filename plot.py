@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 from matplotlib.backends.backend_gtk3 import NavigationToolbar2GTK3
 from matplotlib.backends.backend_gtk3agg import FigureCanvasGTK3Agg

@@ -6,6 +6,12 @@ A simple plotting tool for experimental physics classes. It is being developed f
 ![](wwplot_histogram.png)
 ![](wwplot_menu.png) 
 
+Features:
+
+- XY and histogram plot
+- Linear and nonlinear fit
+- Import Tab delimited CVS files
+
 In order to run this program you will need:
 
 - Python 3 with Numpy, Scipy, PyGobject 3, cairocffi, Matplotlib
@@ -16,4 +22,4 @@ terminal:
 
 	python main.py
 
-This program is developed and tested on Linux. I am not sure if it runs on Windows
+This program is developed and tested on Linux. I am not sure if it runs on Windows. But it should be possible as only multplatform libraries are being used.
