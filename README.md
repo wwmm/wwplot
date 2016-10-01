@@ -10,7 +10,7 @@ Features:
 
 - XY and histogram plot
 - Linear and nonlinear fit
-- Import Tab delimited CSV files
+- Import and export table in TSV format (tab separated values) 
 
 In order to run this program you will need:
 
