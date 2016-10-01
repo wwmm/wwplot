@@ -22,4 +22,4 @@ terminal:
 
 	python main.py
 
-This program is developed and tested on Linux. I am not sure if it runs on Windows. But it should be possible as only multplatform libraries are being used.
+This program is developed and tested on Linux. I am not sure if it runs on Windows. But it should be possible as only cross-platform libraries are being used.

@@ -44,9 +44,10 @@
         <property name="tooltip_text" translatable="yes">Export table to CSV</property>
         <property name="image">export_image</property>
         <property name="always_show_image">True</property>
+        <signal name="clicked" handler="onExportTable" swapped="no"/>
       </object>
       <packing>
-        <property name="position">4</property>
+        <property name="position">1</property>
       </packing>
     </child>
     <child>
@@ -59,7 +60,7 @@
       </object>
       <packing>
         <property name="pack_type">end</property>
-        <property name="position">0</property>
+        <property name="position">2</property>
       </packing>
     </child>
     <child>
@@ -70,7 +71,7 @@
       </object>
       <packing>
         <property name="pack_type">end</property>
-        <property name="position">1</property>
+        <property name="position">3</property>
       </packing>
     </child>
     <child>
@@ -81,7 +82,7 @@
       </object>
       <packing>
         <property name="pack_type">end</property>
-        <property name="position">2</property>
+        <property name="position">4</property>
       </packing>
     </child>
   </object>

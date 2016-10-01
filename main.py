@@ -5,11 +5,11 @@ import sys
 
 import gi
 import numpy as np
-
 gi.require_version('Gdk', '3.0')
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk, Gio, Gtk
 
+from export_table import ExportTable
 from fit import Fit
 from import_table import ImportTable
 from plot import Plot
@@ -52,7 +52,8 @@ class WWplot(Gtk.Application):
 
         headerbar_handlers = {
             "onModeChanged": self.onModeChanged,
-            "onImportTable": self.onImportTable
+            "onImportTable": self.onImportTable,
+            "onExportTable": self.onExportTable
         }
 
         menu_handlers = {
@@ -158,6 +159,10 @@ class WWplot(Gtk.Application):
 
             self.updatePlot()
             self.clear_fitlog()
+
+    def onExportTable(self, button):
+        print("export")
+        et = ExportTable(self.window)
 
     def onSwapColumns(self, button):
         row_iter = self.liststore.get_iter_first()
