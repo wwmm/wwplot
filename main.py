@@ -153,6 +153,7 @@ class WWplot(Gtk.Application):
 
                 for row in it.table:
                     self.liststore.append([row[0], row[1], row[2], row[3]])
+
             elif len(it.table.shape) == 1:
                 for row in it.table:
                     self.liststore.append([row, 0, 0, 0])

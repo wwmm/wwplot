@@ -2,15 +2,15 @@
 
 A simple plotting tool for experimental physics classes. It is being developed at [http://www.cefet-rj.br/index.php/nova-iguacu](http://www.cefet-rj.br/index.php/nova-iguacu).
 
-![](wwplot_main_window.png)
-![](wwplot_histogram.png)
-![](wwplot_menu.png) 
+![](screenshots/linear_fit.png)
+![](screenshots/gaussian_distribution.png)
+![](screenshots/nonlinear_fit.png) 
 
 Features:
 
 - XY and histogram plot
 - Linear and nonlinear fit
-- Import Tab delimited CVS files
+- Import Tab delimited CSV files
 
 In order to run this program you will need:
 
