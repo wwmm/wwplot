@@ -161,8 +161,36 @@ class WWplot(Gtk.Application):
             self.clear_fitlog()
 
     def onExportTable(self, button):
-        print("export")
-        et = ExportTable(self.window)
+        n_rows = len(self.liststore)
+
+        if n_rows > 0:
+            if self.do_histogram is False:
+                n_cols = self.liststore.get_n_columns()
+            else:
+                n_cols = 1
+
+            table = np.empty([n_rows, n_cols], dtype=float)
+
+            row_iter = self.liststore.get_iter_first()
+
+            idx = 0
+
+            while row_iter is not None:
+                c0, c1, c2, c3 = self.liststore.get(row_iter, 0, 1, 2, 3)
+
+                if n_cols == 4:
+                    table[idx, 0] = c0
+                    table[idx, 1] = c1
+                    table[idx, 2] = c2
+                    table[idx, 3] = c3
+                elif n_cols == 1:
+                    table[idx, 0] = c0
+
+                idx = idx + 1
+
+                row_iter = self.liststore.iter_next(row_iter)
+
+            ExportTable(self.window, table)
 
     def onSwapColumns(self, button):
         row_iter = self.liststore.get_iter_first()

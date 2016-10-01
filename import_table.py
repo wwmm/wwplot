@@ -28,13 +28,14 @@ class ImportTable(object):
             path = dialog.get_filename()
             filter_name = dialog.get_filter().get_name()
 
-            if filter_name == "CSV Table (Tab Delimiter)":
+            if filter_name == "CSV Table":
                 self.table = np.genfromtxt(path, delimiter="\t")
 
         dialog.destroy()
 
     def add_filters(self, dialog):
-        filter_text = Gtk.FileFilter()
-        filter_text.set_name("CSV Table (Tab Delimiter)")
-        filter_text.add_mime_type("text/csv")
-        dialog.add_filter(filter_text)
+        filter_csv = Gtk.FileFilter()
+        filter_csv.set_name("CSV Table")
+        filter_csv.add_mime_type("text/csv")
+
+        dialog.add_filter(filter_csv)
