@@ -31,7 +31,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
-        <property name="tooltip_text" translatable="yes">Import table from CSV</property>
+        <property name="tooltip_text" translatable="yes">Import table from TSV file</property>
         <property name="image">import_image</property>
         <signal name="clicked" handler="onImportTable" swapped="no"/>
       </object>
@@ -41,7 +41,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
-        <property name="tooltip_text" translatable="yes">Export table to CSV</property>
+        <property name="tooltip_text" translatable="yes">Export table to TSV file</property>
         <property name="image">export_image</property>
         <property name="always_show_image">True</property>
         <signal name="clicked" handler="onExportTable" swapped="no"/>

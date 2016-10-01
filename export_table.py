@@ -9,7 +9,7 @@ from gi.repository import Gtk
 
 
 class ExportTable(object):
-    """Class that exports a CSV file"""
+    """Class that exports a TSV file"""
 
     def __init__(self, window, table):
         super(ExportTable, self).__init__()
@@ -32,17 +32,17 @@ class ExportTable(object):
             path = dialog.get_filename()
             filter_name = dialog.get_filter().get_name()
 
-            if not path.endswith(".csv"):
-                path += ".csv"
+            if not path.endswith(".tsv"):
+                path += ".tsv"
 
-            if filter_name == "CSV Table":
+            if filter_name == "TSV Table":
                 np.savetxt(path, table, delimiter="\t")
 
         dialog.destroy()
 
     def add_filters(self, dialog):
         filter_csv = Gtk.FileFilter()
-        filter_csv.set_name("CSV Table")
-        filter_csv.add_mime_type("text/csv")
+        filter_csv.set_name("TSV Table")
+        filter_csv.add_mime_type("text/tab-separated-values")
 
         dialog.add_filter(filter_csv)
