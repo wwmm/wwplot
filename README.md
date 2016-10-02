@@ -1,10 +1,10 @@
 # WWplot
 
-A simple plotting tool for experimental physics classes. It is being developed at [http://www.cefet-rj.br/index.php/nova-iguacu](http://www.cefet-rj.br/index.php/nova-iguacu).
+A simple plotting tool for experimental physics classes. It is being developed at [Cefet-NI](http://www.cefet-rj.br/index.php/nova-iguacu).
 
-![](screenshots/linear_fit.png)
-![](screenshots/gaussian_distribution.png)
-![](screenshots/nonlinear_fit.png) 
+![](images/linear_fit.png)
+![](images/gaussian_distribution.png)
+![](images/nonlinear_fit.png) 
 
 Features:
 
