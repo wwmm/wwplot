@@ -8,10 +8,11 @@
     <property name="type_hint">dialog</property>
     <property name="program_name">WWplot</property>
     <property name="comments" translatable="yes">A simple plotting tool for experimental physics classes</property>
-    <property name="website">https://github.com/wwmm/wwplot</property>
-    <property name="website_label" translatable="yes">https://github.com/wwmm/wwplot</property>
+    <property name="website">https://wwmm.github.io/wwplot/</property>
+    <property name="website_label" translatable="yes">https://wwmm.github.io/wwplot/</property>
     <property name="authors">wellington.melo@cefet-rj.br</property>
     <property name="logo">about_icon.png</property>
+    <property name="license_type">gpl-3-0</property>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
@@ -38,6 +39,9 @@
           <placeholder/>
         </child>
       </object>
+    </child>
+    <child>
+      <placeholder/>
     </child>
   </object>
 </interface>
