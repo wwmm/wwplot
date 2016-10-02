@@ -12,7 +12,7 @@ Features:
 - Linear and nonlinear fit
 - Import and export table in TSV format (tab separated values) 
 
-In order to run this program you will need:
+Required libraries:
 
 - Python 3 with Numpy, Scipy, PyGobject 3, cairocffi, Matplotlib
 - Gtk 3.18 or above
@@ -22,4 +22,4 @@ terminal:
 
 	python main.py
 
-This program is developed and tested on Linux. I am not sure if it runs on Windows. But it should be possible as only cross-platform libraries are being used.
+I develop and test this software on Linux. I am not sure if it runs on Windows. But as only cross-platform libraries are being used it should be possible to make an windows executable.
