@@ -1,102 +1,162 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <title>WWplot by wwmm</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" href="stylesheets/materialize.min.css" media="screen">
+      <title>
+        WWplot
+      </title>
   </head>
 
   <body>
-    <div id="container">
-      <div class="inner">
-
+    <div class="container">
         <header>
-          <h1>WWplot</h1>
-          <h2>A simple plotting tool for experimental physics classes</h2>
+            <div class="row">
+                <div class="col s2">
+                    <img class="responsive-img" src="icon.png">
+                </div>
+                <div class="col s6">
+                    <h1 class="black-text">
+                      WWplot
+                    </h1>
+                </div>
+            </div>
+            <h4 class="grey-text">
+                A simple plotting tool for experimental physics classes
+            </h4>
         </header>
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/wwmm/wwplot/zipball/master" id="download-zip" class="button">
-              <span>Download .zip</span>
-          </a>
-          <a href="https://github.com/wwmm/wwplot/tarball/master" id="download-tar-gz" class="button">
-              <span>Download .tar.gz</span>
-          </a>
-          <a href="https://github.com/wwmm/wwplot" id="view-on-github" class="button">
-              <span>View on GitHub</span>
-          </a>
-        </section>
+        <br>
 
-        <hr>
+        <div class="center">
+            <a class="waves-effect waves-light btn" href="https://github.com/wwmm/wwplot/zipball/master">
+                <i class="material-icons left">
+                    file_download
+                </i>
+                Download (Linux)
+            </a>
+            <a class="waves-effect waves-light btn" href="https://github.com/wwmm/wwplot">
+                <i class="material-icons left">
+                    cloud
+                </i>
+                View Code on Github
+            </a>
+        </div>
 
-        <section id="screenshots">
-            <img src=images/linear_fit.png>
-            <img src=images/gaussian_distribution.png>
-            <img src=images/nonlinear_fit.png>
-        </section>
+        <br>
 
-        <hr>
+        <div class="card hoverable">
+            <div class="card-image">
+                <img src="images/linear_fit.png">
+            </div>
+            <div class="card-content">
+                <h6>
+                    Linear Function Fit
+                </h6>
+            </div>
+        </div>
 
-        <section id="features">
-            <p>
-                <h1>Features</h1>
-                <ul>
-                    <li>XY and histogram plot</li>
-                    <li>Linear and nonlinear fit</li>
-                    <li>Import and export table in TSV format (tab separated values)</li>
-                </ul>
-            </p>
-        </section>
+        <div class="card hoverable">
+            <div class="card-image">
+                <img src="images/gaussian_distribution.png">
+            </div>
+            <div class="card-content">
+                <h6>
+                    Histogram Plotting and Fitting
+                </h6>
+            </div>
+        </div>
 
-        <section id="features">
-            <p>
-                <h1>Required Libraries</h1>
-                <ul>
-                    <li>Python 3 with Numpy, Scipy, PyGobject 3, cairocffi, Matplotlib</li>
-                    <li>Gtk 3.18 or above</li>
-                </ul>
-                After installing the required libraries navigate to the program
-                folder in a terminal and run command:
+        <div class="card hoverable">
+            <div class="card-image">
+                <img src="images/nonlinear_fit.png">
+            </div>
+            <div class="card-content">
+                <h6>
+                    Nonlinear Function Fitting
+                </h6>
+            </div>
+        </div>
 
+        <div class="card hoverable">
+            <div class="center">
+                <span class="card-title">Features</span>
+            </div>
+            <div class="card-content">
+              <ul class="collection">
+                  <li class="collection-item">XY and histogram plot</li>
+                  <li class="collection-item">Linear and nonlinear fit</li>
+                  <li class="collection-item">Import and export table in TSV format (tab separated values)</li>
+              </ul>
+            </div>
+        </div>
+
+        <div class="card hoverable">
+            <div class="center">
+                <span class="card-title">Required Libraries</span>
+            </div>
+            <div class="card-content">
+              <ul class="collection">
+                  <li class="collection-item">Python 3</li>
+                  <li class="collection-item">Numpy</li>
+                  <li class="collection-item">Scipy</li>
+                  <li class="collection-item">PyGobject 3</li>
+                  <li class="collection-item">Cairocffi</li>
+                  <li class="collection-item">Matplotlib</li>
+                  <li class="collection-item">Gtk 3.18 or above</li>
+              </ul>
+            </div>
+        </div>
+
+        <div class="card hoverable">
+            <div class="center">
+                <span class="card-title">Program Execution</span>
+            </div>
+            <div class="card-content">
+                <h6>
+                    After installing the required libraries navigate to the program
+                    folder in a terminal and run this command:
+                </h4>
                 <br>
-
-                <code>
+                <strong>
                     python main.py
-                </code>
-            </p>
-        </section>
+                </strong>
+            </div>
+        </div>
 
-        <hr>
+        <div class="card hoverable">
+            <div class="center">
+                <span class="card-title">Credits</span>
+            </div>
+            <div class="card-content">
+                WWplot is developed by
+                <a href="mailto:wellington.melo@cefet-rj.br">
+                  wellington.melo@cefet-rj.br
+                </a>
+                at
+                <a href="http://www.cefet-rj.br/index.php/nova-iguacu">
+                  Cefet-NI
+                </a>
+            </div>
+            <div class="center">
+                <img class="responsive-img" src="images/ni_frente.jpg">
+            </div>
+        </div>
 
-        <section id="support">
-            <p>
-                I develop and test this software on Linux. I am not sure if it
-                runs on Windows. But as only cross-platform libraries are being
-                used it should be possible to make an windows executable.
-            </p>
-        <section>
-
-        <hr>
-
-        <section id="main_content">
-          <p>
-              This program is being developed at
-              <a href="http://www.cefet-rj.br/index.php/nova-iguacu">
-                Cefet-NI
-              </a>
-          </p>
-        </section>
-
-        <footer>
-          WWplot is maintained by <a href="https://github.com/wwmm">wwmm</a><br>
-          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
-
-      </div>
+        <footer class="page-footer">
+            <div class="footer-copyright">
+                <div class="container">
+                    © 2016 WWplot, All rights reserved.
+                    <a class="grey-text text-lighten-4 right" href="https://github.com/wwmm/wwplot/blob/master/LICENSE.md">
+                        GPL3 License
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
   </body>
+  <script type="text/javascript" src="javascripts/jquery-3.1.0.min.js"></script>
+  <script type="text/javascript" src="javascripts/materialize.min.js"></script>
 </html>
