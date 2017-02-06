@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from matplotlib.backends.backend_gtk3 import NavigationToolbar2GTK3
-from matplotlib.backends.backend_gtk3agg import FigureCanvasGTK3Agg
+from matplotlib.backends.backend_gtk3cairo import FigureCanvasGTK3Cairo
 from matplotlib.figure import Figure
 
 
@@ -13,7 +13,7 @@ class Plot():
 
         self.axes = self.f.add_subplot(111)
 
-        self.canvas = FigureCanvasGTK3Agg(self.f)  # a Gtk.DrawingArea
+        self.canvas = FigureCanvasGTK3Cairo(self.f)  # a Gtk.DrawingArea
 
         self.f.tight_layout()
 
