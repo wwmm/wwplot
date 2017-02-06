@@ -8,7 +8,7 @@ from matplotlib.figure import Figure
 class Plot():
     """Plot class based on Matplotlib"""
 
-    def __init__(self, window, box, dpi_value=100):
+    def __init__(self, window, box, dpi_value=120):
         self.f = Figure(dpi=dpi_value)
 
         self.axes = self.f.add_subplot(111)

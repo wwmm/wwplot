@@ -23,6 +23,7 @@ class WWplot(Gtk.Application):
 
         self.selected_row = None
         self.do_histogram = False
+        self.show_grid = True
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -59,7 +60,8 @@ class WWplot(Gtk.Application):
         menu_handlers = {
             "onXtitleChanged": self.onXtitleChanged,
             "onYtitleChanged": self.onYtitleChanged,
-            "onTitleChanged": self.onTitleChanged
+            "onTitleChanged": self.onTitleChanged,
+            "onShowGrid": self.onShowGrid
         }
 
         main_ui_builder.connect_signals(main_ui_handlers)
@@ -277,7 +279,7 @@ class WWplot(Gtk.Application):
 
         # setting plot
         self.plot = Plot(self.window, plot_box)
-        self.plot.set_grid(True)
+        self.plot.set_grid(self.show_grid)
         self.plot.set_xlabel(self.xtitle)
         self.plot.set_ylabel(self.ytitle)
         self.plot.set_title(self.plot_title)
@@ -285,7 +287,7 @@ class WWplot(Gtk.Application):
 
     def updatePlot(self):
         self.plot.axes.clear()
-        self.plot.set_grid(True)
+        self.plot.set_grid(self.show_grid)
         self.plot.set_xlabel(self.xtitle)
         self.plot.set_ylabel(self.ytitle)
         self.plot.set_title(self.plot_title)
@@ -314,7 +316,7 @@ class WWplot(Gtk.Application):
 
             self.hist_count, self.hist_bin, patches = self.plot.hist(self.x)
         else:
-            self.plot.set_margins(0.03)
+            self.plot.set_margins(0.1)
 
             self.plot.errorbar(self.x, self.xerr, self.y, self.yerr, 'bo')
 
@@ -334,6 +336,10 @@ class WWplot(Gtk.Application):
         self.plot_title = button.get_text()
         self.plot.set_title(self.plot_title)
         self.plot.update()
+
+    def onShowGrid(self, button, state):
+        self.show_grid = state
+        self.updatePlot()
 
     def init_fit(self, main_ui_builder):
         fitfunc = main_ui_builder.get_object("fitfunc")
@@ -447,6 +453,7 @@ class WWplot(Gtk.Application):
         dialog.set_transient_for(self.window)
 
         dialog.show()
+
 
 if __name__ == "__main__":
     w = WWplot()
