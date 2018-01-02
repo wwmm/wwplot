@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys
+import os
 
 import gi
 import numpy as np
@@ -9,13 +9,13 @@ gi.require_version('Gdk', '3.0')
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk, Gio, GLib, Gtk
 
-from export_table import ExportTable
-from fit import Fit
-from import_table import ImportTable
-from plot import Plot
+from WWplot.export_table import ExportTable
+from WWplot.fit import Fit
+from WWplot.import_table import ImportTable
+from WWplot.plot import Plot
 
 
-class WWplot(Gtk.Application):
+class Application(Gtk.Application):
 
     def __init__(self):
         Gtk.Application.__init__(self, application_id="com.github.wwmm.wwplot")
@@ -24,19 +24,20 @@ class WWplot(Gtk.Application):
 
         GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, 2, self.quit)  # sigint
 
+    def do_startup(self):
+        Gtk.Application.do_startup(self)
+
         self.selected_row = None
         self.do_histogram = False
         self.show_grid = True
         self.xtitle = 'x'
         self.ytitle = 'y'
         self.plot_title = 'title'
-
-    def do_startup(self):
-        Gtk.Application.do_startup(self)
+        self.module_path = os.path.dirname(__file__)
 
         self.builder = Gtk.Builder()
 
-        self.builder.add_from_file("ui/main_ui.glade")
+        self.builder.add_from_file(self.module_path + "/ui/main_ui.glade")
 
         self.builder.connect_signals(self)
 
@@ -56,11 +57,11 @@ class WWplot(Gtk.Application):
 
         self.create_appmenu()
 
-        self.window.show_all()
-
         self.init_plot()
         self.init_menu()
         self.init_fit()
+
+        self.window.show_all()
 
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
@@ -427,11 +428,3 @@ class WWplot(Gtk.Application):
         dialog.run()
 
         dialog.destroy()
-
-
-if __name__ == "__main__":
-    w = WWplot()
-
-    exit_status = w.run(sys.argv)
-
-    sys.exit(exit_status)

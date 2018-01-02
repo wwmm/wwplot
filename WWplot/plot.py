@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from matplotlib.backends.backend_gtk3 import NavigationToolbar2GTK3
-from matplotlib.backends.backend_gtk3cairo import FigureCanvasGTK3Cairo
+from matplotlib.backends.backend_gtk3agg import FigureCanvasGTK3Agg
 from matplotlib.figure import Figure
 
 
@@ -13,7 +13,7 @@ class Plot():
 
         self.axes = self.f.add_subplot(111)
 
-        self.canvas = FigureCanvasGTK3Cairo(self.f)  # a Gtk.DrawingArea
+        self.canvas = FigureCanvasGTK3Agg(self.f)  # a Gtk.DrawingArea
 
         self.f.tight_layout()
 
@@ -32,7 +32,8 @@ class Plot():
 
     def errorbar(self, x, x_err, y, y_err, config_str):
         line_obj, caplines, barlinecols = self.axes.errorbar(
-            x, y, yerr=y_err, xerr=x_err, fmt=config_str, clip_on=False)
+            x, y, yerr=y_err, xerr=x_err, fmt=config_str, ecolor='g',
+            clip_on=True, capsize=5)
 
         return line_obj, caplines, barlinecols
 
