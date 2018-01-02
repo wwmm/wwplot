@@ -7,7 +7,7 @@ import gi
 import numpy as np
 gi.require_version('Gdk', '3.0')
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gdk, Gio, Gtk
+from gi.repository import Gdk, Gio, GLib, Gtk
 
 from export_table import ExportTable
 from fit import Fit
@@ -18,7 +18,11 @@ from plot import Plot
 class WWplot(Gtk.Application):
 
     def __init__(self):
-        Gtk.Application.__init__(self, application_id="wwmm.wwplot")
+        Gtk.Application.__init__(self, application_id="com.github.wwmm.wwplot")
+
+        GLib.set_application_name('WWplot')
+
+        GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, 2, self.quit)  # sigint
 
         self.selected_row = None
         self.do_histogram = False
@@ -63,6 +67,9 @@ class WWplot(Gtk.Application):
     def do_activate(self):
         self.window.present()
 
+    def do_shutdown(self):
+        Gtk.Application.do_shutdown(self)
+
     def create_appmenu(self):
         menu = Gio.Menu()
 
@@ -76,11 +83,8 @@ class WWplot(Gtk.Application):
         self.add_action(about_action)
 
         quit_action = Gio.SimpleAction.new("quit", None)
-        quit_action.connect("activate", self.onQuit)
+        quit_action.connect("activate", lambda action, parameter: self.quit())
         self.add_action(quit_action)
-
-    def onQuit(self, event, data):
-        self.quit()
 
     def onXEdited(self, renderer, row_id, value):
         self.liststore[row_id][0] = float(value.replace(',', '.'))
