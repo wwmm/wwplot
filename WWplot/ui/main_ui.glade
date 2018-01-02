@@ -411,8 +411,8 @@
                   <object class="GtkEntry" id="fitfunc">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">P[0] * x + P[1]</property>
-                    <property name="placeholder_text" translatable="yes">Example: P[0] * x + P[1]</property>
+                    <property name="text">P[0] * x + P[1]</property>
+                    <property name="placeholder_text">Example: P[0] * x + P[1]</property>
                     <signal name="changed" handler="onFitFunctionChanged" swapped="no"/>
                   </object>
                   <packing>
