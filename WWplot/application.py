@@ -321,8 +321,8 @@ class Application(Gtk.Application):
         self.fit = Fit(maxit=200)
         self.fit.init_function(fitfunc.get_text())
 
-    def onFitFunctionChanged(self, button):
-        self.fit.init_function(button.get_text())
+    def onFitFunctionChanged(self, entry):
+        self.fit.init_function(entry.get_text())
 
     def clear_fitlog(self):
         children = self.fit_listbox.get_children()
