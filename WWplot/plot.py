@@ -6,7 +6,6 @@ from matplotlib.figure import Figure
 
 
 class Plot():
-    """Plot class based on Matplotlib"""
 
     def __init__(self, window, box, dpi_value=120):
         self.f = Figure(dpi=dpi_value)
@@ -38,7 +37,7 @@ class Plot():
         return line_obj, caplines, barlinecols
 
     def hist(self, x):
-        obj = self.axes.hist(x, facecolor="green", alpha=0.8, normed=True)
+        obj = self.axes.hist(x, facecolor='green', alpha=0.8, normed=True)
 
         return obj
 

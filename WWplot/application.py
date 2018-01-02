@@ -18,7 +18,7 @@ from WWplot.plot import Plot
 class Application(Gtk.Application):
 
     def __init__(self):
-        Gtk.Application.__init__(self, application_id="com.github.wwmm.wwplot")
+        Gtk.Application.__init__(self, application_id='com.github.wwmm.wwplot')
 
         GLib.set_application_name('WWplot')
 
@@ -37,23 +37,26 @@ class Application(Gtk.Application):
 
         self.builder = Gtk.Builder()
 
-        self.builder.add_from_file(self.module_path + "/ui/main_ui.glade")
+        self.builder.add_from_file(self.module_path + '/ui/main_ui.glade')
 
         self.builder.connect_signals(self)
 
-        self.window = self.builder.get_object("MainWindow")
+        self.window = self.builder.get_object('MainWindow')
 
         self.window.set_application(self)
 
-        self.liststore = self.builder.get_object("liststore")
+        self.liststore = self.builder.get_object('liststore')
 
-        self.xerr_column = self.builder.get_object("xerr_column")
-        self.y_column = self.builder.get_object("y_column")
-        self.yerr_column = self.builder.get_object("yerr_column")
+        self.fit_parameters_grid = self.builder.get_object(
+            'fit_parameters_grid')
 
-        self.fitfunc = self.builder.get_object("fitfunc")
+        self.xerr_column = self.builder.get_object('xerr_column')
+        self.y_column = self.builder.get_object('y_column')
+        self.yerr_column = self.builder.get_object('yerr_column')
 
-        self.button_switch_xy = self.builder.get_object("button_switch_xy")
+        self.fitfunc = self.builder.get_object('fitfunc')
+
+        self.button_switch_xy = self.builder.get_object('button_switch_xy')
 
         self.create_appmenu()
 
@@ -74,17 +77,17 @@ class Application(Gtk.Application):
     def create_appmenu(self):
         menu = Gio.Menu()
 
-        menu.append("About", "app.about")
-        menu.append("Quit", "app.quit")
+        menu.append('About', 'app.about')
+        menu.append('Quit', 'app.quit')
 
         self.set_app_menu(menu)
 
-        about_action = Gio.SimpleAction.new("about", None)
-        about_action.connect("activate", self.onAbout)
+        about_action = Gio.SimpleAction.new('about', None)
+        about_action.connect('activate', self.onAbout)
         self.add_action(about_action)
 
-        quit_action = Gio.SimpleAction.new("quit", None)
-        quit_action.connect("activate", lambda action, parameter: self.quit())
+        quit_action = Gio.SimpleAction.new('quit', None)
+        quit_action.connect('activate', lambda action, parameter: self.quit())
         self.add_action(quit_action)
 
     def onXEdited(self, renderer, row_id, value):
@@ -182,7 +185,7 @@ class Application(Gtk.Application):
         model, self.selected_row = selection.get_selected()
 
     def onKeyPressed(self, widget, event):
-        if event.keyval == Gdk.keyval_from_name("c"):
+        if event.keyval == Gdk.keyval_from_name('c'):
             if (event.state == Gdk.ModifierType.CONTROL_MASK or
                     Gdk.ModifierType.MOD2_MASK):
 
@@ -193,11 +196,11 @@ class Application(Gtk.Application):
 
                     row = [str(c0), str(c1), str(c2), str(c3)]
 
-                    text = "\t".join(row)
+                    text = '\t'.join(row)
 
                     self.clipboard.set_text(text, -1)
 
-        if event.keyval == Gdk.keyval_from_name("v"):
+        if event.keyval == Gdk.keyval_from_name('v'):
             if (event.state == Gdk.ModifierType.CONTROL_MASK or
                     Gdk.ModifierType.MOD2_MASK):
 
@@ -206,7 +209,7 @@ class Application(Gtk.Application):
 
                     text = self.clipboard.wait_for_text()
 
-                    row = text.replace(',', '.').split("\t")
+                    row = text.replace(',', '.').split('\t')
 
                     if len(row) == 4:
                         x, xerr, y, yerr = [float(i) for i in row]
@@ -217,12 +220,12 @@ class Application(Gtk.Application):
                         self.clear_fitlog()
 
     def init_menu(self):
-        button = self.builder.get_object("popover_button")
-        menu = self.builder.get_object("menu")
-        xtitle = self.builder.get_object("xtitle")
-        ytitle = self.builder.get_object("ytitle")
-        plot_title = self.builder.get_object("plot_title")
-        show_grid = self.builder.get_object("show_grid")
+        button = self.builder.get_object('popover_button')
+        menu = self.builder.get_object('menu')
+        xtitle = self.builder.get_object('xtitle')
+        ytitle = self.builder.get_object('ytitle')
+        plot_title = self.builder.get_object('plot_title')
+        show_grid = self.builder.get_object('show_grid')
 
         self.xtitle = xtitle.get_text()
         self.ytitle = ytitle.get_text()
@@ -240,10 +243,10 @@ class Application(Gtk.Application):
             else:
                 popover.show_all()
 
-        button.connect("clicked", on_click)
+        button.connect('clicked', on_click)
 
     def init_plot(self):
-        plot_box = self.builder.get_object("plot")
+        plot_box = self.builder.get_object('plot')
 
         self.x = np.array([])
         self.xerr = np.array([])
@@ -315,14 +318,41 @@ class Application(Gtk.Application):
         self.updatePlot()
 
     def init_fit(self):
-        fitfunc = self.builder.get_object("fitfunc")
-        self.fit_listbox = self.builder.get_object("fit_listbox")
+        fitfunc = self.builder.get_object('fitfunc')
+        self.fit_listbox = self.builder.get_object('fit_listbox')
 
         self.fit = Fit(maxit=200)
+
         self.fit.init_function(fitfunc.get_text())
+        self.init_fit_parameters()
+
+    def init_fit_parameters(self):
+        grid_children = self.fit_parameters_grid.get_children()
+
+        for child in grid_children:
+            child.destroy()
+
+        for n in range(len(self.fit.initial_P)):
+            builder = Gtk.Builder()
+
+            builder.add_from_file(self.module_path + '/ui/fit_parameter.glade')
+
+            label = builder.get_object('parameter_label')
+            spin = builder.get_object('parameter_value')
+            parameter = builder.get_object('parameter')
+
+            label.set_text('P[' + str(n) + ']')
+            spin.set_value(self.fit.initial_P[n])
+
+            self.fit_parameters_grid.attach(parameter, n, 0, 1, 1)
+
+            spin.connect('value-changed', self.fit.on_parameter_changed, n)
+
+            setattr(self, 'ui_fit_p' + str(n), spin)
 
     def onFitFunctionChanged(self, entry):
         self.fit.init_function(entry.get_text())
+        self.init_fit_parameters()
 
     def clear_fitlog(self):
         children = self.fit_listbox.get_children()
@@ -334,18 +364,24 @@ class Application(Gtk.Application):
         self.clear_fitlog()
 
         row = Gtk.ListBoxRow()
-        row.add(Gtk.Label("Fit Output"))
+        row.add(Gtk.Label('Fit Output'))
 
         self.fit_listbox.add(row)
 
         for n in range(0, len(result)):
-            label = "P[" + str(n) + "] = " + '{:.6}'.format(result[n]) + " +- "
+            label = 'P[' + str(n) + '] = ' + '{:.6}'.format(result[n]) + ' +- '
             label = label + '{:.6}'.format(result_err[n])
 
             row = Gtk.ListBoxRow()
             row.add(Gtk.Label(label))
 
             self.fit_listbox.add(row)
+
+            ui_fit_p = getattr(self, 'ui_fit_p' + str(n))
+
+            ui_fit_p.set_value(round(result[n], 2))
+
+            print('test: ', round(result[n], 2))
 
         row = Gtk.ListBoxRow()
         row.add(Gtk.Label())
@@ -379,10 +415,10 @@ class Application(Gtk.Application):
             func = self.fit.fit_function
 
             if self.do_histogram is False:
-                self.plot.plot(self.x, func(result, self.x), "r-")
+                self.plot.plot(self.x, func(result, self.x), 'r-')
             else:
                 self.plot.plot(
-                    self.hist_bin[:-1], func(result, self.hist_bin[:-1]), "r-")
+                    self.hist_bin[:-1], func(result, self.hist_bin[:-1]), 'r-')
 
             self.plot.update()
 
@@ -394,8 +430,8 @@ class Application(Gtk.Application):
             self.y_column.set_visible(False)
             self.yerr_column.set_visible(False)
 
-            equation = "(1.0 / (P[0] * sqrt(2 * pi))) * "
-            equation = equation + "exp(- (x - P[1])**2 / (2 * P[0]**2))"
+            equation = '(1.0 / (P[0] * sqrt(2 * pi))) * '
+            equation = equation + 'exp(- (x - P[1])**2 / (2 * P[0]**2))'
 
             self.fitfunc.set_text(equation)
 
@@ -407,7 +443,7 @@ class Application(Gtk.Application):
             self.y_column.set_visible(True)
             self.yerr_column.set_visible(True)
 
-            equation = "P[0] * x + P[1]"
+            equation = 'P[0] * x + P[1]'
 
             self.fitfunc.set_text(equation)
 
@@ -419,9 +455,9 @@ class Application(Gtk.Application):
     def onAbout(self, action, parameter):
         builder = Gtk.Builder()
 
-        builder.add_from_file("ui/about.glade")
+        builder.add_from_file('ui/about.glade')
 
-        dialog = builder.get_object("about_dialog")
+        dialog = builder.get_object('about_dialog')
 
         dialog.set_transient_for(self.window)
 

@@ -5,7 +5,7 @@ from numpy import *
 
 
 class Fit(object):
-    """docstring for Fit."""
+    '''docstring for Fit.'''
 
     def __init__(self, maxit=100):
         super(Fit, self).__init__()
@@ -21,11 +21,11 @@ class Fit(object):
         self.fit_function = None
 
     def init_function(self, equation_str):
-        N = equation_str.count("P[")
+        N = equation_str.count('P[')
         n_free = 0
 
         for n in range(0, N):
-            test_str = "P[" + str(n) + "]"
+            test_str = 'P[' + str(n) + ']'
 
             if equation_str.count(test_str) > 0:
                 n_free = n_free + 1
@@ -38,6 +38,9 @@ class Fit(object):
         self.fit_function = lambda P, x: eval(equation_str)
 
         self.model = scipy.odr.Model(self.fit_function)
+
+    def on_parameter_changed(self, obj, idx):
+        self.initial_P[idx] = obj.get_value()
 
     def set_data(self, x, y, xerr=None, yerr=None):
         if xerr is not None and yerr is not None:
