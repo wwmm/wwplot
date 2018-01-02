@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.21.0 -->
 <interface>
   <requires lib="gtk+" version="3.18"/>
+  <object class="GtkImage" id="export_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">document-save-symbolic</property>
+    <property name="use_fallback">True</property>
+  </object>
+  <object class="GtkImage" id="import_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">document-open-symbolic</property>
+    <property name="use_fallback">True</property>
+  </object>
   <object class="GtkListStore" id="liststore">
     <columns>
       <!-- column-name x -->
@@ -13,6 +25,117 @@
       <!-- column-name y_err -->
       <column type="gfloat"/>
     </columns>
+  </object>
+  <object class="GtkGrid" id="menu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="row_spacing">6</property>
+    <property name="column_spacing">6</property>
+    <child>
+      <object class="GtkLabel">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">end</property>
+        <property name="valign">center</property>
+        <property name="label" translatable="yes">X Axis Title</property>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">end</property>
+        <property name="valign">center</property>
+        <property name="label" translatable="yes">Y Axis Title</property>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">end</property>
+        <property name="valign">center</property>
+        <property name="label" translatable="yes">Plot Title</property>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="xtitle">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="input_purpose">name</property>
+        <signal name="changed" handler="onXtitleChanged" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="top_attach">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="valign">center</property>
+        <property name="label" translatable="yes">Grid Lines</property>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">3</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkSwitch" id="show_grid">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="halign">end</property>
+        <signal name="state-set" handler="on_show_grid_state_set" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="top_attach">3</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="ytitle">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="input_purpose">name</property>
+        <signal name="changed" handler="onYtitleChanged" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="top_attach">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="plot_title">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="input_purpose">name</property>
+        <signal name="changed" handler="onTitleChanged" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="top_attach">2</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkImage" id="popover_button_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">format-justify-fill-symbolic</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkApplicationWindow" id="MainWindow">
     <property name="can_focus">False</property>
@@ -329,7 +452,72 @@
       </object>
     </child>
     <child type="titlebar">
-      <placeholder/>
+      <object class="GtkHeaderBar" id="headerbar">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="title">WWplot</property>
+        <property name="has_subtitle">False</property>
+        <property name="show_close_button">True</property>
+        <child>
+          <object class="GtkButton" id="import_button">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Import table from TSV file</property>
+            <property name="image">import_image</property>
+            <signal name="clicked" handler="onImportTable" swapped="no"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="export_button">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Export table to TSV file</property>
+            <property name="image">export_image</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="onExportTable" swapped="no"/>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="popover_button">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="image">popover_button_image</property>
+            <property name="always_show_image">True</property>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSwitch">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <signal name="state-set" handler="onModeChanged" swapped="no"/>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Histogram Mode</property>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+      </object>
     </child>
   </object>
 </interface>

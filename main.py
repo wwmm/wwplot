@@ -16,7 +16,6 @@ from plot import Plot
 
 
 class WWplot(Gtk.Application):
-    """Main class."""
 
     def __init__(self):
         Gtk.Application.__init__(self, application_id="wwmm.wwplot")
@@ -24,74 +23,40 @@ class WWplot(Gtk.Application):
         self.selected_row = None
         self.do_histogram = False
         self.show_grid = True
+        self.xtitle = 'x'
+        self.ytitle = 'y'
+        self.plot_title = 'title'
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
 
-        main_ui_builder = Gtk.Builder()
-        headerbar_builder = Gtk.Builder()
-        menu_builder = Gtk.Builder()
+        self.builder = Gtk.Builder()
 
-        main_ui_builder.add_from_file("ui.glade")
-        headerbar_builder.add_from_file("headerbar.glade")
-        menu_builder.add_from_file("menu.glade")
+        self.builder.add_from_file("ui/main_ui.glade")
 
-        main_ui_handlers = {
-            "onQuit": self.onQuit,
-            "onXEdited": self.onXEdited,
-            "onXerrEdited": self.onXerrEdited,
-            "onYEdited": self.onYEdited,
-            "onYerrEdited": self.onYerrEdited,
-            "onAdd": self.onAdd,
-            "onRemove": self.onRemove,
-            "onSwapColumns": self.onSwapColumns,
-            "onSelectionChanged": self.onSelectionChanged,
-            "onFitFunctionChanged": self.onFitFunctionChanged,
-            "onFit": self.onFit,
-            "onKeyPressed": self.onKeyPressed
-        }
+        self.builder.connect_signals(self)
 
-        headerbar_handlers = {
-            "onModeChanged": self.onModeChanged,
-            "onImportTable": self.onImportTable,
-            "onExportTable": self.onExportTable
-        }
+        self.window = self.builder.get_object("MainWindow")
 
-        menu_handlers = {
-            "onXtitleChanged": self.onXtitleChanged,
-            "onYtitleChanged": self.onYtitleChanged,
-            "onTitleChanged": self.onTitleChanged,
-            "onShowGrid": self.onShowGrid
-        }
-
-        main_ui_builder.connect_signals(main_ui_handlers)
-        headerbar_builder.connect_signals(headerbar_handlers)
-        menu_builder.connect_signals(menu_handlers)
-
-        self.window = main_ui_builder.get_object("MainWindow")
-
-        headerbar = headerbar_builder.get_object("headerbar")
-
-        self.window.set_titlebar(headerbar)
         self.window.set_application(self)
 
-        self.liststore = main_ui_builder.get_object("liststore")
+        self.liststore = self.builder.get_object("liststore")
 
-        self.xerr_column = main_ui_builder.get_object("xerr_column")
-        self.y_column = main_ui_builder.get_object("y_column")
-        self.yerr_column = main_ui_builder.get_object("yerr_column")
+        self.xerr_column = self.builder.get_object("xerr_column")
+        self.y_column = self.builder.get_object("y_column")
+        self.yerr_column = self.builder.get_object("yerr_column")
 
-        self.fitfunc = main_ui_builder.get_object("fitfunc")
+        self.fitfunc = self.builder.get_object("fitfunc")
 
-        self.button_switch_xy = main_ui_builder.get_object("button_switch_xy")
+        self.button_switch_xy = self.builder.get_object("button_switch_xy")
 
         self.create_appmenu()
 
         self.window.show_all()
 
-        self.init_menu(headerbar_builder, menu_builder)
-        self.init_plot(main_ui_builder)
-        self.init_fit(main_ui_builder)
+        self.init_plot()
+        self.init_menu()
+        self.init_fit()
 
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
@@ -246,16 +211,19 @@ class WWplot(Gtk.Application):
                         self.updatePlot()
                         self.clear_fitlog()
 
-    def init_menu(self, headerbar_builder, menu_builder):
-        button = headerbar_builder.get_object("popover_button")
-        menu = menu_builder.get_object("menu")
-        xtitle = menu_builder.get_object("xtitle")
-        ytitle = menu_builder.get_object("ytitle")
-        plot_title = menu_builder.get_object("plot_title")
+    def init_menu(self):
+        button = self.builder.get_object("popover_button")
+        menu = self.builder.get_object("menu")
+        xtitle = self.builder.get_object("xtitle")
+        ytitle = self.builder.get_object("ytitle")
+        plot_title = self.builder.get_object("plot_title")
+        show_grid = self.builder.get_object("show_grid")
 
         self.xtitle = xtitle.get_text()
         self.ytitle = ytitle.get_text()
         self.plot_title = plot_title.get_text()
+
+        show_grid.set_active(self.show_grid)
 
         popover = Gtk.Popover.new(button)
         popover.props.transitions_enabled = True
@@ -269,8 +237,8 @@ class WWplot(Gtk.Application):
 
         button.connect("clicked", on_click)
 
-    def init_plot(self, main_ui_builder):
-        plot_box = main_ui_builder.get_object("plot")
+    def init_plot(self):
+        plot_box = self.builder.get_object("plot")
 
         self.x = np.array([])
         self.xerr = np.array([])
@@ -337,13 +305,13 @@ class WWplot(Gtk.Application):
         self.plot.set_title(self.plot_title)
         self.plot.update()
 
-    def onShowGrid(self, button, state):
+    def on_show_grid_state_set(self, button, state):
         self.show_grid = state
         self.updatePlot()
 
-    def init_fit(self, main_ui_builder):
-        fitfunc = main_ui_builder.get_object("fitfunc")
-        self.fit_listbox = main_ui_builder.get_object("fit_listbox")
+    def init_fit(self):
+        fitfunc = self.builder.get_object("fitfunc")
+        self.fit_listbox = self.builder.get_object("fit_listbox")
 
         self.fit = Fit(maxit=200)
         self.fit.init_function(fitfunc.get_text())
@@ -446,13 +414,15 @@ class WWplot(Gtk.Application):
     def onAbout(self, action, parameter):
         builder = Gtk.Builder()
 
-        builder.add_from_file("about.glade")
+        builder.add_from_file("ui/about.glade")
 
         dialog = builder.get_object("about_dialog")
 
         dialog.set_transient_for(self.window)
 
-        dialog.show()
+        dialog.run()
+
+        dialog.destroy()
 
 
 if __name__ == "__main__":
