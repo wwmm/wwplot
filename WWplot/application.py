@@ -46,17 +46,16 @@ class Application(Gtk.Application):
         self.window.set_application(self)
 
         self.liststore = self.builder.get_object('liststore')
-
+        self.treeview = self.builder.get_object('treeview')
+        self.button_switch_xy = self.builder.get_object('button_switch_xy')
         self.fit_parameters_grid = self.builder.get_object(
             'fit_parameters_grid')
-
         self.xerr_column = self.builder.get_object('xerr_column')
         self.y_column = self.builder.get_object('y_column')
         self.yerr_column = self.builder.get_object('yerr_column')
-
         self.fitfunc = self.builder.get_object('fitfunc')
 
-        self.button_switch_xy = self.builder.get_object('button_switch_xy')
+        self.apply_css_style('listbox.css')
 
         self.create_appmenu()
 
@@ -89,6 +88,18 @@ class Application(Gtk.Application):
         quit_action = Gio.SimpleAction.new('quit', None)
         quit_action.connect('activate', lambda action, parameter: self.quit())
         self.add_action(quit_action)
+
+    def apply_css_style(self, css_file):
+        provider = Gtk.CssProvider()
+
+        css_file = Gio.File.new_for_path(self.module_path + '/ui/' + css_file)
+
+        provider.load_from_file(css_file)
+
+        screen = Gdk.Screen.get_default()
+        priority = Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+
+        Gtk.StyleContext.add_provider_for_screen(screen, provider, priority)
 
     def onXEdited(self, renderer, row_id, value):
         self.liststore[row_id][0] = float(value.replace(',', '.'))
