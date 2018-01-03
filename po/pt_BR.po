@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wwplot\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-02 13:50-0200\n"
-"PO-Revision-Date: 2018-01-02 13:53-0200\n"
+"POT-Creation-Date: 2018-01-03 19:09-0200\n"
+"PO-Revision-Date: 2018-01-03 19:10-0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -23,10 +23,6 @@ msgid "A simple plotting tool for experimental physics classes"
 msgstr ""
 "Uma ferramenta simples para realizar gráficos em cursos de física "
 "experimental"
-
-#: WWplot/ui/about.glade:12
-msgid "https://wwmm.github.io/wwplot/"
-msgstr ""
 
 #: WWplot/ui/main_ui.glade:40
 msgid "X Axis Title"
@@ -44,51 +40,55 @@ msgstr "Título do Gráfico"
 msgid "Grid Lines"
 msgstr "Linhas da Grade"
 
-#: WWplot/ui/main_ui.glade:168
-msgid "Click here to add rows"
-msgstr "Clique aqui para adicionar Linhas"
-
-#: WWplot/ui/main_ui.glade:186
-msgid "Click here to swap x and y columns values"
-msgstr "Clique aqui para trocar os valores das colunas x e y"
-
-#: WWplot/ui/main_ui.glade:200 WWplot/ui/main_ui.glade:289
-msgid "x"
-msgstr "x"
-
-#: WWplot/ui/main_ui.glade:225 WWplot/ui/main_ui.glade:321
-msgid "y"
-msgstr "y"
-
-#: WWplot/ui/main_ui.glade:248
+#: WWplot/ui/main_ui.glade:178
 msgid "Click here to remove rows"
 msgstr "Clique aqui para remover linhas"
 
-#: WWplot/ui/main_ui.glade:305
+#: WWplot/ui/main_ui.glade:195
+msgid "Click here to swap x and y columns values"
+msgstr "Clique aqui para trocar os valores das colunas x e y"
+
+#: WWplot/ui/main_ui.glade:209 WWplot/ui/main_ui.glade:272
+msgid "x"
+msgstr "x"
+
+#: WWplot/ui/main_ui.glade:234 WWplot/ui/main_ui.glade:304
+msgid "y"
+msgstr "y"
+
+#: WWplot/ui/main_ui.glade:288
 msgid "x_err"
 msgstr "x_err"
 
-#: WWplot/ui/main_ui.glade:337
+#: WWplot/ui/main_ui.glade:320
 msgid "y_err"
 msgstr "y_err"
 
-#: WWplot/ui/main_ui.glade:394
+#: WWplot/ui/main_ui.glade:348
+msgid "Click here to add rows"
+msgstr "Clique aqui para adicionar Linhas"
+
+#: WWplot/ui/main_ui.glade:362
 msgid "Fit function"
 msgstr "Função de Ajuste"
 
-#: WWplot/ui/main_ui.glade:398
+#: WWplot/ui/main_ui.glade:366
 msgid "Click here to fit this function to the experimental data"
 msgstr "Clique aqui para ajustar esta Função aos Dados Experimentais"
 
-#: WWplot/ui/main_ui.glade:464
+#: WWplot/ui/main_ui.glade:398
+msgid "Initial Values"
+msgstr "Valores iniciais"
+
+#: WWplot/ui/main_ui.glade:488
 msgid "Import table from TSV file"
 msgstr "Importar tabela de um Arquivo TSV"
 
-#: WWplot/ui/main_ui.glade:474
+#: WWplot/ui/main_ui.glade:498
 msgid "Export table to TSV file"
 msgstr "Exportar Tabela para um Arquivo TSV"
 
-#: WWplot/ui/main_ui.glade:511
+#: WWplot/ui/main_ui.glade:535
 msgid "Histogram Mode"
 msgstr "Modo Histograma"
 
@@ -102,8 +102,7 @@ msgstr "Ferramenta de Gráfico"
 
 #: data/com.github.wwmm.wwplot.desktop.in:5
 msgid "Plotting Tool for Experimental Physics Classes"
-msgstr ""
-"Ferramenta para realizar Gráficos em aulas de Física Experimental"
+msgstr "Ferramenta para realizar Gráficos em aulas de Física Experimental"
 
 #: data/com.github.wwmm.wwplot.desktop.in:6
 msgid "plot;graph;experiment;laboratory;"
