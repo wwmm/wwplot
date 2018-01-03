@@ -53,7 +53,10 @@ class Plot():
         self.axes.set_title(value)
 
     def set_grid(self, value):
-        self.axes.grid(value)
+        if value:
+            self.axes.grid(b=value, linestyle='--')
+        else:
+            self.axes.grid(b=value)
 
     def set_margins(self, value):
         self.axes.margins(value)
