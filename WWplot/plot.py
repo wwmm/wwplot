@@ -12,6 +12,8 @@ class Plot():
 
         self.axes = self.f.add_subplot(111)
 
+        self.axes.tick_params(direction='in')
+
         self.canvas = FigureCanvasGTK3Agg(self.f)  # a Gtk.DrawingArea
 
         self.f.tight_layout()
