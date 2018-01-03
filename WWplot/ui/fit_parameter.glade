@@ -27,11 +27,11 @@
       <object class="GtkSpinButton" id="parameter_value">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
+        <property name="input_purpose">number</property>
         <property name="orientation">vertical</property>
         <property name="adjustment">adjustment</property>
         <property name="digits">2</property>
         <property name="numeric">True</property>
-        <property name="update_policy">if-valid</property>
       </object>
       <packing>
         <property name="left_attach">0</property>

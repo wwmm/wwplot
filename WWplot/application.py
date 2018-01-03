@@ -381,8 +381,6 @@ class Application(Gtk.Application):
 
             ui_fit_p.set_value(round(result[n], 2))
 
-            print('test: ', round(result[n], 2))
-
         row = Gtk.ListBoxRow()
         row.add(Gtk.Label())
 
