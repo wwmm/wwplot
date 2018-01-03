@@ -464,7 +464,7 @@ class Application(Gtk.Application):
     def onAbout(self, action, parameter):
         builder = Gtk.Builder()
 
-        builder.add_from_file('ui/about.glade')
+        builder.add_from_file(self.module_path + '/ui/about.glade')
 
         dialog = builder.get_object('about_dialog')
 

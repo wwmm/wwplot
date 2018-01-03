@@ -7,7 +7,7 @@
     <property name="modal">True</property>
     <property name="type_hint">dialog</property>
     <property name="program_name">WWplot</property>
-    <property name="version">0.0.1</property>
+    <property name="version">0.0.2</property>
     <property name="comments" translatable="yes">A simple plotting tool for experimental physics classes</property>
     <property name="website">https://wwmm.github.io/wwplot/</property>
     <property name="website_label">https://wwmm.github.io/wwplot/</property>
