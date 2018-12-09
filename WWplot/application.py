@@ -87,7 +87,21 @@ class Application(Gtk.Application):
             self.tables[-1].ui, 'table ' + str(n), 'Table ' + str(n))
 
     def onRemoveTable(self, button):
-        pass
+        visible_child = self.table_stack.get_visible_child()
+
+        for t in self.tables:
+            if t.ui == visible_child:
+                self.table_stack.remove(visible_child)
+
+                self.tables.remove(t)
+
+                break
+
+        # for t in self.tables:
+        #     child = self.table_stack
+        #     if t.ui ==
+        # self.stack.child_set_property(self.soe.ui_window, 'icon-name',
+        # 'audio-input-microphone-symbolic')
 
     def onImportTable(self, button):
         it = ImportTable(self.window)
@@ -142,8 +156,8 @@ class Application(Gtk.Application):
 
     def onKeyPressed(self, widget, event):
         if event.keyval == Gdk.keyval_from_name('c'):
-            if (event.state == Gdk.ModifierType.CONTROL_MASK or
-                    Gdk.ModifierType.MOD2_MASK):
+            if (event.state == Gdk.ModifierType.CONTROL_MASK
+                    or Gdk.ModifierType.MOD2_MASK):
 
                 if self.selected_row is not None:
                     c0, c1, c2, c3 = self.liststore.get(self.selected_row, 0,
@@ -156,8 +170,8 @@ class Application(Gtk.Application):
                     self.clipboard.set_text(text, -1)
 
         if event.keyval == Gdk.keyval_from_name('v'):
-            if (event.state == Gdk.ModifierType.CONTROL_MASK
-                    or Gdk.ModifierType.MOD2_MASK):
+            if (event.state == Gdk.ModifierType.CONTROL_MASK or
+                    Gdk.ModifierType.MOD2_MASK):
 
                 if self.selected_row is not None:
                     text = self.clipboard.wait_for_text()
