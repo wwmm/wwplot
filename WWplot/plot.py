@@ -39,7 +39,7 @@ class Plot():
         return line_obj, caplines, barlinecols
 
     def hist(self, x):
-        obj = self.axes.hist(x, facecolor='green', alpha=0.8, normed=True)
+        obj = self.axes.hist(x, facecolor='green', alpha=0.8, density=True)
 
         return obj
 

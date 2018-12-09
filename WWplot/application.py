@@ -1,18 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from WWplot.plot import Plot
+from WWplot.import_table import ImportTable
+from WWplot.fit import Fit
+from WWplot.table import Table
+from WWplot.export_table import ExportTable
+from gi.repository import Gdk, Gio, GLib, Gtk
 import os
 
 import gi
 import numpy as np
 gi.require_version('Gdk', '3.0')
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gdk, Gio, GLib, Gtk
-
-from WWplot.export_table import ExportTable
-from WWplot.fit import Fit
-from WWplot.import_table import ImportTable
-from WWplot.plot import Plot
 
 
 class Application(Gtk.Application):
@@ -45,19 +45,17 @@ class Application(Gtk.Application):
 
         self.window.set_application(self)
 
-        self.liststore = self.builder.get_object('liststore')
-        self.treeview = self.builder.get_object('treeview')
-        self.button_switch_xy = self.builder.get_object('button_switch_xy')
+        self.table_stack = self.builder.get_object('table_stack')
+
         self.fit_parameters_grid = self.builder.get_object(
             'fit_parameters_grid')
-        self.xerr_column = self.builder.get_object('xerr_column')
-        self.y_column = self.builder.get_object('y_column')
-        self.yerr_column = self.builder.get_object('yerr_column')
         self.fitfunc = self.builder.get_object('fitfunc')
 
         self.apply_css_style('listbox.css')
 
-        self.create_appmenu()
+        self.table = Table()
+
+        self.table_stack.add_titled(self.table.ui, 'table0', 'Table 0')
 
         self.init_plot()
         self.init_menu()
@@ -65,29 +63,11 @@ class Application(Gtk.Application):
 
         self.window.show_all()
 
-        self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
-
     def do_activate(self):
         self.window.present()
 
     def do_shutdown(self):
         Gtk.Application.do_shutdown(self)
-
-    def create_appmenu(self):
-        menu = Gio.Menu()
-
-        menu.append('About', 'app.about')
-        menu.append('Quit', 'app.quit')
-
-        self.set_app_menu(menu)
-
-        about_action = Gio.SimpleAction.new('about', None)
-        about_action.connect('activate', self.onAbout)
-        self.add_action(about_action)
-
-        quit_action = Gio.SimpleAction.new('quit', None)
-        quit_action.connect('activate', lambda action, parameter: self.quit())
-        self.add_action(quit_action)
 
     def apply_css_style(self, css_file):
         provider = Gtk.CssProvider()
@@ -100,33 +80,6 @@ class Application(Gtk.Application):
         priority = Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
 
         Gtk.StyleContext.add_provider_for_screen(screen, provider, priority)
-
-    def onXEdited(self, renderer, row_id, value):
-        self.liststore[row_id][0] = float(value.replace(',', '.'))
-        self.updatePlot()
-
-    def onXerrEdited(self, renderer, row_id, value):
-        self.liststore[row_id][1] = float(value.replace(',', '.'))
-        self.updatePlot()
-
-    def onYEdited(self, renderer, row_id, value):
-        self.liststore[row_id][2] = float(value.replace(',', '.'))
-        self.updatePlot()
-
-    def onYerrEdited(self, renderer, row_id, value):
-        self.liststore[row_id][3] = float(value.replace(',', '.'))
-        self.updatePlot()
-
-    def onAdd(self, button):
-        self.liststore.append([0, 0, 0, 0])
-        self.updatePlot()
-        self.clear_fitlog()
-
-    def onRemove(self, button):
-        if self.selected_row is not None:
-            self.liststore.remove(self.selected_row)
-            self.updatePlot()
-            self.clear_fitlog()
 
     def onImportTable(self, button):
         it = ImportTable(self.window)
@@ -179,31 +132,14 @@ class Application(Gtk.Application):
 
             ExportTable(self.window, table)
 
-    def onSwapColumns(self, button):
-        row_iter = self.liststore.get_iter_first()
-
-        while row_iter is not None:
-            y, yerr, x, xerr = self.liststore.get(row_iter, 0, 1, 2, 3)
-
-            self.liststore.set(row_iter, 0, x, 1, xerr, 2, y, 3, yerr)
-
-            row_iter = self.liststore.iter_next(row_iter)
-
-        self.updatePlot()
-        self.clear_fitlog()
-
-    def onSelectionChanged(self, selection):
-        model, self.selected_row = selection.get_selected()
-
     def onKeyPressed(self, widget, event):
         if event.keyval == Gdk.keyval_from_name('c'):
-            if (event.state == Gdk.ModifierType.CONTROL_MASK or
-                    Gdk.ModifierType.MOD2_MASK):
+            if (event.state == Gdk.ModifierType.CONTROL_MASK
+                    or Gdk.ModifierType.MOD2_MASK):
 
                 if self.selected_row is not None:
-                    idx = self.selected_row
-
-                    c0, c1, c2, c3 = self.liststore.get(idx, 0, 1, 2, 3)
+                    c0, c1, c2, c3 = self.liststore.get(self.selected_row, 0,
+                                                        1, 2, 3)
 
                     row = [str(c0), str(c1), str(c2), str(c3)]
 
@@ -216,8 +152,6 @@ class Application(Gtk.Application):
                     Gdk.ModifierType.MOD2_MASK):
 
                 if self.selected_row is not None:
-                    idx = self.selected_row
-
                     text = self.clipboard.wait_for_text()
 
                     row = text.replace(',', '.').split('\t')
@@ -225,7 +159,8 @@ class Application(Gtk.Application):
                     if len(row) == 4:
                         x, xerr, y, yerr = [float(i) for i in row]
 
-                        self.liststore.set(idx, 0, x, 1, xerr, 2, y, 3, yerr)
+                        self.liststore.set(self.selected_row, 0, x, 1, xerr, 2,
+                                           y, 3, yerr)
 
                         self.updatePlot()
                         self.clear_fitlog()
