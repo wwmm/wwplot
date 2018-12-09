@@ -12,6 +12,8 @@ gi.require_version('Gdk', '3.0')
 class Table():
 
     def __init__(self):
+        self.selected_row = None
+
         self.module_path = os.path.dirname(__file__)
 
         self.builder = Gtk.Builder()
