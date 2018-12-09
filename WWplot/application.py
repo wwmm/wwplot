@@ -81,10 +81,10 @@ class Application(Gtk.Application):
     def onAddTable(self, button):
         self.tables.append(Table())
 
-        n = len(self.tables)
+        n = len(self.tables) - 1
 
         self.table_stack.add_titled(
-            self.tables[-1].ui, 'table ' + str(n), 'Table ' + str(n))
+            self.tables[-1].ui, 'table' + str(n), 'Table ' + str(n))
 
     def onRemoveTable(self, button):
         visible_child = self.table_stack.get_visible_child()
@@ -97,11 +97,12 @@ class Application(Gtk.Application):
 
                 break
 
-        # for t in self.tables:
-        #     child = self.table_stack
-        #     if t.ui ==
-        # self.stack.child_set_property(self.soe.ui_window, 'icon-name',
-        # 'audio-input-microphone-symbolic')
+        for n in range(len(self.tables)):
+            self.table_stack.child_set_property(self.tables[n].ui, 'name',
+                                                'table' + str(n))
+
+            self.table_stack.child_set_property(self.tables[n].ui, 'title',
+                                                'Table ' + str(n))
 
     def onImportTable(self, button):
         it = ImportTable(self.window)
