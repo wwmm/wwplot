@@ -175,7 +175,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkSwitch">
+          <object class="GtkSwitch" id="mode_switch">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <signal name="state-set" handler="onModeChanged" swapped="no"/>

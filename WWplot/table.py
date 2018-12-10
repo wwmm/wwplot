@@ -48,8 +48,32 @@ class Table():
         self.liststore.set_sort_column_id(0, Gtk.SortType.ASCENDING)
 
         self.init_fit()
+        self.init_mode()
 
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+
+    def init_mode(self):
+        if self.app.do_histogram:
+            equation = '(1.0 / (P[0] * sqrt(2 * pi))) * '
+            equation = equation + 'exp(- (x - P[1])**2 / (2 * P[0]**2))'
+
+            self.xerr_column.set_visible(False)
+            self.y_column.set_visible(False)
+            self.yerr_column.set_visible(False)
+
+            self.fitfunc.set_text(equation)
+
+            self.button_switch_xy.hide()
+        else:
+            equation = 'P[0] * x + P[1]'
+
+            self.xerr_column.set_visible(True)
+            self.y_column.set_visible(True)
+            self.yerr_column.set_visible(True)
+
+            self.fitfunc.set_text(equation)
+
+            self.button_switch_xy.show_all()
 
     def onXEdited(self, renderer, row_id, value):
         self.liststore[row_id][0] = float(value.replace(',', '.'))
