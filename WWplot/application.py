@@ -157,7 +157,9 @@ class Application(Gtk.Application):
             for t, n in zip(self.tables, range(len(self.tables))):
                 x, xerr, y, yerr = t.getColumns()
 
-                self.plot.errorbar(x, xerr, y, yerr, n)
+                self.plot.errorbar(x, xerr, y, yerr, n, 'table ' + str(n))
+
+                self.plot.axes.legend()
 
                 if len(t.fit_x) > 0:
                     self.plot.plot(t.fit_x, t.fit_y, 'r-')

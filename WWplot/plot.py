@@ -33,10 +33,10 @@ class Plot():
 
         return line_obj
 
-    def errorbar(self, x, x_err, y, y_err, marker_idx):
+    def errorbar(self, x, x_err, y, y_err, marker_idx, legenda):
         line_obj, caplines, barlinecols = self.axes.errorbar(
             x, y, yerr=y_err, xerr=x_err, fmt=self.markers[marker_idx],
-            clip_on=True, capsize=5)
+            label=legenda, clip_on=True, capsize=5)
 
         return line_obj, caplines, barlinecols
 
