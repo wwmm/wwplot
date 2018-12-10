@@ -254,7 +254,11 @@ class Table():
             label = label + '{:.6}'.format(result_err[n])
 
             row = Gtk.ListBoxRow()
-            row.add(Gtk.Label(label))
+
+            Label = Gtk.Label(label)
+            Label.set_halign(Gtk.Align.START)
+
+            row.add(Label)
 
             self.fit_listbox.add(row)
 

@@ -239,6 +239,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="halign">start</property>
                 <property name="valign">center</property>
                 <property name="image">tab_remove_img</property>
                 <property name="always_show_image">True</property>
@@ -255,6 +256,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="image">table_add_img</property>
                 <property name="always_show_image">True</property>
