@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from WWplot.plot import Plot
-from WWplot.fit import Fit
 from WWplot.table import Table
 from gi.repository import Gdk, Gio, GLib, Gtk
 import os
@@ -46,15 +45,10 @@ class Application(Gtk.Application):
 
         self.table_stack = self.builder.get_object('table_stack')
 
-        self.fit_parameters_grid = self.builder.get_object(
-            'fit_parameters_grid')
-        self.fitfunc = self.builder.get_object('fitfunc')
-
         self.apply_css_style('listbox.css')
 
         self.init_plot()
         self.init_menu()
-        self.init_fit()
 
         self.window.show_all()
 
@@ -192,109 +186,6 @@ class Application(Gtk.Application):
     def on_show_grid_state_set(self, button, state):
         self.show_grid = state
         self.updatePlot()
-
-    def init_fit(self):
-        fitfunc = self.builder.get_object('fitfunc')
-        self.fit_listbox = self.builder.get_object('fit_listbox')
-
-        self.fit = Fit(maxit=200)
-
-        self.fit.init_function(fitfunc.get_text())
-        self.init_fit_parameters()
-
-    def init_fit_parameters(self):
-        grid_children = self.fit_parameters_grid.get_children()
-
-        for child in grid_children:
-            child.destroy()
-
-        for n in range(len(self.fit.initial_P)):
-            builder = Gtk.Builder()
-
-            builder.add_from_file(self.module_path + '/ui/fit_parameter.glade')
-
-            label = builder.get_object('parameter_label')
-            spin = builder.get_object('parameter_value')
-            parameter = builder.get_object('parameter')
-
-            label.set_text('P[' + str(n) + ']')
-            spin.set_value(self.fit.initial_P[n])
-
-            self.fit_parameters_grid.attach(parameter, n, 0, 1, 1)
-
-            spin.connect('value-changed', self.fit.on_parameter_changed, n)
-
-            setattr(self, 'ui_fit_p' + str(n), spin)
-
-    def onFitFunctionChanged(self, entry):
-        self.fit.init_function(entry.get_text())
-        self.init_fit_parameters()
-
-    def clear_fitlog(self):
-        children = self.fit_listbox.get_children()
-
-        for child in children:
-            self.fit_listbox.remove(child)
-
-    def build_fitlog(self, result, result_err, stopreason):
-        self.clear_fitlog()
-
-        row = Gtk.ListBoxRow()
-        row.add(Gtk.Label('Fit Output'))
-
-        self.fit_listbox.add(row)
-
-        for n in range(0, len(result)):
-            label = 'P[' + str(n) + '] = ' + '{:.6}'.format(result[n]) + ' +- '
-            label = label + '{:.6}'.format(result_err[n])
-
-            row = Gtk.ListBoxRow()
-            row.add(Gtk.Label(label))
-
-            self.fit_listbox.add(row)
-
-            ui_fit_p = getattr(self, 'ui_fit_p' + str(n))
-
-            ui_fit_p.set_value(round(result[n], 2))
-
-        row = Gtk.ListBoxRow()
-        row.add(Gtk.Label())
-
-        self.fit_listbox.add(row)
-
-        for reason in stopreason:
-            row = Gtk.ListBoxRow()
-            row.add(Gtk.Label(reason))
-
-            self.fit_listbox.add(row)
-
-        self.fit_listbox.show_all()
-
-    def onFit(self, button):
-        if len(self.x) > 1:
-            self.updatePlot()
-
-            if self.do_histogram is False:
-                self.fit.set_data(self.x, self.y, self.xerr, self.yerr)
-            else:
-                self.fit.set_data(self.hist_bin[:-1], self.hist_count)
-
-            stopreason = self.fit.run()
-
-            result = self.fit.output
-            result_err = self.fit.output_err
-
-            self.build_fitlog(result, result_err, stopreason)
-
-            func = self.fit.fit_function
-
-            if self.do_histogram is False:
-                self.plot.plot(self.x, func(result, self.x), 'r-')
-            else:
-                self.plot.plot(
-                    self.hist_bin[:-1], func(result, self.hist_bin[:-1]), 'r-')
-
-            self.plot.update()
 
     def onModeChanged(self, button, state):
         if state is True:  # do histogram

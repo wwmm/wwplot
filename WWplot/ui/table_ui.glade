@@ -294,6 +294,7 @@
             <property name="tooltip_text" translatable="yes">Click here to fit this function to the experimental data</property>
             <property name="halign">center</property>
             <property name="valign">center</property>
+            <signal name="clicked" handler="onFit" swapped="no"/>
             <style>
               <class name="suggested-action"/>
             </style>
@@ -311,6 +312,7 @@
             <property name="hexpand">True</property>
             <property name="text">P[0] * x + P[1]</property>
             <property name="placeholder_text">Example: P[0] * x + P[1]</property>
+            <signal name="changed" handler="onFitFunctionChanged" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
