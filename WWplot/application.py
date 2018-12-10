@@ -104,39 +104,6 @@ class Application(Gtk.Application):
 
         self.updatePlot()
 
-    def onKeyPressed(self, widget, event):
-        if event.keyval == Gdk.keyval_from_name('c'):
-            if (event.state == Gdk.ModifierType.CONTROL_MASK or
-                    Gdk.ModifierType.MOD2_MASK):
-
-                if self.selected_row is not None:
-                    c0, c1, c2, c3 = self.liststore.get(self.selected_row, 0,
-                                                        1, 2, 3)
-
-                    row = [str(c0), str(c1), str(c2), str(c3)]
-
-                    text = '\t'.join(row)
-
-                    self.clipboard.set_text(text, -1)
-
-        if event.keyval == Gdk.keyval_from_name('v'):
-            if (event.state == Gdk.ModifierType.CONTROL_MASK
-                    or Gdk.ModifierType.MOD2_MASK):
-
-                if self.selected_row is not None:
-                    text = self.clipboard.wait_for_text()
-
-                    row = text.replace(',', '.').split('\t')
-
-                    if len(row) == 4:
-                        x, xerr, y, yerr = [float(i) for i in row]
-
-                        self.liststore.set(self.selected_row, 0, x, 1, xerr, 2,
-                                           y, 3, yerr)
-
-                        self.updatePlot()
-                        self.clear_fitlog()
-
     def init_menu(self):
         button = self.builder.get_object('popover_button')
         menu = self.builder.get_object('menu')

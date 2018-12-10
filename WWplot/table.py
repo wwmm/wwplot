@@ -179,5 +179,5 @@ class Table():
                         self.liststore.set(self.selected_row, 0, x, 1, xerr, 2,
                                            y, 3, yerr)
 
-                        # self.updatePlot()
+                        self.app.updatePlot()
                         # self.clear_fitlog()

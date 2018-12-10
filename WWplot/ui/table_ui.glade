@@ -59,6 +59,7 @@
             <property name="vexpand">True</property>
             <property name="model">liststore</property>
             <property name="enable_grid_lines">both</property>
+            <signal name="key-press-event" handler="onKeyPressed" swapped="no"/>
             <child internal-child="selection">
               <object class="GtkTreeSelection">
                 <signal name="changed" handler="onSelectionChanged" swapped="no"/>
