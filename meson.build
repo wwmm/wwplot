@@ -1,5 +1,5 @@
 project('wwplot',
-  version: '0.0.2',
+  version: '0.0.3',
   meson_version: '>= 0.40.0'
 )
 

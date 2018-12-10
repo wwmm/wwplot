@@ -326,7 +326,7 @@ class Application(Gtk.Application):
         self.updatePlot()
         self.clear_fitlog()
 
-    def onAbout(self, action, parameter):
+    def onAbout(self, obj):
         builder = Gtk.Builder()
 
         builder.add_from_file(self.module_path + '/ui/about.glade')
