@@ -147,11 +147,6 @@ class Application(Gtk.Application):
         self.plot.set_ylabel(self.ytitle)
         self.plot.set_title(self.plot_title)
 
-        # self.x = np.array(x)
-        # self.xerr = np.array(xerr)
-        # self.y = np.array(y)
-        # self.yerr = np.array(yerr)
-
         if self.do_histogram:
             self.plot.set_margins(0.0)
 
@@ -164,7 +159,8 @@ class Application(Gtk.Application):
 
                 self.plot.errorbar(x, xerr, y, yerr, n)
 
-            # self.plot.errorbar(self.x, self.xerr, self.y, self.yerr, 'bo')
+                if len(t.fit_x) > 0:
+                    self.plot.plot(t.fit_x, t.fit_y, 'r-')
 
         self.plot.update()
 

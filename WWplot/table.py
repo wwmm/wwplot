@@ -19,6 +19,8 @@ class Table():
         self.app = app
 
         self.selected_row = None
+        self.fit_x = np.array([])
+        self.fit_y = np.array([])
 
         self.module_path = os.path.dirname(__file__)
 
@@ -47,30 +49,34 @@ class Table():
 
     def onXEdited(self, renderer, row_id, value):
         self.liststore[row_id][0] = float(value.replace(',', '.'))
+        self.clear_fitlog()
         self.app.updatePlot()
 
     def onXerrEdited(self, renderer, row_id, value):
         self.liststore[row_id][1] = float(value.replace(',', '.'))
+        self.clear_fitlog()
         self.app.updatePlot()
 
     def onYEdited(self, renderer, row_id, value):
         self.liststore[row_id][2] = float(value.replace(',', '.'))
+        self.clear_fitlog()
         self.app.updatePlot()
 
     def onYerrEdited(self, renderer, row_id, value):
         self.liststore[row_id][3] = float(value.replace(',', '.'))
+        self.clear_fitlog()
         self.app.updatePlot()
 
     def onAdd(self, button):
         self.liststore.append([0, 0, 0, 0])
         self.app.updatePlot()
-        # self.clear_fitlog()
+        self.clear_fitlog()
 
     def onRemove(self, button):
         if self.selected_row is not None:
             self.liststore.remove(self.selected_row)
             self.app.updatePlot()
-            # self.clear_fitlog()
+            self.clear_fitlog()
 
     def onSwapColumns(self, button):
         row_iter = self.liststore.get_iter_first()
@@ -83,7 +89,7 @@ class Table():
             row_iter = self.liststore.iter_next(row_iter)
 
         self.app.updatePlot()
-        # self.clear_fitlog()
+        self.clear_fitlog()
 
     def getColumns(self):
         row_iter = self.liststore.get_iter_first()
@@ -122,7 +128,7 @@ class Table():
                     self.liststore.append([row, 0, 0, 0])
 
             self.app.updatePlot()
-            # self.clear_fitlog()
+            self.clear_fitlog()
 
     def onExportTable(self, button):
         n_rows = len(self.liststore)
@@ -187,7 +193,7 @@ class Table():
                                            y, 3, yerr)
 
                         self.app.updatePlot()
-                        # self.clear_fitlog()
+                        self.clear_fitlog()
 
     def init_fit(self):
         fitfunc = self.builder.get_object('fitfunc')
@@ -227,6 +233,9 @@ class Table():
         self.init_fit_parameters()
 
     def clear_fitlog(self):
+        self.fit_x = np.array([])
+        self.fit_y = np.array([])
+
         children = self.fit_listbox.get_children()
 
         for child in children:
@@ -270,9 +279,7 @@ class Table():
         x, xerr, y, yerr = self.getColumns()
 
         if len(x) > 1:
-            self.updatePlot()
-
-            if self.do_histogram is False:
+            if self.app.do_histogram is False:
                 self.fit.set_data(x, y, xerr, yerr)
             else:
                 self.fit.set_data(self.hist_bin[:-1], self.hist_count)
@@ -286,10 +293,11 @@ class Table():
 
             func = self.fit.fit_function
 
-            if self.do_histogram is False:
-                self.plot.plot(self.x, func(result, self.x), 'r-')
+            if self.app.do_histogram is False:
+                self.fit_x = x
+                self.fit_y = func(result, x)
             else:
                 self.plot.plot(
                     self.hist_bin[:-1], func(result, self.hist_bin[:-1]), 'r-')
 
-            self.plot.update()
+            self.app.updatePlot()
