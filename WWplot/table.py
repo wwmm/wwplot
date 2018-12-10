@@ -89,6 +89,9 @@ class Table():
             self.app.updatePlot()
 
     def onSwapColumns(self, button):
+        self.liststore.set_sort_column_id(
+            Gtk.TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID, Gtk.SortType.ASCENDING)
+
         row_iter = self.liststore.get_iter_first()
 
         while row_iter is not None:
@@ -97,6 +100,8 @@ class Table():
             self.liststore.set(row_iter, 0, x, 1, xerr, 2, y, 3, yerr)
 
             row_iter = self.liststore.iter_next(row_iter)
+
+        self.liststore.set_sort_column_id(0, Gtk.SortType.ASCENDING)
 
         self.clear_fitlog()
         self.app.updatePlot()
@@ -174,8 +179,8 @@ class Table():
 
     def onKeyPressed(self, widget, event):
         if event.keyval == Gdk.keyval_from_name('c'):
-            if (event.state == Gdk.ModifierType.CONTROL_MASK
-                    or Gdk.ModifierType.MOD2_MASK):
+            if (event.state == Gdk.ModifierType.CONTROL_MASK or
+                    Gdk.ModifierType.MOD2_MASK):
 
                 if self.selected_row is not None:
                     c0, c1, c2, c3 = self.liststore.get(self.selected_row, 0,
@@ -188,8 +193,8 @@ class Table():
                     self.clipboard.set_text(text, -1)
 
         if event.keyval == Gdk.keyval_from_name('v'):
-            if (event.state == Gdk.ModifierType.CONTROL_MASK or
-                    Gdk.ModifierType.MOD2_MASK):
+            if (event.state == Gdk.ModifierType.CONTROL_MASK
+                    or Gdk.ModifierType.MOD2_MASK):
 
                 if self.selected_row is not None:
                     text = self.clipboard.wait_for_text()
