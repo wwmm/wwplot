@@ -106,8 +106,8 @@ class Application(Gtk.Application):
 
     def onKeyPressed(self, widget, event):
         if event.keyval == Gdk.keyval_from_name('c'):
-            if (event.state == Gdk.ModifierType.CONTROL_MASK
-                    or Gdk.ModifierType.MOD2_MASK):
+            if (event.state == Gdk.ModifierType.CONTROL_MASK or
+                    Gdk.ModifierType.MOD2_MASK):
 
                 if self.selected_row is not None:
                     c0, c1, c2, c3 = self.liststore.get(self.selected_row, 0,
@@ -120,8 +120,8 @@ class Application(Gtk.Application):
                     self.clipboard.set_text(text, -1)
 
         if event.keyval == Gdk.keyval_from_name('v'):
-            if (event.state == Gdk.ModifierType.CONTROL_MASK or
-                    Gdk.ModifierType.MOD2_MASK):
+            if (event.state == Gdk.ModifierType.CONTROL_MASK
+                    or Gdk.ModifierType.MOD2_MASK):
 
                 if self.selected_row is not None:
                     text = self.clipboard.wait_for_text()
@@ -201,7 +201,7 @@ class Application(Gtk.Application):
             for t, n in zip(self.tables, range(len(self.tables))):
                 x, xerr, y, yerr = t.getColumns()
 
-                self.plot.errorbar(x, xerr, y, yerr)
+                self.plot.errorbar(x, xerr, y, yerr, n)
 
             # self.plot.errorbar(self.x, self.xerr, self.y, self.yerr, 'bo')
 
