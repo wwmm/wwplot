@@ -45,7 +45,7 @@ class Application(Gtk.Application):
 
         self.table_stack = self.builder.get_object('table_stack')
 
-        self.apply_css_style('listbox.css')
+        # self.apply_css_style('listbox.css')
 
         self.init_plot()
         self.init_menu()

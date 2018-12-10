@@ -144,7 +144,6 @@
         <property name="can_focus">False</property>
         <property name="halign">center</property>
         <property name="column_spacing">3</property>
-        <property name="column_homogeneous">True</property>
         <child>
           <object class="GtkButton" id="remove_row">
             <property name="visible">True</property>
@@ -152,6 +151,7 @@
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Click here to remove rows</property>
             <property name="halign">start</property>
+            <property name="valign">center</property>
             <property name="image">remove_row_img</property>
             <property name="always_show_image">True</property>
             <signal name="clicked" handler="onRemove" swapped="no"/>
@@ -171,6 +171,7 @@
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Click here to swap x and y columns values</property>
             <property name="halign">center</property>
+            <property name="valign">center</property>
             <property name="always_show_image">True</property>
             <signal name="clicked" handler="onSwapColumns" swapped="no"/>
             <child>
@@ -232,7 +233,8 @@
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Click here to add rows</property>
             <property name="halign">end</property>
-            <property name="margin_left">6</property>
+            <property name="valign">center</property>
+            <property name="margin_left">12</property>
             <property name="image">add_row_img</property>
             <property name="always_show_image">True</property>
             <signal name="clicked" handler="onAdd" swapped="no"/>
@@ -251,6 +253,8 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Import table from TSV file</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
             <property name="image">import_image</property>
             <signal name="clicked" handler="onImportTable" swapped="no"/>
           </object>
@@ -265,7 +269,9 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Export table to TSV file</property>
-            <property name="margin_right">6</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="margin_right">12</property>
             <property name="image">export_image</property>
             <property name="always_show_image">True</property>
             <signal name="clicked" handler="onExportTable" swapped="no"/>
