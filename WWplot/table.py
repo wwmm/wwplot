@@ -21,6 +21,8 @@ class Table():
         self.selected_row = None
         self.fit_x = np.array([])
         self.fit_y = np.array([])
+        self.hist_x = np.array([])
+        self.hist_count = np.array([])
 
         self.module_path = os.path.dirname(__file__)
 
@@ -42,6 +44,8 @@ class Table():
         self.fit_parameters_grid = self.builder.get_object(
             'fit_parameters_grid')
         self.fitfunc = self.builder.get_object('fitfunc')
+
+        self.liststore.set_sort_column_id(0, Gtk.SortType.ASCENDING)
 
         self.init_fit()
 
@@ -291,10 +295,10 @@ class Table():
         x, xerr, y, yerr = self.getColumns()
 
         if len(x) > 1:
-            if self.app.do_histogram is False:
+            if not self.app.do_histogram:
                 self.fit.set_data(x, y, xerr, yerr)
             else:
-                self.fit.set_data(self.hist_bin[:-1], self.hist_count)
+                self.fit.set_data(self.hist_x, self.hist_count)
 
             stopreason = self.fit.run()
 
@@ -305,11 +309,7 @@ class Table():
 
             func = self.fit.fit_function
 
-            if self.app.do_histogram is False:
-                self.fit_x = x
-                self.fit_y = func(result, x)
-            else:
-                self.plot.plot(
-                    self.hist_bin[:-1], func(result, self.hist_bin[:-1]), 'r-')
+            self.fit_x = x
+            self.fit_y = func(result, x)
 
             self.app.updatePlot()

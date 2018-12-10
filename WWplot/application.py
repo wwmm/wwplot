@@ -147,11 +147,7 @@ class Application(Gtk.Application):
         self.plot.set_ylabel(self.ytitle)
         self.plot.set_title(self.plot_title)
 
-        if self.do_histogram:
-            self.plot.set_margins(0.0)
-
-            self.hist_count, self.hist_bin, patches = self.plot.hist(self.x)
-        else:
+        if not self.do_histogram:
             self.plot.set_margins(0.1)
 
             for t, n in zip(self.tables, range(len(self.tables))):
@@ -160,6 +156,19 @@ class Application(Gtk.Application):
                 self.plot.errorbar(x, xerr, y, yerr, n, 'table ' + str(n))
 
                 self.plot.axes.legend()
+
+                if len(t.fit_x) > 0:
+                    self.plot.plot(t.fit_x, t.fit_y, 'r-')
+        else:
+            self.plot.set_margins(0.0)
+
+            for t, n in zip(self.tables, range(len(self.tables))):
+                x, xerr, y, yerr = t.getColumns()
+
+                count, bins, patches = self.plot.hist(x)
+
+                t.hist_x = bins[:-1]
+                t.hist_count = count
 
                 if len(t.fit_x) > 0:
                     self.plot.plot(t.fit_x, t.fit_y, 'r-')
@@ -189,31 +198,34 @@ class Application(Gtk.Application):
         if state is True:  # do histogram
             self.do_histogram = True
 
-            self.xerr_column.set_visible(False)
-            self.y_column.set_visible(False)
-            self.yerr_column.set_visible(False)
-
             equation = '(1.0 / (P[0] * sqrt(2 * pi))) * '
             equation = equation + 'exp(- (x - P[1])**2 / (2 * P[0]**2))'
 
-            self.fitfunc.set_text(equation)
+            for t, n in zip(self.tables, range(len(self.tables))):
+                t.xerr_column.set_visible(False)
+                t.y_column.set_visible(False)
+                t.yerr_column.set_visible(False)
 
-            self.button_switch_xy.hide()
+                t.fitfunc.set_text(equation)
+
+                t.button_switch_xy.hide()
         else:  # do xy plot
             self.do_histogram = False
 
-            self.xerr_column.set_visible(True)
-            self.y_column.set_visible(True)
-            self.yerr_column.set_visible(True)
-
             equation = 'P[0] * x + P[1]'
 
-            self.fitfunc.set_text(equation)
+            for t, n in zip(self.tables, range(len(self.tables))):
+                t.xerr_column.set_visible(True)
+                t.y_column.set_visible(True)
+                t.yerr_column.set_visible(True)
 
-            self.button_switch_xy.show_all()
+                t.fitfunc.set_text(equation)
+
+                t.button_switch_xy.show_all()
+
+                t.clear_fitlog()
 
         self.updatePlot()
-        self.clear_fitlog()
 
     def onAbout(self, obj):
         builder = Gtk.Builder()
