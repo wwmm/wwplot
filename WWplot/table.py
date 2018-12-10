@@ -49,34 +49,40 @@ class Table():
 
     def onXEdited(self, renderer, row_id, value):
         self.liststore[row_id][0] = float(value.replace(',', '.'))
+
         self.clear_fitlog()
         self.app.updatePlot()
 
     def onXerrEdited(self, renderer, row_id, value):
         self.liststore[row_id][1] = float(value.replace(',', '.'))
+
         self.clear_fitlog()
         self.app.updatePlot()
 
     def onYEdited(self, renderer, row_id, value):
         self.liststore[row_id][2] = float(value.replace(',', '.'))
+
         self.clear_fitlog()
         self.app.updatePlot()
 
     def onYerrEdited(self, renderer, row_id, value):
         self.liststore[row_id][3] = float(value.replace(',', '.'))
+
         self.clear_fitlog()
         self.app.updatePlot()
 
     def onAdd(self, button):
         self.liststore.append([0, 0, 0, 0])
-        self.app.updatePlot()
+
         self.clear_fitlog()
+        self.app.updatePlot()
 
     def onRemove(self, button):
         if self.selected_row is not None:
             self.liststore.remove(self.selected_row)
-            self.app.updatePlot()
+
             self.clear_fitlog()
+            self.app.updatePlot()
 
     def onSwapColumns(self, button):
         row_iter = self.liststore.get_iter_first()
@@ -88,8 +94,8 @@ class Table():
 
             row_iter = self.liststore.iter_next(row_iter)
 
-        self.app.updatePlot()
         self.clear_fitlog()
+        self.app.updatePlot()
 
     def getColumns(self):
         row_iter = self.liststore.get_iter_first()
@@ -127,8 +133,8 @@ class Table():
                 for row in it.table:
                     self.liststore.append([row, 0, 0, 0])
 
-            self.app.updatePlot()
             self.clear_fitlog()
+            self.app.updatePlot()
 
     def onExportTable(self, button):
         n_rows = len(self.liststore)
@@ -192,8 +198,8 @@ class Table():
                         self.liststore.set(self.selected_row, 0, x, 1, xerr, 2,
                                            y, 3, yerr)
 
-                        self.app.updatePlot()
                         self.clear_fitlog()
+                        self.app.updatePlot()
 
     def init_fit(self):
         fitfunc = self.builder.get_object('fitfunc')
@@ -280,6 +286,8 @@ class Table():
         self.fit_listbox.show_all()
 
     def onFit(self, button):
+        self.clear_fitlog()
+        
         x, xerr, y, yerr = self.getColumns()
 
         if len(x) > 1:
