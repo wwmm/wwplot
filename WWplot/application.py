@@ -79,7 +79,7 @@ class Application(Gtk.Application):
         Gtk.StyleContext.add_provider_for_screen(screen, provider, priority)
 
     def onAddTable(self, button):
-        self.tables.append(Table())
+        self.tables.append(Table(self))
 
         n = len(self.tables) - 1
 
@@ -237,24 +237,10 @@ class Application(Gtk.Application):
         self.plot.set_ylabel(self.ytitle)
         self.plot.set_title(self.plot_title)
 
-        row_iter = self.liststore.get_iter_first()
-
-        x, xerr, y, yerr = [], [], [], []
-
-        while row_iter is not None:
-            c0, c1, c2, c3 = self.liststore.get(row_iter, 0, 1, 2, 3)
-
-            x.append(c0)
-            xerr.append(c1)
-            y.append(c2)
-            yerr.append(c3)
-
-            row_iter = self.liststore.iter_next(row_iter)
-
-        self.x = np.array(x)
-        self.xerr = np.array(xerr)
-        self.y = np.array(y)
-        self.yerr = np.array(yerr)
+        # self.x = np.array(x)
+        # self.xerr = np.array(xerr)
+        # self.y = np.array(y)
+        # self.yerr = np.array(yerr)
 
         if self.do_histogram:
             self.plot.set_margins(0.0)
@@ -263,7 +249,12 @@ class Application(Gtk.Application):
         else:
             self.plot.set_margins(0.1)
 
-            self.plot.errorbar(self.x, self.xerr, self.y, self.yerr, 'bo')
+            for t, n in zip(self.tables, range(len(self.tables))):
+                x, xerr, y, yerr = t.getColumns()
+
+                self.plot.errorbar(x, xerr, y, yerr)
+
+            # self.plot.errorbar(self.x, self.xerr, self.y, self.yerr, 'bo')
 
         self.plot.update()
 

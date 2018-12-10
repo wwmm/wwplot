@@ -4,6 +4,8 @@ from matplotlib.backends.backend_gtk3 import NavigationToolbar2GTK3
 from matplotlib.backends.backend_gtk3agg import FigureCanvasGTK3Agg
 from matplotlib.figure import Figure
 
+import itertools
+
 
 class Plot():
 
@@ -26,14 +28,17 @@ class Plot():
 
         box.show_all()
 
+        self.markers = itertools.cycle(
+            ('o', 's', 'v', 'P', '*', 'D', 'x', '>'))
+
     def plot(self, x, y, config_str):
         line_obj, = self.axes.plot(x, y, config_str)
 
         return line_obj
 
-    def errorbar(self, x, x_err, y, y_err, config_str):
+    def errorbar(self, x, x_err, y, y_err):
         line_obj, caplines, barlinecols = self.axes.errorbar(
-            x, y, yerr=y_err, xerr=x_err, fmt=config_str, ecolor='g',
+            x, y, yerr=y_err, xerr=x_err, marker=next(self.markers),
             clip_on=True, capsize=5)
 
         return line_obj, caplines, barlinecols

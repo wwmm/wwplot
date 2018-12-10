@@ -2,6 +2,11 @@
 <!-- Generated with glade 3.22.1 -->
 <interface domain="wwplot">
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkImage" id="add_row_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">list-add-symbolic</property>
+  </object>
   <object class="GtkListStore" id="liststore">
     <columns>
       <!-- column-name x -->
@@ -13,6 +18,11 @@
       <!-- column-name y_err -->
       <column type="gfloat"/>
     </columns>
+  </object>
+  <object class="GtkImage" id="remove_row_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">list-remove-symbolic</property>
   </object>
   <object class="GtkGrid" id="table_ui">
     <property name="visible">True</property>
@@ -26,12 +36,14 @@
       <object class="GtkScrolledWindow">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
+        <property name="hexpand">True</property>
         <property name="vexpand">True</property>
         <property name="min_content_width">350</property>
         <child>
           <object class="GtkTreeView" id="treeview">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="hexpand">True</property>
             <property name="vexpand">True</property>
             <property name="model">liststore</property>
             <property name="enable_grid_lines">both</property>
@@ -117,16 +129,18 @@
       <object class="GtkGrid">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="halign">center</property>
         <property name="column_spacing">3</property>
         <property name="column_homogeneous">True</property>
         <child>
           <object class="GtkButton" id="remove_row">
-            <property name="label">gtk-remove</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Click here to remove rows</property>
-            <property name="use_stock">True</property>
+            <property name="halign">start</property>
+            <property name="image">remove_row_img</property>
+            <property name="always_show_image">True</property>
             <signal name="clicked" handler="onRemove" swapped="no"/>
             <style>
               <class name="destructive-action"/>
@@ -143,6 +157,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Click here to swap x and y columns values</property>
+            <property name="halign">center</property>
             <property name="always_show_image">True</property>
             <signal name="clicked" handler="onSwapColumns" swapped="no"/>
             <child>
@@ -199,12 +214,13 @@
         </child>
         <child>
           <object class="GtkButton" id="add_row">
-            <property name="label">gtk-add</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Click here to add rows</property>
-            <property name="use_stock">True</property>
+            <property name="halign">end</property>
+            <property name="image">add_row_img</property>
+            <property name="always_show_image">True</property>
             <signal name="clicked" handler="onAdd" swapped="no"/>
             <style>
               <class name="suggested-action"/>
