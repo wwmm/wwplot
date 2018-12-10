@@ -287,7 +287,7 @@ class Table():
 
     def onFit(self, button):
         self.clear_fitlog()
-        
+
         x, xerr, y, yerr = self.getColumns()
 
         if len(x) > 1:
