@@ -1,0 +1,45 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "editor.formatOnSave": true,
+        "editor.rulers": [120],
+        "editor.renderWhitespace": "all",
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": false,
+            "strings": false
+        },
+        "editor.parameterHints.enabled": true,
+        "editor.wordBasedSuggestions": true,
+        "editor.tabSize": 4,
+        "eslint.workingDirectories": ["./static/js"],
+        "go.autocompleteUnimportedPackages": true,
+        "go.useCodeSnippetsOnFunctionSuggest": true,
+        "go.useLanguageServer": true,
+        "go.languageServerExperimentalFeatures": {
+            "format": true,
+            "autoComplete": true,
+            "rename": true,
+            "goToDefinition": true,
+            "hover": true,
+            "signatureHelp": true,
+            "goToTypeDefinition": true,
+            "goToImplementation": true,
+            "documentSymbols": true,
+            "workspaceSymbols": true,
+            "findReferences": true,
+            "diagnostics": true,
+            "documentLink": true
+        },
+        "html.format.indentInnerHtml": true,
+        "html.format.preserveNewLines": false,
+        "less.lint.duplicateProperties": "error",
+        "less.lint.emptyRules": "error",
+        "less.lint.ieHack": "error",
+        "less.lint.zeroUnits": "error"
+    }
+}
