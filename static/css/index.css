@@ -4,17 +4,54 @@
     margin: 0;
 }
 
-.row {
-    margin-bottom: 0;
-}
+/*
+    O auto sizing de alguns collections via flexboxes depende de body e html com tamanho explicitamente configurado
+*/
 
-.btn {
-    height: 100%;
+body,
+html {
     width: 100%;
-    line-height: 1;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-flow: column;
 }
 
-.btn i {
-    font-size: 48px;
-    line-height: 1;
+#main_card {
+    display: flex;
+    flex-flow: column;
+    min-height: 0%;
+    max-height: 100%;
+}
+
+#main_card .card-content {
+    display: flex;
+    flex-flow: column;
+    min-height: 0%;
+    max-height: 100%;
+}
+
+/*
+    Adicionando scroll nas tabelas e garantindo que o nome das colunas não saia do lugar ao fazer esse scroll
+*/
+
+table {
+    display: flex;
+    flex-flow: column;
+    white-space: nowrap;
+    table-layout: fixed;
+}
+
+tr {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-evenly;
+}
+
+td {
+    padding: 0;
+}
+
+tbody {
+    overflow: auto;
 }

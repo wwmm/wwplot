@@ -31,35 +31,8 @@
     margin: 0;
 }
 
-/*
-    Row dentro de um botão
-*/
-
-.btn .row {
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 3px;
-}
-
-/*
-    Reduzindo o padding dentro das cards
-*/
-
 .card .card-content {
     padding: 12px;
-}
-
-/*
-    Fazendo aparecer scroll nas coleções
-*/
-
-.collection {
-    overflow-y: auto;
-}
-
-.collection .collection-item {
-    white-space: nowrap;
-    padding: 10px;
 }
 
 /*
@@ -86,12 +59,4 @@
 
 .tabs .indicator {
     background-color: #ffffff;
-}
-
-/*
-    Classberry title
-*/
-
-#classberry_title {
-    margin-bottom: 0;
 }
