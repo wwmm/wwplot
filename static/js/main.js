@@ -15,14 +15,14 @@ document.getElementById("btn_add_row").addEventListener("click", event => {
     const cell_yerr = row.insertCell(2);
     const cell_delete = row.insertCell(3);
 
-    cell_x.setAttribute("contenteditable", true);
-    cell_y.setAttribute("contenteditable", true);
-    cell_yerr.setAttribute("contenteditable", true);
+    // cell_x.setAttribute("contenteditable", true);
+    // cell_y.setAttribute("contenteditable", true);
+    // cell_yerr.setAttribute("contenteditable", true);
     cell_delete.setAttribute("name", "delete_row");
 
-    cell_x.innerHTML = "0";
-    cell_y.innerHTML = "0";
-    cell_yerr.innerHTML = "0";
+    cell_x.innerHTML = `<input type="number"/>`;
+    cell_y.innerHTML = `<input type="number"/>`;
+    cell_yerr.innerHTML = `<input type="number"/>`;
 
     const child = `
         <button
@@ -38,6 +38,6 @@ document.getElementById("btn_add_row").addEventListener("click", event => {
     const button = document.getElementById(`btn_remove_row${row.rowIndex}`);
 
     button.addEventListener("click", () => {
-        body.deleteRow(row.rowIndex);
+        body.deleteRow(row.rowIndex - 1);
     });
 });
