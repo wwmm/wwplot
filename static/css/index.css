@@ -107,3 +107,7 @@ th .btn i {
     font-size: 24px;
     line-height: 1;
 }
+
+input[type="number"]:not(.browser-default) {
+    margin: 0;
+}

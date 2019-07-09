@@ -15,14 +15,11 @@ document.getElementById("btn_add_row").addEventListener("click", event => {
     const cell_yerr = row.insertCell(2);
     const cell_delete = row.insertCell(3);
 
-    // cell_x.setAttribute("contenteditable", true);
-    // cell_y.setAttribute("contenteditable", true);
-    // cell_yerr.setAttribute("contenteditable", true);
     cell_delete.setAttribute("name", "delete_row");
 
-    cell_x.innerHTML = `<input type="number"/>`;
-    cell_y.innerHTML = `<input type="number"/>`;
-    cell_yerr.innerHTML = `<input type="number"/>`;
+    cell_x.innerHTML = `<input type="number" value="0" />`;
+    cell_y.innerHTML = `<input type="number" value="0" />`;
+    cell_yerr.innerHTML = `<input type="number" value="0" />`;
 
     const child = `
         <button
