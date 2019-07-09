@@ -12,26 +12,24 @@
     <body>
         <div id="main_card" class="card blue-grey lighten-5">
             <div class="card-content">
-                <div class="center">
-                    <button id="btn_add_row" class="btn waves-effect waves-light">
-                        <i class="material-icons">add</i>
-                    </button>
-                </div>
-
                 <table id="table1">
                     <thead>
                         <tr>
                             <th>x</th>
                             <th>y</th>
                             <th>yerr</th>
-                            <th name="delete_row"></th>
+                            <th name="delete_row">
+                                <button id="btn_add_row" class="btn waves-effect waves-light blue">
+                                    <i class="material-icons">add_circle</i>
+                                </button>
+                            </th>
                         </tr>
                     </thead>
                     <tbody id="tbody_aluno_presenca">
                         <tr>
-                            <td contenteditable="true">1.00</td>
-                            <td contenteditable="true">0.5</td>
-                            <td contenteditable="true">0.87</td>
+                            <td contenteditable="true">0</td>
+                            <td contenteditable="true">0</td>
+                            <td contenteditable="true">0</td>
                             <td name="delete_row">
                                 <button class="btn waves-effect waves-light red darken-3">
                                     <i class="material-icons">delete_forever</i>
