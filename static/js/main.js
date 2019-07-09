@@ -8,8 +8,8 @@
 document.getElementById("btn_add_row").addEventListener("click", event => {
     event.preventDefault();
 
-    const table = document.getElementById("table1");
-    const row = table.insertRow(-1);
+    const body = document.getElementById("table1_body");
+    const row = body.insertRow(-1);
     const cell_x = row.insertCell(0);
     const cell_y = row.insertCell(1);
     const cell_yerr = row.insertCell(2);
@@ -38,6 +38,6 @@ document.getElementById("btn_add_row").addEventListener("click", event => {
     const button = document.getElementById(`btn_remove_row${row.rowIndex}`);
 
     button.addEventListener("click", () => {
-        table.deleteRow(row.rowIndex);
+        body.deleteRow(row.rowIndex);
     });
 });
