@@ -45,12 +45,21 @@ th {
     flex-flow: row;
     flex: 1;
     justify-content: center;
+    padding-bottom: 0;
 }
 
 tr {
     display: flex;
     flex-flow: row;
     flex: 1;
+}
+
+tbody > tr:hover {
+    background-color: #b0bec5;
+}
+
+td:hover {
+    background-color: #cfd8dc;
 }
 
 td {
