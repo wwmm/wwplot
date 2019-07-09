@@ -69,6 +69,7 @@ td {
     padding: 0;
     border-left: 1px solid rgba(0, 0, 0, 0.12);
     border-right: 1px solid rgba(0, 0, 0, 0.12);
+    background-color: #ffffff;
 }
 
 th[name="delete_row"] {
@@ -85,13 +86,13 @@ td[name="delete_row"] {
     flex-flow: row;
     flex: 0;
     padding: 3px;
+    background-color: transparent;
 }
 
 tbody {
     min-height: 0%;
     max-height: 100%;
     overflow: auto;
-    background-color: #ffffff;
 }
 
 td .btn,
