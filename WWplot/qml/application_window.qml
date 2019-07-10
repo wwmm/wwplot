@@ -2,6 +2,8 @@ import QtQuick.Controls 2.4
 import QtQuick 2.13
 import QtQuick.Window 2.0
 import wwplot 1.0
+import QtQuick.Controls.Material 2.12
+import QtQuick.Layouts 1.11
 
 Window {
     id: root
@@ -9,37 +11,35 @@ Window {
     visible: true
     width: 640
     height: 480
+    Material.theme: Material.Dark
+    Material.accent: Material.Purple
 
-    TableView {
+    RowLayout{
         anchors.fill: parent
-        columnSpacing: 1
-        rowSpacing: 1
 
-        model: TableModel {}
+        TableView {
+            model: TableModel {}
+            rowSpacing: 5
+            columnSpacing: 5
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            ScrollBar.horizontal: ScrollBar {}
+            ScrollBar.vertical: ScrollBar {}
 
-        delegate: Rectangle {
-            implicitWidth: 100
-            implicitHeight: 50
+            delegate: Rectangle {
+                    implicitWidth: root.width / 4
+                    implicitHeight: 25
+                    border.color: "black"
+                    border.width: 1
 
-            Rectangle {
-                id: bar
-                
-                width: parent.width * display / 100.0
-                height: 30
-                color: "green"
-            }
-
-            TextInput {
-                inputMethodHints: Qt.ImhDigitsOnly
-
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-
-                width: parent.width * 0.70
-                height: parent.height * 0.6
-                
-                text: display
-            }   
+                    TextInput {
+                        id: cellText
+                        inputMethodHints: Qt.ImhDigitsOnly
+                        clip: true
+                        width: parent.width
+                        text: display
+                    }
+            }            
         }
     }
 }

@@ -8,7 +8,7 @@ import sys
 from PySide2.QtWidgets import QApplication
 from application_window import ApplicationWindow
 
-APP = QApplication(sys.argv)
+APP = QApplication(sys.argv + ['--style', 'material'])
 AW = ApplicationWindow()
 
 if not AW.engine.rootObjects():
