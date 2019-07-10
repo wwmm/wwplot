@@ -1,24 +1,25 @@
 {
-    "folders": [
-        {
-            "path": "."
-        }
-    ],
-    "settings": {
-        "editor.formatOnSave": true,
-        "editor.rulers": [120],
-        "editor.renderWhitespace": "all",
-        "editor.quickSuggestions": {
-            "other": true,
-            "comments": false,
-            "strings": false
-        },
-        "editor.parameterHints.enabled": true,
-        "editor.wordBasedSuggestions": true,
-        "editor.tabSize": 4,        
-        "less.lint.duplicateProperties": "error",
-        "less.lint.emptyRules": "error",
-        "less.lint.ieHack": "error",
-        "less.lint.zeroUnits": "error"
+  "folders": [
+    {
+      "path": "."
     }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+    "editor.renderWhitespace": "all",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": false
+    },
+    "editor.parameterHints.enabled": true,
+    "editor.wordBasedSuggestions": true,
+    "editor.tabSize": 4,
+    "less.lint.duplicateProperties": "error",
+    "less.lint.emptyRules": "error",
+    "less.lint.ieHack": "error",
+    "less.lint.zeroUnits": "error",
+    "python.linting.pylintArgs": ["--extension-pkg-whitelist=PySide2"]
+  }
 }
