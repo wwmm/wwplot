@@ -9,37 +9,61 @@ Window {
     id: root
     title: qsTr("WWplot")
     visible: true
-    width: 640
-    height: 480
+    property int margin: 12
+    width: mainLayout.implicitWidth + 2 * margin
+    height: mainLayout.implicitHeight + 2 * margin
+    minimumWidth: mainLayout.Layout.minimumWidth + 2 * margin
+    minimumHeight: mainLayout.Layout.minimumHeight + 2 * margin
     Material.theme: Material.Dark
     Material.accent: Material.Purple
 
-    RowLayout{
+    ColumnLayout{
+        id: mainLayout
         anchors.fill: parent
+        anchors.margins: margin
 
-        TableView {
-            model: TableModel {}
-            rowSpacing: 5
-            columnSpacing: 5
+        Pane {
+            id: pane
             Layout.fillWidth: true
             Layout.fillHeight: true
-            ScrollBar.horizontal: ScrollBar {}
-            ScrollBar.vertical: ScrollBar {}
+            implicitWidth: 640
+            implicitHeight: 480
+            Layout.margins: margin
+            Material.background: Material.Teal
+            Material.elevation: 6
 
-            delegate: Rectangle {
-                    implicitWidth: root.width / 4
-                    implicitHeight: 25
-                    border.color: "black"
-                    border.width: 1
+            ColumnLayout{
+                spacing: 2
+                anchors.fill: parent
 
-                    TextInput {
-                        id: cellText
-                        inputMethodHints: Qt.ImhDigitsOnly
-                        clip: true
-                        width: parent.width
-                        text: display
-                    }
-            }            
+                TableView {
+                    id: table
+                    model: TableModel {}
+                    rowSpacing: 1
+                    columnSpacing: 1
+                    clip: true
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.margins: 5
+                    ScrollBar.horizontal: ScrollBar {}
+                    ScrollBar.vertical: ScrollBar {}
+
+                    delegate: Rectangle {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.color: "black"
+                        border.width: 1
+
+                        TextInput {
+                            id: cellText
+                            inputMethodHints: Qt.ImhDigitsOnly
+                            text: display
+                        }
+                    }            
+                }
+            }
         }
     }
 }
