@@ -1,35 +1,45 @@
 import QtQuick.Controls 2.4
-import QtQuick 2.0
+import QtQuick 2.13
+import QtQuick.Window 2.0
+import wwplot 1.0
 
-ApplicationWindow {
+Window {
+    id: root
     title: qsTr("WWplot")
     visible: true
-    width: 800
-    height: 600
+    width: 640
+    height: 480
 
-    Rectangle { // our inlined button ui
-        id: button
-        x: 12; y: 12
-        width: 116; height: 26
-        color: "lightsteelblue"
-        border.color: "slategrey"
-        Text {
-            anchors.centerIn: parent
-            text: "Start"
-        }
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                status.text = "Button clicked!"
+    TableView {
+        anchors.fill: parent
+        columnSpacing: 1
+        rowSpacing: 1
+
+        model: TableModel {}
+
+        delegate: Rectangle {
+            implicitWidth: 100
+            implicitHeight: 50
+
+            Rectangle {
+                id: bar
+                
+                width: parent.width * display / 100.0
+                height: 30
+                color: "green"
             }
-        }
-    }
 
-    Text { // text changes when button was clicked
-        id: status
-        x: 12; y: 76
-        width: 116; height: 26
-        text: "waiting ..."
-        horizontalAlignment: Text.AlignHCenter
+            TextInput {
+                inputMethodHints: Qt.ImhDigitsOnly
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+
+                width: parent.width * 0.70
+                height: parent.height * 0.6
+                
+                text: display
+            }   
+        }
     }
 }

@@ -20,6 +20,9 @@
     "less.lint.emptyRules": "error",
     "less.lint.ieHack": "error",
     "less.lint.zeroUnits": "error",
-    "python.linting.pylintArgs": ["--extension-pkg-whitelist=PySide2"]
+    "python.linting.pylintArgs": [
+      "--extension-pkg-whitelist=PySide2",
+      "--max-line-length=120"
+    ]
   }
 }

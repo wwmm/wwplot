@@ -4,7 +4,9 @@ application window
 """
 
 from PySide2.QtCore import QObject
-from PySide2.QtQml import QQmlApplicationEngine
+from PySide2.QtQml import QQmlApplicationEngine, qmlRegisterType
+from PySide2.QtCore import QUrl
+from table_model import TableModel
 
 
 class ApplicationWindow(QObject):
@@ -17,6 +19,6 @@ class ApplicationWindow(QObject):
 
         self.engine = QQmlApplicationEngine()
 
-        self.engine.load("qml/application_window.qml")
+        qmlRegisterType(TableModel, "wwplot", 1, 0, "TableModel")
 
-        self.window = self.engine.rootObjects()[0]
+        self.engine.load(QUrl("qml/application_window.qml"))

@@ -1,6 +1,7 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Main application file
+Script that starts the application
 """
 
 import sys
@@ -9,5 +10,8 @@ from application_window import ApplicationWindow
 
 APP = QApplication(sys.argv)
 AW = ApplicationWindow()
+
+if not AW.engine.rootObjects():
+    sys.exit(-1)
 
 sys.exit(APP.exec_())
