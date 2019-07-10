@@ -14,7 +14,7 @@ class TableModel(QAbstractTableModel):
     def __init__(self):
         QAbstractTableModel.__init__(self)
 
-        self.dados = [1, 2, 3, 4, 5]
+        self.dados = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.nrows = len(self.dados)
         self.ncols = 4
 
@@ -25,11 +25,4 @@ class TableModel(QAbstractTableModel):
         return self.ncols
 
     def data(self, index, role):
-        # if role == Qt.HeadingRole:
-        #     print("oi")
-        print(Qt.HeadingRole)
-
-        if role == Qt.DisplayRole and index.row() >= 0 and index.row() < len(self.dados) and index.column() == 0:
-            return 10
-
-        return -1
+        return index.column() + index.row()

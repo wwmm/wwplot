@@ -14,6 +14,7 @@ Window {
     height: mainLayout.implicitHeight + 2 * margin
     minimumWidth: mainLayout.Layout.minimumWidth + 2 * margin
     minimumHeight: mainLayout.Layout.minimumHeight + 2 * margin
+    
     Material.theme: Material.Dark
     Material.accent: Material.Purple
 
@@ -24,27 +25,28 @@ Window {
 
         Pane {
             id: pane
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            implicitWidth: 640
-            implicitHeight: 480
+            implicitWidth: paneLayout.Layout.minimumWidth + 2 * margin
+            implicitHeight: paneLayout.Layout.minimumHeight + 2 * margin
             Layout.margins: margin
-            Material.background: Material.Teal
-            Material.elevation: 6
+            Material.background: Material.Grey
+            Material.elevation: 2
 
             ColumnLayout{
+                id: paneLayout
                 spacing: 2
                 anchors.fill: parent
 
                 TableView {
                     id: table
+                    property int cellW: 100
+                    property int cellH: 25
+                    Layout.margins: 5
+                    implicitWidth: 4 * cellW + 2 * Layout.margins
+                    implicitHeight: 5 * cellH
                     model: TableModel {}
                     rowSpacing: 1
                     columnSpacing: 1
-                    clip: true
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    Layout.margins: 5
+                    clip: true                    
                     ScrollBar.horizontal: ScrollBar {}
                     ScrollBar.vertical: ScrollBar {}
 
