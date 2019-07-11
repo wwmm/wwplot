@@ -19,10 +19,12 @@ class Model(QAbstractTableModel):
         QAbstractTableModel.__init__(self)
 
         self.ncols = 4
-        self.data_x = np.zeros(5)
-        self.data_xerr = np.zeros(5)
-        self.data_y = np.zeros(5)
-        self.data_yerr = np.zeros(5)
+        nrows = 5  # initial number of rows
+
+        self.data_x = np.zeros(nrows)
+        self.data_xerr = np.zeros(nrows)
+        self.data_y = np.zeros(nrows)
+        self.data_yerr = np.zeros(nrows)
 
     def rowCount(self, _):
         return self.data_x.size
@@ -53,14 +55,14 @@ class Model(QAbstractTableModel):
                 if column == 3:
                     self.data_yerr[row] = float_value
 
+                # sorting
+
                 sorted_idx = self.data_x.argsort()
 
                 self.data_x = self.data_x[sorted_idx]
                 self.data_xerr = self.data_xerr[sorted_idx]
                 self.data_y = self.data_y[sorted_idx]
                 self.data_yerr = self.data_yerr[sorted_idx]
-
-                # self.dataChanged.emit(index, index)
 
                 return True
             except ValueError:
