@@ -4,9 +4,11 @@ application window
 """
 
 from PySide2.QtCore import QObject
-from PySide2.QtQml import QQmlApplicationEngine, qmlRegisterType
-from PySide2.QtCore import QUrl
-from table_model import TableModel
+from PySide2.QtUiTools import QUiLoader
+from PySide2.QtWidgets import QPushButton, QTabWidget
+
+# from PySide2.QtCharts import QtCharts
+from table import Table
 
 
 class ApplicationWindow(QObject):
@@ -17,8 +19,18 @@ class ApplicationWindow(QObject):
     def __init__(self):
         QObject.__init__(self)
 
-        self.engine = QQmlApplicationEngine()
+        self.window = QUiLoader().load("ui/application_window.ui")
 
-        qmlRegisterType(TableModel, "wwplot", 1, 0, "TableModel")
+        self.tab_widget = self.window.findChild(QTabWidget, "tab_widget")
+        button_add_tab = self.window.findChild(QPushButton, "button_add_tab")
 
-        self.engine.load(QUrl("qml/application_window.qml"))
+        button_add_tab.clicked.connect(self.add_tab)
+
+        self.window.show()
+
+    def add_tab(self):
+        """
+            Add a tab when the button button_add_tab is clicked
+        """
+
+        self.tab_widget.addTab(Table(), "table")
