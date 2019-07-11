@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Table model class that will be exposed to QML
+Table view and model classes
 """
 
 import numpy as np
 from PySide2.QtCore import QAbstractTableModel, Qt
 from PySide2.QtGui import QColor
+from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import QTableView
 
 
@@ -93,12 +94,18 @@ class Model(QAbstractTableModel):
                 return "{}".format(self.data_yerr[row])
 
 
-class Table(QTableView):
+class Table():
     """
         Class that creates each data table
     """
 
     def __init__(self):
-        QTableView.__init__(self)
+        self.name = ""
 
-        self.setModel(Model())
+        loader = QUiLoader()
+
+        self.main_widget = loader.load("ui/table.ui")
+
+        self.table_view = self.main_widget.findChild(QTableView, "table_view")
+
+        self.table_view.setModel(Model())

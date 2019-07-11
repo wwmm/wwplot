@@ -20,6 +20,8 @@ class ApplicationWindow(QObject):
     def __init__(self):
         QObject.__init__(self)
 
+        self.tables = []
+
         loader = QUiLoader()
 
         loader.registerCustomWidget(QtCharts.QChartView)
@@ -45,7 +47,13 @@ class ApplicationWindow(QObject):
 
     def add_tab(self):
         """
-            Add a tab when the button button_add_tab is clicked
+            Creates a new tab with a table when the button button_add_tab is clicked
         """
 
-        self.tab_widget.addTab(Table(), "table")
+        table = Table()
+
+        self.tables.append(table)
+
+        table.name = "table " + str(len(self.tables))
+
+        self.tab_widget.addTab(table.main_widget, table.name)

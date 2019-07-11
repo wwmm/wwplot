@@ -1,0 +1,2 @@
+max-line-length=120
+extension-pkg-whitelist=PySide2
