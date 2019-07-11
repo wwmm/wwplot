@@ -3,6 +3,7 @@
 Table model class that will be exposed to QML
 """
 
+import numpy as np
 from PySide2.QtCore import QAbstractTableModel, Qt
 from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QTableView
@@ -16,15 +17,48 @@ class Model(QAbstractTableModel):
     def __init__(self):
         QAbstractTableModel.__init__(self)
 
-        self.dados = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        self.nrows = len(self.dados)
         self.ncols = 4
+        self.data_x = np.zeros(5)
+        self.data_xerr = np.zeros(5)
+        self.data_y = np.zeros(5)
+        self.data_yerr = np.zeros(5)
 
     def rowCount(self, _):
-        return self.nrows
+        return self.data_x.size
 
     def columnCount(self, _):
         return self.ncols
+
+    def flags(self, _):
+        return Qt.ItemIsEditable | Qt.ItemIsEnabled | Qt.ItemIsSelectable
+
+    def setData(self, index, value, role):
+        if index.isValid() and role == Qt.EditRole:
+            column = index.column()
+            row = index.row()
+
+            try:
+                float_value = float(value)
+
+                if column == 0:
+                    self.data_x[row] = float_value
+
+                if column == 1:
+                    self.data_xerr[row] = float_value
+
+                if column == 2:
+                    self.data_y[row] = float_value
+
+                if column == 3:
+                    self.data_yerr[row] = float_value
+
+                # self.dataChanged.emit(index, index)
+
+                return True
+            except ValueError:
+                return False
+
+        return False
 
     def headerData(self, section, orientation, role):
         if role != Qt.DisplayRole:
@@ -36,17 +70,27 @@ class Model(QAbstractTableModel):
         return "{}".format(section)
 
     def data(self, index, role):
-        column = index.column()
-        row = index.row()
-
-        if role == Qt.DisplayRole:
-            return index.column() + index.row()
-
         if role == Qt.BackgroundRole:
             return QColor(Qt.white)
 
-        if role == Qt.TextAlignmentRole:
+        elif role == Qt.TextAlignmentRole:
             return Qt.AlignRight
+
+        elif role == Qt.DisplayRole:
+            column = index.column()
+            row = index.row()
+
+            if column == 0:
+                return "{}".format(self.data_x[row])
+
+            if column == 1:
+                return "{}".format(self.data_xerr[row])
+
+            if column == 2:
+                return "{}".format(self.data_y[row])
+
+            if column == 3:
+                return "{}".format(self.data_yerr[row])
 
 
 class Table(QTableView):
