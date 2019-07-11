@@ -44,6 +44,8 @@ class ApplicationWindow(QObject):
         self.chart_view.setChart(self.chart)
         self.chart_view.setRenderHint(QPainter.Antialiasing)
 
+        self.add_tab()
+
         self.window.show()
 
     def add_tab(self):

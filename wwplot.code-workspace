@@ -20,6 +20,8 @@
     "less.lint.emptyRules": "error",
     "less.lint.ieHack": "error",
     "less.lint.zeroUnits": "error",
-    "python.formatting.autopep8Args": ["--max-line-length=120"]
+    "python.formatting.autopep8Args": ["--max-line-length=120"],
+    "python.linting.flake8Enabled": true,
+    "python.linting.pylintEnabled": false
   }
 }

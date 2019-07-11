@@ -53,6 +53,13 @@ class Model(QAbstractTableModel):
                 if column == 3:
                     self.data_yerr[row] = float_value
 
+                sorted_idx = self.data_x.argsort()
+
+                self.data_x = self.data_x[sorted_idx]
+                self.data_xerr = self.data_xerr[sorted_idx]
+                self.data_y = self.data_y[sorted_idx]
+                self.data_yerr = self.data_yerr[sorted_idx]
+
                 # self.dataChanged.emit(index, index)
 
                 return True
