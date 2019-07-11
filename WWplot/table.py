@@ -100,8 +100,6 @@ class Table():
     """
 
     def __init__(self):
-        self.name = ""
-
         loader = QUiLoader()
 
         self.main_widget = loader.load("ui/table.ui")

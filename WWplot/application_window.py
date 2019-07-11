@@ -34,6 +34,7 @@ class ApplicationWindow(QObject):
         self.tab_widget = self.window.findChild(QTabWidget, "tab_widget")
         button_add_tab = self.window.findChild(QPushButton, "button_add_tab")
 
+        self.tab_widget.tabCloseRequested.connect(self.remove_tab)
         button_add_tab.clicked.connect(self.add_tab)
 
         # Creating QChart
@@ -54,6 +55,15 @@ class ApplicationWindow(QObject):
 
         self.tables.append(table)
 
-        table.name = "table " + str(len(self.tables))
+        self.tab_widget.addTab(table.main_widget, "table " + str(len(self.tables)))
 
-        self.tab_widget.addTab(table.main_widget, table.name)
+    def remove_tab(self, index):
+        widget = self.tab_widget.widget(index)
+
+        self.tab_widget.removeTab(index)
+
+        for t in self.tables:
+            if t.main_widget == widget:
+                self.tables.remove(t)
+
+                break
