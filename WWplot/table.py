@@ -24,10 +24,12 @@ class Table():
         button_add_row = self.main_widget.findChild(QToolButton, "button_add_row")
         button_remove_row = self.main_widget.findChild(QToolButton, "button_remove_row")
         button_import = self.main_widget.findChild(QPushButton, "button_import")
+        button_export = self.main_widget.findChild(QPushButton, "button_export")
 
         button_add_row.clicked.connect(self.add_row)
         button_remove_row.clicked.connect(self.remove_row)
         button_import.clicked.connect(self.import_data)
+        button_export.clicked.connect(self.export_data)
 
         self.model = Model()
 
@@ -52,10 +54,10 @@ class Table():
                 self.model.remove_rows(list(int_index_list))
 
     def import_data(self):
-        path = QFileDialog.getOpenFileName(None, "Open File", "/home", "Tables (*.tsv)")
+        path = QFileDialog.getOpenFileName(self.main_widget, "Open File", "/home", "Tables (*.tsv)")[0]
 
-        if path[0] != "":
-            table = np.genfromtxt(path[0], delimiter='\t')
+        if path != "":
+            table = np.genfromtxt(path, delimiter='\t')
 
             self.model.beginResetModel()
 
@@ -65,3 +67,14 @@ class Table():
             self.model.data_yerr = table[:, 3]
 
             self.model.endResetModel()
+
+    def export_data(self):
+        path = QFileDialog.getSaveFileName(self.main_widget, "Save F:xile",  "/home/", "Tables (*.tsv)")[0]
+
+        if path != "":
+            if not path.endswith('.tsv'):
+                path += '.tsv'
+
+            np.savetxt(path,
+                       np.transpose([self.model.data_x, self.model.data_xerr, self.model.data_y, self.model.data_yerr]),
+                       delimiter="\t")
