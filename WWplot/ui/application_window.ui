@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>996</width>
-    <height>421</height>
+    <width>791</width>
+    <height>498</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,7 +38,14 @@
      </widget>
     </item>
     <item row="0" column="1" rowspan="2">
-     <widget class="PySide2.QtCharts.QtCharts.QChartView" name="chart_view"/>
+     <widget class="PySide2.QtCharts.QtCharts.QChartView" name="chart_view">
+      <property name="minimumSize">
+       <size>
+        <width>640</width>
+        <height>480</height>
+       </size>
+      </property>
+     </widget>
     </item>
     <item row="0" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
