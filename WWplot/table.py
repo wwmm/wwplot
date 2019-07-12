@@ -95,7 +95,15 @@ class Model(QAbstractTableModel):
             if column == 3:
                 return "{}".format(self.data_yerr[row])
 
-    def insertRows(self, row_index=0, count=1):
+    def sort(self):
+        sorted_idx = self.data_x.argsort()
+
+        self.data_x = self.data_x[sorted_idx]
+        self.data_xerr = self.data_xerr[sorted_idx]
+        self.data_y = self.data_y[sorted_idx]
+        self.data_yerr = self.data_yerr[sorted_idx]
+
+    def append_row(self):
         self.beginInsertRows(QModelIndex(), self.data_x.size, self.data_x.size)
 
         self.data_x = np.append(self.data_x, 0)
@@ -105,13 +113,17 @@ class Model(QAbstractTableModel):
 
         self.endInsertRows()
 
-    def sort(self):
-        sorted_idx = self.data_x.argsort()
+    def remove_rows(self, index_list):
+        index_list.sort(reverse=True)
 
-        self.data_x = self.data_x[sorted_idx]
-        self.data_xerr = self.data_xerr[sorted_idx]
-        self.data_y = self.data_y[sorted_idx]
-        self.data_yerr = self.data_yerr[sorted_idx]
+        for index in index_list:
+            self.beginRemoveRows(QModelIndex(), index, index)
+            self.endRemoveRows()
+
+        self.data_x = np.delete(self.data_x, index_list)
+        self.data_xerr = np.delete(self.data_xerr, index_list)
+        self.data_y = np.delete(self.data_y, index_list)
+        self.data_yerr = np.delete(self.data_yerr, index_list)
 
 
 class Table():
@@ -126,12 +138,28 @@ class Table():
 
         self.table_view = self.main_widget.findChild(QTableView, "table_view")
         button_add_row = self.main_widget.findChild(QToolButton, "button_add_row")
+        button_remove_row = self.main_widget.findChild(QToolButton, "button_remove_row")
 
         button_add_row.clicked.connect(self.add_row)
+        button_remove_row.clicked.connect(self.remove_row)
 
         self.model = Model()
 
         self.table_view.setModel(self.model)
 
     def add_row(self):
-        self.model.insertRows()
+        self.model.append_row()
+
+    def remove_row(self):
+        index_list = self.table_view.selectedIndexes()
+
+        if len(index_list) >= 4:
+            int_index_list = set()
+            columns = set()
+
+            for index in index_list:
+                int_index_list.add(index.row())
+                columns.add(index.column())
+
+            if 0 in columns and 1 in columns and 2 in columns and 3 in columns:
+                self.model.remove_rows(list(int_index_list))
