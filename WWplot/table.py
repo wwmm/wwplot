@@ -3,9 +3,12 @@
 Table view and model classes
 """
 
+import os
+
 import numpy as np
 from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import QFileDialog, QPushButton, QTableView, QToolButton, QHeaderView
+from PySide2.QtWidgets import (QFileDialog, QHeaderView, QPushButton,
+                               QTableView, QToolButton)
 
 from model import Model
 
@@ -54,7 +57,9 @@ class Table():
                 self.model.remove_rows(list(int_index_list))
 
     def import_data(self):
-        path = QFileDialog.getOpenFileName(self.main_widget, "Open File", "/home", "Tables (*.tsv)")[0]
+        home = os.path.expanduser("~")
+
+        path = QFileDialog.getOpenFileName(self.main_widget, "Open Table", home, "Tables (*.tsv)")[0]
 
         if path != "":
             table = np.genfromtxt(path, delimiter='\t')
@@ -69,7 +74,9 @@ class Table():
             self.model.endResetModel()
 
     def export_data(self):
-        path = QFileDialog.getSaveFileName(self.main_widget, "Save F:xile",  "/home/", "Tables (*.tsv)")[0]
+        home = os.path.expanduser("~")
+
+        path = QFileDialog.getSaveFileName(self.main_widget, "Save Table",  home, "Tables (*.tsv)")[0]
 
         if path != "":
             if not path.endswith('.tsv'):
@@ -77,4 +84,4 @@ class Table():
 
             np.savetxt(path,
                        np.transpose([self.model.data_x, self.model.data_xerr, self.model.data_y, self.model.data_yerr]),
-                       delimiter="\t")
+                       delimiter="\t", fmt='%1.6e')
