@@ -4,10 +4,10 @@ Table view and model classes
 """
 
 import numpy as np
-from PySide2.QtCore import QAbstractTableModel, Qt
+from PySide2.QtCore import QAbstractTableModel, Qt, QModelIndex
 from PySide2.QtGui import QColor
 from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import QTableView
+from PySide2.QtWidgets import QTableView, QToolButton
 
 
 class Model(QAbstractTableModel):
@@ -55,14 +55,7 @@ class Model(QAbstractTableModel):
                 if column == 3:
                     self.data_yerr[row] = float_value
 
-                # sorting
-
-                sorted_idx = self.data_x.argsort()
-
-                self.data_x = self.data_x[sorted_idx]
-                self.data_xerr = self.data_xerr[sorted_idx]
-                self.data_y = self.data_y[sorted_idx]
-                self.data_yerr = self.data_yerr[sorted_idx]
+                self.sort()
 
                 return True
             except ValueError:
@@ -102,6 +95,24 @@ class Model(QAbstractTableModel):
             if column == 3:
                 return "{}".format(self.data_yerr[row])
 
+    def insertRows(self, row_index=0, count=1):
+        self.beginInsertRows(QModelIndex(), self.data_x.size, self.data_x.size)
+
+        self.data_x = np.append(self.data_x, 0)
+        self.data_xerr = np.append(self.data_xerr, 0)
+        self.data_y = np.append(self.data_y, 0)
+        self.data_yerr = np.append(self.data_yerr, 0)
+
+        self.endInsertRows()
+
+    def sort(self):
+        sorted_idx = self.data_x.argsort()
+
+        self.data_x = self.data_x[sorted_idx]
+        self.data_xerr = self.data_xerr[sorted_idx]
+        self.data_y = self.data_y[sorted_idx]
+        self.data_yerr = self.data_yerr[sorted_idx]
+
 
 class Table():
     """
@@ -114,5 +125,13 @@ class Table():
         self.main_widget = loader.load("ui/table.ui")
 
         self.table_view = self.main_widget.findChild(QTableView, "table_view")
+        button_add_row = self.main_widget.findChild(QToolButton, "button_add_row")
 
-        self.table_view.setModel(Model())
+        button_add_row.clicked.connect(self.add_row)
+
+        self.model = Model()
+
+        self.table_view.setModel(self.model)
+
+    def add_row(self):
+        self.model.insertRows()

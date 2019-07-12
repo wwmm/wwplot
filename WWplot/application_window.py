@@ -7,7 +7,7 @@ from PySide2.QtCharts import QtCharts
 from PySide2.QtCore import QObject
 from PySide2.QtGui import QPainter
 from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import QPushButton, QTabWidget, QToolButton, QTabBar
+from PySide2.QtWidgets import QPushButton, QTabWidget
 
 from table import Table
 
@@ -58,8 +58,6 @@ class ApplicationWindow(QObject):
         self.tables.append(table)
 
         self.tab_widget.addTab(table.main_widget, "table " + str(len(self.tables)))
-
-        self.tab_widget.tabBar().setTabButton(0, QTabBar.RightSide, QToolButton("+"))
 
     def remove_tab(self, index):
         widget = self.tab_widget.widget(index)
