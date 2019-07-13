@@ -46,8 +46,6 @@ class Model(QAbstractTableModel):
                 if column == 3:
                     self.data_yerr[row] = float_value
 
-                # self.sort()
-
                 return True
             except ValueError:
                 return False
@@ -86,13 +84,21 @@ class Model(QAbstractTableModel):
             if column == 3:
                 return "{0:.6e}".format(self.data_yerr[row])
 
-    def sort(self):
-        sorted_idx = self.data_x.argsort()
+    def sort(self, column, order):
+        if column == 0:
+            sorted_idx = self.data_x.argsort()
 
-        self.data_x = self.data_x[sorted_idx]
-        self.data_xerr = self.data_xerr[sorted_idx]
-        self.data_y = self.data_y[sorted_idx]
-        self.data_yerr = self.data_yerr[sorted_idx]
+            if order == Qt.SortOrder.DescendingOrder:
+                sorted_idx = sorted_idx[::-1]
+
+            self.beginResetModel()
+
+            self.data_x = self.data_x[sorted_idx]
+            self.data_xerr = self.data_xerr[sorted_idx]
+            self.data_y = self.data_y[sorted_idx]
+            self.data_yerr = self.data_yerr[sorted_idx]
+
+            self.endResetModel()
 
     def append_row(self):
         self.beginInsertRows(QModelIndex(), self.data_x.size, self.data_x.size)
