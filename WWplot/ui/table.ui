@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>667</width>
-    <height>438</height>
+    <width>629</width>
+    <height>411</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,19 +23,22 @@
    <item row="1" column="0" colspan="5">
     <widget class="QTableView" name="table_view">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>530</width>
+       <width>0</width>
        <height>0</height>
       </size>
      </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAsNeeded</enum>
+     </property>
      <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::AdjustIgnored</enum>
+      <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
      </property>
      <property name="textElideMode">
       <enum>Qt::ElideNone</enum>

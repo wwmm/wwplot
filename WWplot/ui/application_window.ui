@@ -18,7 +18,7 @@
     <item row="1" column="0">
      <widget class="QTabWidget" name="tab_widget">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -42,6 +42,12 @@
     </item>
     <item row="0" column="1" rowspan="2">
      <widget class="PySide2.QtCharts.QtCharts.QChartView" name="chart_view">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
         <width>640</width>

@@ -36,6 +36,7 @@ class Table(QObject):
         self.model = Model()
 
         self.table_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.table_view.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table_view.setModel(self.model)
 
     def eventFilter(self, obj, event):
