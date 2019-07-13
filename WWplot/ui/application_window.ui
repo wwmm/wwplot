@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>791</width>
+    <width>922</width>
     <height>498</height>
    </rect>
   </property>
@@ -34,6 +34,9 @@
       </property>
       <property name="movable">
        <bool>false</bool>
+      </property>
+      <property name="tabBarAutoHide">
+       <bool>true</bool>
       </property>
      </widget>
     </item>

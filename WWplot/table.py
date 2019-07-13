@@ -45,25 +45,63 @@ class Table(QObject):
 
                 return True
             elif event.matches(QKeySequence.Copy):
-                table_str = ""
-                clipboard = QGuiApplication.clipboard()
-
                 s_model = self.table_view.selectionModel()
-                selection_range = s_model.selection().constFirst()
 
-                for i in range(selection_range.top(), selection_range.bottom() + 1):
-                    row_value = []
+                if s_model.hasSelection():
+                    selection_range = s_model.selection().constFirst()
 
-                    for j in range(selection_range.left(), selection_range.right() + 1):
-                        row_value.append(s_model.model().index(i, j).data())
+                    table_str = ""
+                    clipboard = QGuiApplication.clipboard()
 
-                    table_str += "\t".join(row_value) + "\n"
+                    for i in range(selection_range.top(), selection_range.bottom() + 1):
+                        row_value = []
 
-                clipboard.setText(table_str)
+                        for j in range(selection_range.left(), selection_range.right() + 1):
+                            row_value.append(s_model.model().index(i, j).data())
+
+                        table_str += "\t".join(row_value) + "\n"
+
+                    clipboard.setText(table_str)
 
                 return True
             elif event.matches(QKeySequence.Paste):
-                print("paste")
+                s_model = self.table_view.selectionModel()
+
+                if s_model.hasSelection():
+                    clipboard = QGuiApplication.clipboard()
+
+                    table_str = clipboard.text()
+                    table_rows = table_str.splitlines()  # splitlines avoids an empty line at the end
+
+                    selection_range = s_model.selection().constFirst()
+
+                    first_row = selection_range.top()
+                    first_col = selection_range.left()
+                    last_col_idx = 0
+                    last_row_idx = 0
+
+                    for i in range(len(table_rows)):
+                        model_i = first_row + i
+
+                        if model_i < self.model.rowCount():
+                            row_cols = table_rows[i].split("\t")
+
+                            for j in range(len(row_cols)):
+                                model_j = first_col + j
+
+                                if model_j < self.model.columnCount():
+                                    self.model.setData(self.model.index(model_i, model_j), row_cols[j], Qt.EditRole)
+
+                                    if model_j > last_col_idx:
+                                        last_col_idx = model_j
+
+                            if model_i > last_row_idx:
+                                last_row_idx = model_i
+
+                    first_index = self.model.index(first_row, first_col)
+                    last_index = self.model.index(last_row_idx, last_col_idx)
+
+                    self.model.dataChanged.emit(first_index, last_index)
 
                 return True
             else:
@@ -79,13 +117,14 @@ class Table(QObject):
     def remove_selected_rows(self):
         s_model = self.table_view.selectionModel()
 
-        index_list = s_model.selectedRows()
-        int_index_list = []
+        if s_model.hasSelection():
+            index_list = s_model.selectedRows()
+            int_index_list = []
 
-        for index in index_list:
-            int_index_list.append(index.row())
+            for index in index_list:
+                int_index_list.append(index.row())
 
-        self.model.remove_rows(int_index_list)
+            self.model.remove_rows(int_index_list)
 
     def import_data(self):
         home = os.path.expanduser("~")

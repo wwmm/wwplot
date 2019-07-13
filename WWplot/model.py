@@ -17,13 +17,13 @@ class Model(QAbstractTableModel):
         self.data_y = np.zeros(nrows)
         self.data_yerr = np.zeros(nrows)
 
-    def rowCount(self, _):
+    def rowCount(self, parent=QModelIndex()):
         return self.data_x.size
 
-    def columnCount(self, _):
+    def columnCount(self, parent=QModelIndex()):
         return self.ncols
 
-    def flags(self, _):
+    def flags(self, index):
         return Qt.ItemIsEditable | Qt.ItemIsEnabled | Qt.ItemIsSelectable
 
     def setData(self, index, value, role):
@@ -46,7 +46,7 @@ class Model(QAbstractTableModel):
                 if column == 3:
                     self.data_yerr[row] = float_value
 
-                self.sort()
+                # self.sort()
 
                 return True
             except ValueError:
