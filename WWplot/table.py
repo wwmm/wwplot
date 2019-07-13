@@ -4,7 +4,7 @@ import os
 
 import numpy as np
 from PySide2.QtCore import QEvent, QObject, Qt
-from PySide2.QtGui import QKeySequence
+from PySide2.QtGui import QKeySequence, QGuiApplication
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import (QFileDialog, QHeaderView, QPushButton,
                                QTableView, QToolButton)
@@ -45,9 +45,21 @@ class Table(QObject):
 
                 return True
             elif event.matches(QKeySequence.Copy):
-                index_list = self.table_view.selectedIndexes()
+                table_str = ""
+                clipboard = QGuiApplication.clipboard()
 
-                print(index_list)
+                s_model = self.table_view.selectionModel()
+                selection_range = s_model.selection().constFirst()
+
+                for i in range(selection_range.top(), selection_range.bottom() + 1):
+                    row_value = []
+
+                    for j in range(selection_range.left(), selection_range.right() + 1):
+                        row_value.append(s_model.model().index(i, j).data())
+
+                    table_str += "\t".join(row_value) + "\n"
+
+                clipboard.setText(table_str)
 
                 return True
             elif event.matches(QKeySequence.Paste):
