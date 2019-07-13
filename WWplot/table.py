@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-"""
-Table view and model classes
-"""
 
 import os
 
 import numpy as np
+from PySide2.QtCore import QEvent, QObject, Qt
+from PySide2.QtGui import QKeySequence
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import (QFileDialog, QHeaderView, QPushButton,
                                QTableView, QToolButton)
@@ -13,12 +12,10 @@ from PySide2.QtWidgets import (QFileDialog, QHeaderView, QPushButton,
 from model import Model
 
 
-class Table():
-    """
-        Class that creates each data table
-    """
-
+class Table(QObject):
     def __init__(self):
+        QObject.__init__(self)
+
         loader = QUiLoader()
 
         self.main_widget = loader.load("ui/table.ui")
@@ -30,31 +27,53 @@ class Table():
         button_export = self.main_widget.findChild(QPushButton, "button_export")
 
         button_add_row.clicked.connect(self.add_row)
-        button_remove_row.clicked.connect(self.remove_row)
+        button_remove_row.clicked.connect(self.remove_selected_rows)
         button_import.clicked.connect(self.import_data)
         button_export.clicked.connect(self.export_data)
+
+        self.table_view.installEventFilter(self)
 
         self.model = Model()
 
         self.table_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table_view.setModel(self.model)
 
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.KeyPress:
+            if event.key() == Qt.Key_Delete:
+                self.remove_selected_rows()
+
+                return True
+            elif event.matches(QKeySequence.Copy):
+                index_list = self.table_view.selectedIndexes()
+
+                print(index_list)
+
+                return True
+            elif event.matches(QKeySequence.Paste):
+                print("paste")
+
+                return True
+            else:
+                return QObject.eventFilter(self, obj, event)
+        else:
+            return QObject.eventFilter(self, obj, event)
+
+        return QObject.eventFilter(self, obj, event)
+
     def add_row(self):
         self.model.append_row()
 
-    def remove_row(self):
-        index_list = self.table_view.selectedIndexes()
+    def remove_selected_rows(self):
+        s_model = self.table_view.selectionModel()
 
-        if len(index_list) >= 4:
-            int_index_list = set()
-            columns = set()
+        index_list = s_model.selectedRows()
+        int_index_list = []
 
-            for index in index_list:
-                int_index_list.add(index.row())
-                columns.add(index.column())
+        for index in index_list:
+            int_index_list.append(index.row())
 
-            if 0 in columns and 1 in columns and 2 in columns and 3 in columns:
-                self.model.remove_rows(list(int_index_list))
+        self.model.remove_rows(int_index_list)
 
     def import_data(self):
         home = os.path.expanduser("~")

@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-application window
-"""
 
 from PySide2.QtCharts import QtCharts
 from PySide2.QtCore import QObject
@@ -13,10 +10,6 @@ from table import Table
 
 
 class ApplicationWindow(QObject):
-    """
-    Class that handles the main window
-    """
-
     def __init__(self):
         QObject.__init__(self)
 
@@ -49,10 +42,6 @@ class ApplicationWindow(QObject):
         self.window.show()
 
     def add_tab(self):
-        """
-            Creates a new tab with a table when the button button_add_tab is clicked
-        """
-
         table = Table()
 
         self.tables.append(table)
