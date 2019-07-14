@@ -76,3 +76,14 @@ class ApplicationWindow(QObject):
         self.plot.set_xlabel(self.xtitle)
         self.plot.set_ylabel(self.ytitle)
         self.plot.set_title(self.plot_title)
+
+        if not self.do_histogram:
+            self.plot.set_margins(0.1)
+
+            for t, n in zip(self.tables, range(len(self.tables))):
+                self.plot.errorbar(t.model.data_x, t.model.data_xerr, t.model.data_y, t.model.data_yerr, n,
+                                   'table ' + str(n))
+
+                self.plot.axes.legend()
+        else:
+            self.plot.set_margins(0.0)
