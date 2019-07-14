@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PySide2.QtCore import QObject
+from PySide2.QtCore import QObject, QFile
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import QPushButton, QTabWidget, QVBoxLayout
 
@@ -41,6 +41,14 @@ class ApplicationWindow(QObject):
         self.plot_layout.addWidget(self.plot.toolbar)
 
         self.add_tab()
+
+        # self.window.setStyleSheet("QWidget { background: white; }")
+        style_file = QFile("./ui/custom.css")
+        style_file.open(QFile.ReadOnly)
+
+        self.window.setStyleSheet(style_file.readAll().data().decode("utf-8"))
+
+        style_file.close()
 
         self.window.show()
 
