@@ -10,7 +10,7 @@ class Model(QAbstractTableModel):
         QAbstractTableModel.__init__(self)
 
         self.ncols = 4
-        nrows = 5  # initial number of rows
+        nrows = 1  # initial number of rows
 
         self.data_x = np.zeros(nrows)
         self.data_xerr = np.zeros(nrows)
@@ -111,6 +111,11 @@ class Model(QAbstractTableModel):
         self.data_yerr = np.append(self.data_yerr, 0)
 
         self.endInsertRows()
+
+        first_index = self.index(0, 0)
+        last_index = self.index(self.rowCount() - 1, self.columnCount() - 1)
+
+        self.dataChanged.emit(first_index, last_index)
 
     def remove_rows(self, index_list):
         index_list.sort(reverse=True)

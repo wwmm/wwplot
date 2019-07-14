@@ -37,14 +37,12 @@ class ApplicationWindow(QObject):
         self.axis_x = QtCharts.QValueAxis()
         self.axis_x.setTitleText("x")
         self.axis_x.setRange(-10, 10)
-        self.axis_x.setTickCount(5)
-        self.axis_x.setLabelFormat("%.2f")
+        self.axis_x.setLabelFormat("%.1f")
 
         self.axis_y = QtCharts.QValueAxis()
         self.axis_y.setTitleText("y")
         self.axis_y.setRange(-10, 10)
-        self.axis_y.setTickCount(5)
-        self.axis_y.setLabelFormat("%.2f")
+        self.axis_y.setLabelFormat("%.1f")
 
         self.chart.addAxis(self.axis_x, Qt.AlignBottom)
         self.chart.addAxis(self.axis_y, Qt.AlignLeft)
@@ -64,9 +62,7 @@ class ApplicationWindow(QObject):
         table.series.attachAxis(self.axis_x)
         table.series.attachAxis(self.axis_y)
 
-        table.series.pointAdded.connect(self.chart_data_changed)
-        table.series.pointReplaced.connect(self.chart_data_changed)
-        table.series.pointRemoved.connect(self.chart_data_changed)
+        table.model.dataChanged.connect(self.update_scale)
 
         self.tables.append(table)
 
@@ -83,27 +79,31 @@ class ApplicationWindow(QObject):
 
                 self.tables.remove(t)
 
-                self.chart_data_changed(0)
+                self.update_scale(0)
 
                 break
 
-    def chart_data_changed(self, index):
-        Xmin, Xmax, Ymin, Ymax = 0, 0, 0, 0
+    def update_scale(self):
+        n_tables = len(self.tables)
 
-        for table in self.tables:
-            xmin, xmax, ymin, ymax = table.model.get_min_max_xy()
+        if n_tables > 0:
+            Xmin, Xmax, Ymin, Ymax = self.tables[0].model.get_min_max_xy()
 
-            if xmin < Xmin:
-                Xmin = xmin
+            if n_tables > 1:
+                for n in range(n_tables):
+                    xmin, xmax, ymin, ymax = self.tables[n].model.get_min_max_xy()
 
-            if xmax > Xmax:
-                Xmax = xmax
+                    if xmin < Xmin:
+                        Xmin = xmin
 
-            if ymin < Ymin:
-                Ymin = ymin
+                    if xmax > Xmax:
+                        Xmax = xmax
 
-            if ymax > Ymax:
-                Ymax = ymax
+                    if ymin < Ymin:
+                        Ymin = ymin
 
-        self.axis_x.setRange(Xmin, Xmax)
-        self.axis_y.setRange(Ymin, Ymax)
+                    if ymax > Ymax:
+                        Ymax = ymax
+
+            self.axis_x.setRange(Xmin, Xmax)
+            self.axis_y.setRange(Ymin, Ymax)
