@@ -102,6 +102,11 @@ class Model(QAbstractTableModel):
 
             self.endResetModel()
 
+            first_index = self.index(0, 0)
+            last_index = self.index(self.rowCount() - 1, self.columnCount() - 1)
+
+            self.dataChanged.emit(first_index, last_index)
+
     def append_row(self):
         self.beginInsertRows(QModelIndex(), self.data_x.size, self.data_x.size)
 
@@ -120,14 +125,22 @@ class Model(QAbstractTableModel):
     def remove_rows(self, index_list):
         index_list.sort(reverse=True)
 
-        for index in index_list:
-            self.beginRemoveRows(QModelIndex(), index, index)
-            self.endRemoveRows()
-
         self.data_x = np.delete(self.data_x, index_list)
         self.data_xerr = np.delete(self.data_xerr, index_list)
         self.data_y = np.delete(self.data_y, index_list)
         self.data_yerr = np.delete(self.data_yerr, index_list)
 
+        for index in index_list:
+            self.beginRemoveRows(QModelIndex(), index, index)
+            self.endRemoveRows()
+
+        first_index = self.index(index_list[-1], 0)
+        last_index = self.index(index_list[0], 3)
+
+        self.dataChanged.emit(first_index, last_index)
+
     def get_min_max_xy(self):
-        return np.amin(self.data_x), np.amax(self.data_x), np.amin(self.data_y), np.amax(self.data_y)
+        if self.data_x.size > 0:
+            return np.amin(self.data_x), np.amax(self.data_x), np.amin(self.data_y), np.amax(self.data_y)
+        else:
+            return 0, 0, 0, 0

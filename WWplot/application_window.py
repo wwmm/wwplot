@@ -49,6 +49,7 @@ class ApplicationWindow(QObject):
 
         self.chart_view.setChart(self.chart)
         self.chart_view.setRenderHint(QPainter.Antialiasing)
+        self.chart_view.setRubberBand(QtCharts.QChartView.RectangleRubberBand)
 
         self.add_tab()
 
@@ -62,7 +63,7 @@ class ApplicationWindow(QObject):
         table.series.attachAxis(self.axis_x)
         table.series.attachAxis(self.axis_y)
 
-        table.model.dataChanged.connect(self.update_scale)
+        table.model.dataChanged.connect(self.data_changed)
 
         self.tables.append(table)
 
@@ -79,7 +80,7 @@ class ApplicationWindow(QObject):
 
                 self.tables.remove(t)
 
-                self.update_scale(0)
+                self.update_scale()
 
                 break
 
@@ -107,3 +108,6 @@ class ApplicationWindow(QObject):
 
             self.axis_x.setRange(Xmin, Xmax)
             self.axis_y.setRange(Ymin, Ymax)
+
+    def data_changed(self, top_left_index, bottom_right_index, roles):
+        self.update_scale()

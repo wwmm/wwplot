@@ -147,14 +147,23 @@ class Table(QObject):
         if path != "":
             table = np.genfromtxt(path, delimiter='\t')
 
-            self.model.beginResetModel()
+            if len(table.shape) == 2:
+                nrows, ncols = table.shape
 
-            self.model.data_x = table[:, 0]
-            self.model.data_xerr = table[:, 1]
-            self.model.data_y = table[:, 2]
-            self.model.data_yerr = table[:, 3]
+                if ncols == 4 and nrows > 0:
+                    self.model.beginResetModel()
 
-            self.model.endResetModel()
+                    self.model.data_x = table[:, 0]
+                    self.model.data_xerr = table[:, 1]
+                    self.model.data_y = table[:, 2]
+                    self.model.data_yerr = table[:, 3]
+
+                    self.model.endResetModel()
+
+                    first_index = self.model.index(0, 0)
+                    last_index = self.model.index(nrows - 1, ncols - 1)
+
+                    self.model.dataChanged.emit(first_index, last_index)
 
     def export_data(self):
         home = os.path.expanduser("~")
