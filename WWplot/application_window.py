@@ -12,6 +12,12 @@ class ApplicationWindow(QObject):
     def __init__(self):
         QObject.__init__(self)
 
+        self.do_histogram = False
+        self.show_grid = True
+        self.xtitle = "x"
+        self.ytitle = "y"
+        self.plot_title = "title"
+
         self.tables = []
 
         self.window = QUiLoader().load("ui/application_window.ui")
@@ -26,6 +32,12 @@ class ApplicationWindow(QObject):
         self.plot = Plot(self.window)
 
         self.plot.setMinimumSize(640, 480)
+        self.plot.set_grid(self.show_grid)
+        self.plot.set_xlabel(self.xtitle)
+        self.plot.set_ylabel(self.ytitle)
+        self.plot.set_title(self.plot_title)
+        self.plot.tight_layout()
+
         self.plot_layout.addWidget(self.plot)
         self.plot_layout.addWidget(self.plot.toolbar)
 
@@ -49,35 +61,18 @@ class ApplicationWindow(QObject):
 
         for t in self.tables:
             if t.main_widget == widget:
-                self.chart.removeSeries(t.series)
-
                 self.tables.remove(t)
 
-                self.update_scale()
+                self.update_plot()
 
                 break
 
-    def update_scale(self):
-        n_tables = len(self.tables)
-
-        if n_tables > 0:
-            Xmin, Xmax, Ymin, Ymax = self.tables[0].model.get_min_max_xy()
-
-            if n_tables > 1:
-                for n in range(n_tables):
-                    xmin, xmax, ymin, ymax = self.tables[n].model.get_min_max_xy()
-
-                    if xmin < Xmin:
-                        Xmin = xmin
-
-                    if xmax > Xmax:
-                        Xmax = xmax
-
-                    if ymin < Ymin:
-                        Ymin = ymin
-
-                    if ymax > Ymax:
-                        Ymax = ymax
-
     def data_changed(self, top_left_index, bottom_right_index, roles):
-        self.update_scale()
+        self.update_plot()
+
+    def update_plot(self):
+        self.plot.axes.clear()
+        self.plot.set_grid(self.show_grid)
+        self.plot.set_xlabel(self.xtitle)
+        self.plot.set_ylabel(self.ytitle)
+        self.plot.set_title(self.plot_title)
