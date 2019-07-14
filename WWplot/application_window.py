@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from PySide2.QtCharts import QtCharts
-from PySide2.QtCore import QObject, Qt
-from PySide2.QtGui import QPainter
+from PySide2.QtCore import QObject
 from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import QPushButton, QTabWidget
+from PySide2.QtWidgets import QPushButton, QTabWidget, QVBoxLayout
 
 from table import Table
+from plot import Plot
 
 
 class ApplicationWindow(QObject):
@@ -15,41 +14,20 @@ class ApplicationWindow(QObject):
 
         self.tables = []
 
-        loader = QUiLoader()
+        self.window = QUiLoader().load("ui/application_window.ui")
 
-        loader.registerCustomWidget(QtCharts.QChartView)
-
-        # print(loader.availableWidgets())
-
-        self.window = loader.load("ui/application_window.ui")
-
-        self.chart_view = self.window.findChild(QtCharts.QChartView, "chart_view")
+        self.plot_layout = self.window.findChild(QVBoxLayout, "plot_layout")
         self.tab_widget = self.window.findChild(QTabWidget, "tab_widget")
         button_add_tab = self.window.findChild(QPushButton, "button_add_tab")
 
         self.tab_widget.tabCloseRequested.connect(self.remove_tab)
         button_add_tab.clicked.connect(self.add_tab)
 
-        # Creating QChart
-        self.chart = QtCharts.QChart()
-        self.chart.setAnimationOptions(QtCharts.QChart.AllAnimations)
+        self.plot = Plot(self.window)
 
-        self.axis_x = QtCharts.QValueAxis()
-        self.axis_x.setTitleText("x")
-        self.axis_x.setRange(-10, 10)
-        self.axis_x.setLabelFormat("%.1f")
-
-        self.axis_y = QtCharts.QValueAxis()
-        self.axis_y.setTitleText("y")
-        self.axis_y.setRange(-10, 10)
-        self.axis_y.setLabelFormat("%.1f")
-
-        self.chart.addAxis(self.axis_x, Qt.AlignBottom)
-        self.chart.addAxis(self.axis_y, Qt.AlignLeft)
-
-        self.chart_view.setChart(self.chart)
-        self.chart_view.setRenderHint(QPainter.Antialiasing)
-        self.chart_view.setRubberBand(QtCharts.QChartView.RectangleRubberBand)
+        self.plot.setMinimumSize(640, 480)
+        self.plot_layout.addWidget(self.plot)
+        self.plot_layout.addWidget(self.plot.toolbar)
 
         self.add_tab()
 
@@ -57,11 +35,6 @@ class ApplicationWindow(QObject):
 
     def add_tab(self):
         table = Table()
-
-        self.chart.addSeries(table.series)
-
-        table.series.attachAxis(self.axis_x)
-        table.series.attachAxis(self.axis_y)
 
         table.model.dataChanged.connect(self.data_changed)
 
@@ -105,9 +78,6 @@ class ApplicationWindow(QObject):
 
                     if ymax > Ymax:
                         Ymax = ymax
-
-            self.axis_x.setRange(Xmin, Xmax)
-            self.axis_y.setRange(Ymin, Ymax)
 
     def data_changed(self, top_left_index, bottom_right_index, roles):
         self.update_scale()

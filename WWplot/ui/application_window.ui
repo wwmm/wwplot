@@ -15,6 +15,26 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <item>
+       <widget class="QPushButton" name="button_add_tab">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Add Table</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item row="1" column="0">
      <widget class="QTabWidget" name="tab_widget">
       <property name="sizePolicy">
@@ -41,51 +61,11 @@
      </widget>
     </item>
     <item row="0" column="1" rowspan="2">
-     <widget class="PySide2.QtCharts.QtCharts.QChartView" name="chart_view">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>640</width>
-        <height>480</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
-      </property>
-      <item>
-       <widget class="QPushButton" name="button_add_tab">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Add Table</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <layout class="QVBoxLayout" name="plot_layout"/>
     </item>
    </layout>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>PySide2.QtCharts.QtCharts.QChartView</class>
-   <extends>QGraphicsView</extends>
-   <header>QChartView</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
