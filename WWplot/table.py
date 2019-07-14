@@ -3,8 +3,9 @@
 import os
 
 import numpy as np
+from PySide2.QtCharts import QtCharts
 from PySide2.QtCore import QEvent, QObject, Qt
-from PySide2.QtGui import QKeySequence, QGuiApplication
+from PySide2.QtGui import QGuiApplication, QKeySequence
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import (QFileDialog, QHeaderView, QPushButton,
                                QTableView, QToolButton)
@@ -38,6 +39,17 @@ class Table(QObject):
         self.table_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table_view.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table_view.setModel(self.model)
+
+        # chart series
+
+        self.series = QtCharts.QLineSeries(self.table_view)
+        self.series.setName("teste")
+
+        self.mapper = QtCharts.QVXYModelMapper()
+        self.mapper.setXColumn(0)
+        self.mapper.setYColumn(2)
+        self.mapper.setSeries(self.series)
+        self.mapper.setModel(self.model)
 
     def eventFilter(self, obj, event):
         if event.type() == QEvent.KeyPress:

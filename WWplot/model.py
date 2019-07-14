@@ -46,6 +46,8 @@ class Model(QAbstractTableModel):
                 if column == 3:
                     self.data_yerr[row] = float_value
 
+                self.dataChanged.emit(index, index)
+
                 return True
             except ValueError:
                 return False
@@ -121,3 +123,6 @@ class Model(QAbstractTableModel):
         self.data_xerr = np.delete(self.data_xerr, index_list)
         self.data_y = np.delete(self.data_y, index_list)
         self.data_yerr = np.delete(self.data_yerr, index_list)
+
+    def get_min_max_xy(self):
+        return np.amin(self.data_x), np.amax(self.data_x), np.amin(self.data_y), np.amax(self.data_y)
