@@ -36,7 +36,6 @@ class ApplicationWindow(QObject):
         self.plot.set_xlabel(self.xtitle)
         self.plot.set_ylabel(self.ytitle)
         self.plot.set_title(self.plot_title)
-        self.plot.tight_layout()
 
         self.plot_layout.addWidget(self.plot)
         self.plot_layout.addWidget(self.plot.toolbar)
@@ -85,5 +84,10 @@ class ApplicationWindow(QObject):
                                    'table ' + str(n))
 
                 self.plot.axes.legend()
+
+                # if len(t.fit_x) > 0:
+                #     self.plot.plot(t.fit_x, t.fit_y, 'r-')
         else:
             self.plot.set_margins(0.0)
+
+        self.plot.redraw_canvas()

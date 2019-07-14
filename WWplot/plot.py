@@ -17,8 +17,6 @@ class Plot(FigureCanvasQTAgg):
 
         self.axes.tick_params(direction='in')
 
-        self.fig.tight_layout()
-
         self.toolbar = NavigationToolbar2QT(self, parent)
 
         self.markers = ('o', 's', 'v', 'P', '*', 'D', 'x', '>')
@@ -60,7 +58,9 @@ class Plot(FigureCanvasQTAgg):
     def tight_layout(self):
         self.fig.tight_layout()
 
-    def update_plot(self):
+    def redraw_canvas(self):
         self.axes.relim()
         self.axes.autoscale_view(tight=True)
         self.fig.tight_layout()
+
+        self.draw_idle()
