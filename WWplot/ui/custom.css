@@ -1,39 +1,110 @@
-/* QWidget {
+QMainWindow {
   background: #eceff1;
-} */
+}
 
-/* QTabBar {
-  background: #607d8b;
-  left: 10px;
+QPushButton {
+  background-color: #26a69a;
+  color: #fff;
+  font-size: 14px;
+  border: none;
+  border-radius: 2px;
+  margin: 0;
+  padding-top: 0px;
+  padding-right: 16px;
+  padding-bottom: 0px;
+  padding-left: 16px;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-indent: 0px;
+  font: 400 13.3333px Arial;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  height: 36px;
+  line-height: 36px;
+  outline: 0;
+}
+
+QPushButton:pressed {
+  background-color: #00695c;
+}
+
+QTableView {
+  color: rgba(0, 0, 0, 0.87);
+  background-color: transparent;
+  border: none;
+  selection-background-color: #2196f3;
+  line-height: 1.6;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-weight: normal;
+}
+
+QTableView QHeaderView {
+  background-color: transparent;
+  border: none;
+}
+
+QTableView QHeaderView::section {
+  color: rgba(0, 0, 0, 0.6);
+  background-color: transparent;
+  border: none;
+  vertical-align: middle;
+  line-height: 1.6;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-weight: bold;
+}
+
+QTableView QTableCornerButton::section {
+  background-color: transparent;
+  border: none;
+}
+
+QTableView::item {
+  background-color: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+  margin: 3px 3px;
+  line-height: 1.6;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-weight: normal;
+}
+
+QTabWidget {
+  background: #eceff1;
+  padding: 6px;
 }
 
 QTabWidget::pane {
-  background: #eceff1;
-  padding: 6px;
-} */
+  background-color: #fff;
+  border-radius: 2px;
+  margin: 0.5rem 0 1rem 0;
+  color: rgba(0, 0, 0, 0.87);
+  line-height: 1.6;
+  font-size: 16px;
+}
 
-/* QTabBar::tab {
-  background: transparent;
-  border: 0px solid transparent;
-  border-bottom: 2px solid transparent;
-  color: #546e7a;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 3px;
-  padding-bottom: 3px;
-} */
+QTabBar::tab {
+  background-color: #cfd8dc;
+  color: #ffffff;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  line-height: 100px;
+  height: 100px;
+  text-transform: uppercase;
+}
 
-/* QTabBar::tab:hover {
-  background-color: transparent;
-  border: 0px solid transparent;
-  border-bottom: 2px solid #80cbc4;
-  color: #afbdc4;
+QTabBar::tab:hover {
+  color: #eceff1;
 }
 
 QTabBar::tab:selected {
-  background-color: transparent;
-  border: 0px solid transparent;
-  border-top: none;
-  border-bottom: 2px solid #80cbc4;
-  color: #ffffff;
-} */
+  background-color: #ffffff;
+  color: rgba(0, 0, 0, 0.87);
+}

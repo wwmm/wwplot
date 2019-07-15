@@ -43,6 +43,9 @@
      <property name="textElideMode">
       <enum>Qt::ElideNone</enum>
      </property>
+     <property name="showGrid">
+      <bool>false</bool>
+     </property>
      <property name="sortingEnabled">
       <bool>true</bool>
      </property>
@@ -95,6 +98,11 @@
     </widget>
    </item>
   </layout>
+  <zorder>table_view</zorder>
+  <zorder>button_remove_row</zorder>
+  <zorder>button_export</zorder>
+  <zorder>button_add_row</zorder>
+  <zorder>button_import</zorder>
  </widget>
  <resources/>
  <connections/>

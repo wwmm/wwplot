@@ -65,7 +65,7 @@ class Model(QAbstractTableModel):
 
     def data(self, index, role):
         if role == Qt.BackgroundRole:
-            return QColor(Qt.white)
+            return QColor(Qt.transparent)
 
         elif role == Qt.TextAlignmentRole:
             return Qt.AlignRight
