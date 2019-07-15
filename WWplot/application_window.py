@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from PySide2.QtCore import QObject, QFile
+from PySide2.QtCore import QFile, QObject, Qt
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import QPushButton, QTabWidget, QVBoxLayout
 
-from table import Table
 from plot import Plot
+from table import Table
 
 
 class ApplicationWindow(QObject):
@@ -37,13 +37,13 @@ class ApplicationWindow(QObject):
         self.plot.set_ylabel(self.ytitle)
         self.plot.set_title(self.plot_title)
 
+        self.plot_layout.setAlignment(Qt.AlignTop)
         self.plot_layout.addWidget(self.plot)
         self.plot_layout.addWidget(self.plot.toolbar)
 
         self.add_tab()
 
-        # self.window.setStyleSheet("QWidget { background: white; }")
-        style_file = QFile("./ui/custom.css")
+        style_file = QFile("ui/custom.css")
         style_file.open(QFile.ReadOnly)
 
         self.window.setStyleSheet(style_file.readAll().data().decode("utf-8"))

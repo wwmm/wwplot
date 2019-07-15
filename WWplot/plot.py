@@ -2,6 +2,7 @@
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT
 from matplotlib.figure import Figure
+from PySide2.QtWidgets import QSizePolicy
 
 
 class Plot(FigureCanvasQTAgg):
@@ -17,7 +18,14 @@ class Plot(FigureCanvasQTAgg):
 
         self.axes.tick_params(direction='in')
 
+        size_policy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+
+        self.setSizePolicy(size_policy)
+
         self.toolbar = NavigationToolbar2QT(self, parent)
+        self.toolbar.setSizePolicy(size_policy)
 
         self.markers = ('o', 's', 'v', 'P', '*', 'D', 'x', '>')
 
