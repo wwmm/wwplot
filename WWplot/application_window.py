@@ -3,6 +3,7 @@
 from PySide2.QtCore import QFile, QObject, Qt
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import QPushButton, QTabWidget, QVBoxLayout
+from PySide2.QtGui import QFontDatabase
 
 from plot import Plot
 from table import Table
@@ -19,6 +20,11 @@ class ApplicationWindow(QObject):
         self.plot_title = "title"
 
         self.tables = []
+
+        status = QFontDatabase.addApplicationFont("ui/MaterialIcons-Regular.ttf")
+
+        if status == -1:
+            print("failed to add font ui/MaterialIcons-Regular.ttf")
 
         self.window = QUiLoader().load("ui/application_window.ui")
 

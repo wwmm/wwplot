@@ -28,6 +28,30 @@ QPushButton:pressed {
   background-color: #00695c;
 }
 
+QToolButton#button_add_row {
+  background-color: #26a69a;
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  text-transform: none;
+  text-decoration: none;
+  text-indent: 0px;
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 1;
+  outline: 0;
+}
+
+QToolButton:pressed {
+  background-color: #00695c;
+}
+
 QTableView {
   color: rgba(0, 0, 0, 0.87);
   background-color: transparent;

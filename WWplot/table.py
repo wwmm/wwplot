@@ -39,6 +39,10 @@ class Table(QObject):
         self.table_view.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table_view.setModel(self.model)
 
+        # icons
+
+        button_add_row.setText("add_box")
+
     def eventFilter(self, obj, event):
         if event.type() == QEvent.KeyPress:
             if event.key() == Qt.Key_Delete:
