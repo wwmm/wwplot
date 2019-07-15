@@ -4,10 +4,11 @@ import os
 
 import numpy as np
 from PySide2.QtCore import QEvent, QObject, Qt
-from PySide2.QtGui import QGuiApplication, QKeySequence
+from PySide2.QtGui import QColor, QGuiApplication, QKeySequence
 from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import (QFileDialog, QHeaderView, QPushButton,
-                               QTableView, QToolButton)
+from PySide2.QtWidgets import (QFileDialog, QGraphicsDropShadowEffect,
+                               QHeaderView, QPushButton, QTableView,
+                               QToolButton)
 
 from model import Model
 
@@ -39,9 +40,15 @@ class Table(QObject):
         self.table_view.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table_view.setModel(self.model)
 
-        # icons
+        # shadow
 
-        button_add_row.setText("add_box")
+        effect = QGraphicsDropShadowEffect(self.main_widget)
+        # effect.setColor(QColor(0, 0, 0, 255))
+        effect.setXOffset(2)
+        effect.setYOffset(2)
+        effect.setBlurRadius(5)
+
+        button_add_row.setGraphicsEffect(effect)
 
     def eventFilter(self, obj, event):
         if event.type() == QEvent.KeyPress:

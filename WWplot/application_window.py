@@ -21,10 +21,7 @@ class ApplicationWindow(QObject):
 
         self.tables = []
 
-        status = QFontDatabase.addApplicationFont("ui/MaterialIcons-Regular.ttf")
-
-        if status == -1:
-            print("failed to add font ui/MaterialIcons-Regular.ttf")
+        self.add_fonts()
 
         self.window = QUiLoader().load("ui/application_window.ui")
 
@@ -57,6 +54,10 @@ class ApplicationWindow(QObject):
         style_file.close()
 
         self.window.show()
+
+    def add_fonts(self):
+        if QFontDatabase.addApplicationFont("ui/MaterialIcons-Regular.ttf") == -1:
+            print("failed to add font ui/MaterialIcons-Regular")
 
     def add_tab(self):
         table = Table()
