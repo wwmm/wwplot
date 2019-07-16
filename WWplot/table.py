@@ -6,7 +6,7 @@ import numpy as np
 from PySide2.QtCore import QEvent, QObject, Qt
 from PySide2.QtGui import QColor, QGuiApplication, QKeySequence
 from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import (QFileDialog, QGraphicsDropShadowEffect,
+from PySide2.QtWidgets import (QFileDialog, QFrame, QGraphicsDropShadowEffect,
                                QHeaderView, QPushButton, QTableView)
 
 from model import Model
@@ -25,6 +25,7 @@ class Table(QObject):
         button_remove_row = self.main_widget.findChild(QPushButton, "button_remove_row")
         button_import = self.main_widget.findChild(QPushButton, "button_import")
         button_export = self.main_widget.findChild(QPushButton, "button_export")
+        fit_frame = self.main_widget.findChild(QFrame, "fit_frame")
 
         button_add_row.clicked.connect(self.add_row)
         button_remove_row.clicked.connect(self.remove_selected_rows)
@@ -45,13 +46,24 @@ class Table(QObject):
         button_remove_row.setGraphicsEffect(self.button_shadow())
         button_import.setGraphicsEffect(self.button_shadow())
         button_export.setGraphicsEffect(self.button_shadow())
+        fit_frame.setGraphicsEffect(self.card_shadow())
 
     def button_shadow(self):
         effect = QGraphicsDropShadowEffect(self.main_widget)
 
         effect.setColor(QColor(0, 0, 0, 100))
-        effect.setXOffset(0)
+        effect.setXOffset(1)
         effect.setYOffset(1)
+        effect.setBlurRadius(5)
+
+        return effect
+
+    def card_shadow(self):
+        effect = QGraphicsDropShadowEffect(self.main_widget)
+
+        effect.setColor(QColor(0, 0, 0, 100))
+        effect.setXOffset(2)
+        effect.setYOffset(2)
         effect.setBlurRadius(5)
 
         return effect
