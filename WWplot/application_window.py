@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from PySide2.QtCore import QFile, QObject, Qt
+from PySide2.QtGui import QColor, QFontDatabase
 from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import QPushButton, QTabWidget, QVBoxLayout
-from PySide2.QtGui import QFontDatabase
+from PySide2.QtWidgets import (QGraphicsDropShadowEffect, QPushButton,
+                               QTabWidget, QVBoxLayout)
 
 from plot import Plot
 from table import Table
@@ -41,8 +42,8 @@ class ApplicationWindow(QObject):
         self.plot.set_title(self.plot_title)
 
         self.plot_layout.setAlignment(Qt.AlignTop)
-        self.plot_layout.addWidget(self.plot)
         self.plot_layout.addWidget(self.plot.toolbar)
+        self.plot_layout.addWidget(self.plot)
 
         self.add_tab()
 
@@ -53,11 +54,34 @@ class ApplicationWindow(QObject):
 
         style_file.close()
 
+        self.tab_widget.setGraphicsEffect(self.card_shadow())
+        button_add_tab.setGraphicsEffect(self.button_shadow())
+
         self.window.show()
 
     def add_fonts(self):
         if QFontDatabase.addApplicationFont("ui/MaterialIcons-Regular.ttf") == -1:
             print("failed to add font ui/MaterialIcons-Regular")
+
+    def button_shadow(self):
+        effect = QGraphicsDropShadowEffect(self.window)
+
+        effect.setColor(QColor(0, 0, 0, 100))
+        effect.setXOffset(0)
+        effect.setYOffset(1)
+        effect.setBlurRadius(5)
+
+        return effect
+
+    def card_shadow(self):
+        effect = QGraphicsDropShadowEffect(self.window)
+
+        effect.setColor(QColor(0, 0, 0, 100))
+        effect.setXOffset(1)
+        effect.setYOffset(1)
+        effect.setBlurRadius(5)
+
+        return effect
 
     def add_tab(self):
         table = Table()

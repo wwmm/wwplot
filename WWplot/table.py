@@ -7,8 +7,7 @@ from PySide2.QtCore import QEvent, QObject, Qt
 from PySide2.QtGui import QColor, QGuiApplication, QKeySequence
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import (QFileDialog, QGraphicsDropShadowEffect,
-                               QHeaderView, QPushButton, QTableView,
-                               QToolButton)
+                               QHeaderView, QPushButton, QTableView)
 
 from model import Model
 
@@ -22,8 +21,8 @@ class Table(QObject):
         self.main_widget = loader.load("ui/table.ui")
 
         self.table_view = self.main_widget.findChild(QTableView, "table_view")
-        button_add_row = self.main_widget.findChild(QToolButton, "button_add_row")
-        button_remove_row = self.main_widget.findChild(QToolButton, "button_remove_row")
+        button_add_row = self.main_widget.findChild(QPushButton, "button_add_row")
+        button_remove_row = self.main_widget.findChild(QPushButton, "button_remove_row")
         button_import = self.main_widget.findChild(QPushButton, "button_import")
         button_export = self.main_widget.findChild(QPushButton, "button_export")
 
@@ -40,15 +39,22 @@ class Table(QObject):
         self.table_view.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table_view.setModel(self.model)
 
-        # shadow
+        # effects
 
+        button_add_row.setGraphicsEffect(self.button_shadow())
+        button_remove_row.setGraphicsEffect(self.button_shadow())
+        button_import.setGraphicsEffect(self.button_shadow())
+        button_export.setGraphicsEffect(self.button_shadow())
+
+    def button_shadow(self):
         effect = QGraphicsDropShadowEffect(self.main_widget)
-        # effect.setColor(QColor(0, 0, 0, 255))
-        effect.setXOffset(2)
-        effect.setYOffset(2)
+
+        effect.setColor(QColor(0, 0, 0, 100))
+        effect.setXOffset(0)
+        effect.setYOffset(1)
         effect.setBlurRadius(5)
 
-        button_add_row.setGraphicsEffect(effect)
+        return effect
 
     def eventFilter(self, obj, event):
         if event.type() == QEvent.KeyPress:
