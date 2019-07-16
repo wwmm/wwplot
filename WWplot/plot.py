@@ -1,14 +1,24 @@
 # -*- coding: utf-8 -*-
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT
+from matplotlib import rcParams
+from matplotlib.backends.backend_qt5agg import (FigureCanvasQTAgg,
+                                                NavigationToolbar2QT)
 from matplotlib.figure import Figure
 from PySide2.QtWidgets import QSizePolicy
+
+rcParams["font.family"] = "sans-serif"
+rcParams["font.sans-serif"] = ["Roboto"]
+rcParams["font.size"] = 14
+rcParams["legend.fontsize"] = "medium"
+rcParams["figure.titlesize"] = "medium"
+rcParams["xtick.labelsize"] = "large"
+rcParams["markers.fillstyle"] = "none"
 
 
 class Plot(FigureCanvasQTAgg):
 
-    def __init__(self, parent=None, dpi_value=120):
-        self.fig = Figure(dpi=dpi_value)
+    def __init__(self, parent=None):
+        self.fig = Figure()
 
         FigureCanvasQTAgg.__init__(self, self.fig)
 
@@ -16,7 +26,7 @@ class Plot(FigureCanvasQTAgg):
 
         self.axes = self.fig.add_subplot(111)
 
-        self.axes.tick_params(direction='in')
+        self.axes.tick_params(direction="in")
 
         size_policy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         size_policy.setHorizontalStretch(0)
@@ -27,7 +37,7 @@ class Plot(FigureCanvasQTAgg):
         self.toolbar = NavigationToolbar2QT(self, parent)
         self.toolbar.setSizePolicy(size_policy)
 
-        self.markers = ('o', 's', 'v', 'P', '*', 'D', 'x', '>')
+        self.markers = ("o", "s", "v", "P", "*", "D", "x", ">")
 
     def plot(self, x, y, config_str):
         line_obj, = self.axes.plot(x, y, config_str)
@@ -41,7 +51,7 @@ class Plot(FigureCanvasQTAgg):
         return line_obj, caplines, barlinecols
 
     def hist(self, x):
-        obj = self.axes.hist(x, facecolor='green', alpha=0.8, density=True)
+        obj = self.axes.hist(x, facecolor="green", alpha=0.8, density=True)
 
         return obj
 
@@ -56,7 +66,7 @@ class Plot(FigureCanvasQTAgg):
 
     def set_grid(self, value):
         if value:
-            self.axes.grid(b=value, linestyle='--')
+            self.axes.grid(b=value, linestyle="--")
         else:
             self.axes.grid(b=value)
 

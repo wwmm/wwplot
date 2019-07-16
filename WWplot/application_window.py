@@ -3,8 +3,8 @@
 from PySide2.QtCore import QFile, QObject, Qt
 from PySide2.QtGui import QColor, QFontDatabase
 from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import (QGraphicsDropShadowEffect, QPushButton,
-                               QTabWidget, QVBoxLayout)
+from PySide2.QtWidgets import (QGraphicsDropShadowEffect, QLineEdit,
+                               QPushButton, QTabWidget, QVBoxLayout)
 
 from plot import Plot
 from table import Table
@@ -16,9 +16,6 @@ class ApplicationWindow(QObject):
 
         self.do_histogram = False
         self.show_grid = True
-        self.xtitle = "x"
-        self.ytitle = "y"
-        self.plot_title = "title"
 
         self.tables = []
 
@@ -28,22 +25,23 @@ class ApplicationWindow(QObject):
 
         self.plot_layout = self.window.findChild(QVBoxLayout, "plot_layout")
         self.tab_widget = self.window.findChild(QTabWidget, "tab_widget")
+        self.xtitle = self.window.findChild(QLineEdit, "x_axis_title")
+        self.ytitle = self.window.findChild(QLineEdit, "y_axis_title")
         button_add_tab = self.window.findChild(QPushButton, "button_add_tab")
 
         self.tab_widget.tabCloseRequested.connect(self.remove_tab)
+        self.xtitle.returnPressed.connect(lambda: self.update_plot())
+        self.ytitle.returnPressed.connect(lambda: self.update_plot())
         button_add_tab.clicked.connect(self.add_tab)
 
         self.plot = Plot(self.window)
 
         self.plot.setMinimumSize(640, 480)
         self.plot.set_grid(self.show_grid)
-        self.plot.set_xlabel(self.xtitle)
-        self.plot.set_ylabel(self.ytitle)
-        self.plot.set_title(self.plot_title)
 
         self.plot_layout.setAlignment(Qt.AlignTop)
-        self.plot_layout.addWidget(self.plot.toolbar)
         self.plot_layout.addWidget(self.plot)
+        self.plot_layout.addWidget(self.plot.toolbar)
 
         self.add_tab()
 
@@ -92,6 +90,8 @@ class ApplicationWindow(QObject):
 
         self.tab_widget.addTab(table.main_widget, "table " + str(len(self.tables)))
 
+        self.update_plot()
+
     def remove_tab(self, index):
         widget = self.tab_widget.widget(index)
 
@@ -111,9 +111,8 @@ class ApplicationWindow(QObject):
     def update_plot(self):
         self.plot.axes.clear()
         self.plot.set_grid(self.show_grid)
-        self.plot.set_xlabel(self.xtitle)
-        self.plot.set_ylabel(self.ytitle)
-        self.plot.set_title(self.plot_title)
+        self.plot.set_xlabel(self.xtitle.displayText())
+        self.plot.set_ylabel(self.ytitle.displayText())
 
         if not self.do_histogram:
             self.plot.set_margins(0.1)
