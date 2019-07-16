@@ -147,3 +147,28 @@ QTabBar::tab:selected {
 /*
   Scrollbars
 */
+
+QScrollBar {
+  background-color: white;
+  border: none;
+  width: 12px;
+  margin: 0px 0px 0px 0px;
+}
+
+QScrollBar:horizontal {
+  height: 12px;
+}
+
+QScrollBar::handle {
+  min-height: 0px;
+  border-radius: 4px;
+  background-color: #cfd8dc;
+}
+
+QScrollBar::add-line {
+  height: 0px;
+}
+
+QScrollBar::sub-line {
+  height: 0px;
+}

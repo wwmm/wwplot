@@ -34,11 +34,17 @@
        <height>0</height>
       </size>
      </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>480</height>
+      </size>
+     </property>
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarAsNeeded</enum>
      </property>
      <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
      </property>
      <property name="textElideMode">
       <enum>Qt::ElideNone</enum>
