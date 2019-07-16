@@ -9,9 +9,10 @@ from PySide2.QtWidgets import QSizePolicy
 rcParams["font.family"] = "sans-serif"
 rcParams["font.sans-serif"] = ["Roboto"]
 rcParams["font.size"] = 14
-rcParams["legend.fontsize"] = "medium"
+rcParams["legend.fontsize"] = "small"
 rcParams["figure.titlesize"] = "medium"
-rcParams["xtick.labelsize"] = "large"
+rcParams["xtick.labelsize"] = "medium"
+rcParams["ytick.labelsize"] = "medium"
 rcParams["markers.fillstyle"] = "none"
 
 

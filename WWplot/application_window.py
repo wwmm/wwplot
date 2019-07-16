@@ -3,7 +3,7 @@
 from PySide2.QtCore import QFile, QObject, Qt
 from PySide2.QtGui import QColor, QFontDatabase
 from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import (QGraphicsDropShadowEffect, QLineEdit,
+from PySide2.QtWidgets import (QFrame, QGraphicsDropShadowEffect, QLineEdit,
                                QPushButton, QTabWidget, QVBoxLayout)
 
 from plot import Plot
@@ -23,6 +23,7 @@ class ApplicationWindow(QObject):
 
         self.window = QUiLoader().load("ui/application_window.ui")
 
+        self.plot_frame = self.window.findChild(QFrame, "plot_frame")
         self.plot_layout = self.window.findChild(QVBoxLayout, "plot_layout")
         self.tab_widget = self.window.findChild(QTabWidget, "tab_widget")
         self.xtitle = self.window.findChild(QLineEdit, "x_axis_title")
@@ -53,6 +54,7 @@ class ApplicationWindow(QObject):
         style_file.close()
 
         self.tab_widget.setGraphicsEffect(self.card_shadow())
+        self.plot_frame.setGraphicsEffect(self.card_shadow())
         button_add_tab.setGraphicsEffect(self.button_shadow())
 
         self.window.show()
@@ -75,8 +77,8 @@ class ApplicationWindow(QObject):
         effect = QGraphicsDropShadowEffect(self.window)
 
         effect.setColor(QColor(0, 0, 0, 100))
-        effect.setXOffset(1)
-        effect.setYOffset(1)
+        effect.setXOffset(2)
+        effect.setYOffset(2)
         effect.setBlurRadius(5)
 
         return effect

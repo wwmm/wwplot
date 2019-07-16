@@ -186,3 +186,13 @@ QLineEdit {
   text-indent: 0px;
   text-align: start;
 }
+
+/*
+  QFrame
+*/
+
+QFrame {
+  background-color: #fff;
+  border-radius: 2px;
+  padding: 2px;
+}
