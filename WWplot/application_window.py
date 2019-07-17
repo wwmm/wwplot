@@ -99,8 +99,8 @@ class ApplicationWindow(QObject):
         table = Table()
 
         table.model.dataChanged.connect(self.data_changed)
-
         table.legend.returnPressed.connect(lambda: self.update_plot())
+        table.fit.finished.connect(lambda: self.update_plot())
 
         self.tables.append(table)
 
@@ -143,8 +143,10 @@ class ApplicationWindow(QObject):
 
                 self.plot.axes.legend()
 
-                # if len(t.fit_x) > 0:
-                #     self.plot.plot(t.fit_x, t.fit_y, 'r-')
+                if t.fit.ready:
+                    fit_y = t.fit.fit_function(t.fit.output, t.model.data_x)
+
+                    self.plot.plot(t.model.data_x, fit_y, 'r-')
         else:
             self.plot.set_margins(0.0)
 

@@ -2,11 +2,18 @@
 
 import scipy.odr
 from numpy import *
+from PySide2.QtCore import QObject, Signal
 
 
-class Fit():
+class Fit(QObject):
+    finished = Signal()
 
     def __init__(self, maxit=100):
+        QObject.__init__(self)
+
+        self.maxit = maxit
+        self.ready = False
+
         self.x, self.xerr = [], []
         self.y, self.yerr = [], []
 
@@ -16,6 +23,8 @@ class Fit():
         self.fit_function = None
 
     def init_function(self, equation_str):
+        self.ready = False
+
         N = equation_str.count("P[")
         n_free = 0
 
@@ -34,9 +43,6 @@ class Fit():
 
         self.model = scipy.odr.Model(self.fit_function)
 
-    def on_parameter_changed(self, obj, idx):
-        self.initial_P[idx] = obj.get_value()
-
     def set_data(self, x, y, xerr=None, yerr=None):
         if xerr is not None and yerr is not None:
             self.fit_data = scipy.odr.RealData(x, y, sx=xerr, sy=yerr)
@@ -53,5 +59,9 @@ class Fit():
         self.output_err = sqrt(diag(out.cov_beta))
 
         self.output = out.beta
+
+        self.ready = True
+
+        self.finished.emit()
 
         return out.stopreason

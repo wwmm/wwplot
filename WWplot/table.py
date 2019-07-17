@@ -10,6 +10,7 @@ from PySide2.QtWidgets import (QFileDialog, QFrame, QGraphicsDropShadowEffect,
                                QHeaderView, QLineEdit, QPushButton, QTableView)
 
 from model import Model
+from fit import Fit
 
 
 class Table(QObject):
@@ -35,6 +36,7 @@ class Table(QObject):
         button_remove_row.clicked.connect(self.remove_selected_rows)
         button_import.clicked.connect(self.import_data)
         button_export.clicked.connect(self.export_data)
+        button_fit.clicked.connect(self.run_fit)
 
         self.table_view.installEventFilter(self)
 
@@ -53,6 +55,10 @@ class Table(QObject):
         button_fit.setGraphicsEffect(self.button_shadow())
         button_calc.setGraphicsEffect(self.button_shadow())
         fit_frame.setGraphicsEffect(self.card_shadow())
+
+        # fit
+
+        self.fit = Fit()
 
     def button_shadow(self):
         effect = QGraphicsDropShadowEffect(self.main_widget)
@@ -200,3 +206,11 @@ class Table(QObject):
             np.savetxt(path,
                        np.transpose([self.model.data_x, self.model.data_xerr, self.model.data_y, self.model.data_yerr]),
                        delimiter="\t", fmt='%1.6e')
+
+    def run_fit(self):
+        if self.model.data_x.size > 1:
+            self.fit.init_function(self.equation.displayText())
+
+            self.fit.set_data(self.model.data_x, self.model.data_y, self.model.data_xerr, self.model.data_yerr)
+
+            self.fit.run()

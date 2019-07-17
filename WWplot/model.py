@@ -138,9 +138,3 @@ class Model(QAbstractTableModel):
         last_index = self.index(index_list[0], 3)
 
         self.dataChanged.emit(first_index, last_index)
-
-    def get_min_max_xy(self):
-        if self.data_x.size > 0:
-            return np.amin(self.data_x), np.amax(self.data_x), np.amin(self.data_y), np.amax(self.data_y)
-        else:
-            return 0, 0, 0, 0
