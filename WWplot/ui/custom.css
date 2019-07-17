@@ -201,3 +201,31 @@ QFrame {
 QFrame#fit_frame {
   background-color: #eceff1;
 }
+
+/*
+  QLabel
+*/
+
+QLabel {
+  background-color: transparent;
+}
+
+/*
+  QDoubleSpinBox
+*/
+
+QDoubleSpinBox {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  outline: 0;
+}
+
+/*
+  QScrollArea
+*/
+
+QScrollArea,
+QScrollArea > QWidget > QWidget {
+  background-color: transparent;
+}

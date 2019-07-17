@@ -21,6 +21,8 @@ class ApplicationWindow(QObject):
 
         self.add_fonts()
 
+        # loading widgets from designer file
+
         self.window = QUiLoader().load("ui/application_window.ui")
 
         plot_frame = self.window.findChild(QFrame, "plot_frame")
@@ -30,10 +32,14 @@ class ApplicationWindow(QObject):
         self.ytitle = self.window.findChild(QLineEdit, "y_axis_title")
         button_add_tab = self.window.findChild(QPushButton, "button_add_tab")
 
+        # signal connection
+
         self.tab_widget.tabCloseRequested.connect(self.remove_tab)
         self.xtitle.returnPressed.connect(lambda: self.update_plot())
         self.ytitle.returnPressed.connect(lambda: self.update_plot())
         button_add_tab.clicked.connect(self.add_tab)
+
+        # init plot class
 
         self.plot = Plot(self.window)
 
@@ -44,7 +50,11 @@ class ApplicationWindow(QObject):
         self.plot_layout.addWidget(self.plot)
         self.plot_layout.addWidget(self.plot.toolbar)
 
+        # 1 tab by default
+
         self.add_tab()
+
+        # custom stylesheet
 
         style_file = QFile("ui/custom.css")
         style_file.open(QFile.ReadOnly)
@@ -52,6 +62,8 @@ class ApplicationWindow(QObject):
         self.window.setStyleSheet(style_file.readAll().data().decode("utf-8"))
 
         style_file.close()
+
+        # effects
 
         self.tab_widget.setGraphicsEffect(self.card_shadow())
         plot_frame.setGraphicsEffect(self.card_shadow())
@@ -88,6 +100,8 @@ class ApplicationWindow(QObject):
 
         table.model.dataChanged.connect(self.data_changed)
 
+        table.legend.returnPressed.connect(lambda: self.update_plot())
+
         self.tables.append(table)
 
         self.tab_widget.addTab(table.main_widget, "table " + str(len(self.tables)))
@@ -120,8 +134,12 @@ class ApplicationWindow(QObject):
             self.plot.set_margins(0.1)
 
             for t, n in zip(self.tables, range(len(self.tables))):
-                self.plot.errorbar(t.model.data_x, t.model.data_xerr, t.model.data_y, t.model.data_yerr, n,
-                                   'table ' + str(n))
+                legend = t.legend.displayText()
+
+                if legend == "":
+                    legend = "table " + str(n)
+
+                self.plot.errorbar(t.model.data_x, t.model.data_xerr, t.model.data_y, t.model.data_yerr, n, legend)
 
                 self.plot.axes.legend()
 

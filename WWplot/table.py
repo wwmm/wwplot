@@ -7,7 +7,7 @@ from PySide2.QtCore import QEvent, QObject, Qt
 from PySide2.QtGui import QColor, QGuiApplication, QKeySequence
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import (QFileDialog, QFrame, QGraphicsDropShadowEffect,
-                               QHeaderView, QPushButton, QTableView)
+                               QHeaderView, QLineEdit, QPushButton, QTableView)
 
 from model import Model
 
@@ -25,7 +25,11 @@ class Table(QObject):
         button_remove_row = self.main_widget.findChild(QPushButton, "button_remove_row")
         button_import = self.main_widget.findChild(QPushButton, "button_import")
         button_export = self.main_widget.findChild(QPushButton, "button_export")
+        button_fit = self.main_widget.findChild(QPushButton, "button_fit")
+        button_calc = self.main_widget.findChild(QPushButton, "button_calc")
         fit_frame = self.main_widget.findChild(QFrame, "fit_frame")
+        self.equation = self.main_widget.findChild(QLineEdit, "equation")
+        self.legend = self.main_widget.findChild(QLineEdit, "legend_name")
 
         button_add_row.clicked.connect(self.add_row)
         button_remove_row.clicked.connect(self.remove_selected_rows)
@@ -46,6 +50,8 @@ class Table(QObject):
         button_remove_row.setGraphicsEffect(self.button_shadow())
         button_import.setGraphicsEffect(self.button_shadow())
         button_export.setGraphicsEffect(self.button_shadow())
+        button_fit.setGraphicsEffect(self.button_shadow())
+        button_calc.setGraphicsEffect(self.button_shadow())
         fit_frame.setGraphicsEffect(self.card_shadow())
 
     def button_shadow(self):
