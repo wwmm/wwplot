@@ -7,10 +7,11 @@ from PySide2.QtCore import QEvent, QObject, Qt
 from PySide2.QtGui import QColor, QGuiApplication, QKeySequence
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import (QFileDialog, QFrame, QGraphicsDropShadowEffect,
-                               QHeaderView, QLineEdit, QPushButton, QTableView)
+                               QGridLayout, QHeaderView, QLineEdit,
+                               QPushButton, QTableView)
 
-from model import Model
 from fit import Fit
+from model import Model
 
 
 class Table(QObject):
@@ -31,12 +32,15 @@ class Table(QObject):
         fit_frame = self.main_widget.findChild(QFrame, "fit_frame")
         self.equation = self.main_widget.findChild(QLineEdit, "equation")
         self.legend = self.main_widget.findChild(QLineEdit, "legend_name")
+        self.fit_params_layout = self.main_widget.findChild(QGridLayout, "fit_params_layout")
 
         button_add_row.clicked.connect(self.add_row)
         button_remove_row.clicked.connect(self.remove_selected_rows)
         button_import.clicked.connect(self.import_data)
         button_export.clicked.connect(self.export_data)
         button_fit.clicked.connect(self.run_fit)
+        button_calc.clicked.connect(self.calc_equation)
+        self.equation.returnPressed.connect(self.init_fit_params)
 
         self.table_view.installEventFilter(self)
 
@@ -59,6 +63,8 @@ class Table(QObject):
         # fit
 
         self.fit = Fit()
+
+        self.init_fit_params()
 
     def button_shadow(self):
         effect = QGraphicsDropShadowEffect(self.main_widget)
@@ -209,8 +215,62 @@ class Table(QObject):
 
     def run_fit(self):
         if self.model.data_x.size > 1:
-            self.fit.init_function(self.equation.displayText())
+            self.init_fit_params()
 
             self.fit.set_data(self.model.data_x, self.model.data_y, self.model.data_xerr, self.model.data_yerr)
 
             self.fit.run()
+
+            self.view_fit_output()
+
+    def init_fit_output_layout(self):
+        ncols = self.fit_params_layout.columnCount()
+        nrows = self.fit_params_layout.rowCount()
+
+        for i in range(nrows):
+            for j in range(ncols):
+                widget = self.fit_params_layout.itemAtPosition(i, j).widget()
+
+                if widget:
+                    if i > len(self.fit.parameters) - 1:
+                        widget.setVisible(False)
+                    else:
+                        widget.setVisible(True)
+
+                        if j == 1:
+                            widget.setValue(self.fit.parameters[i])
+
+                        if j == 2:
+                            widget.setText("+- 0")
+
+    def init_fit_params(self):
+        self.fit.init_function(self.equation.displayText())
+
+        self.init_fit_output_layout()
+
+    def view_fit_output(self):
+        ncols = self.fit_params_layout.columnCount()
+
+        for i in range(len(self.fit.parameters)):
+            for j in range(1, ncols):
+                widget = self.fit_params_layout.itemAtPosition(i, j).widget()
+
+                if widget:
+                    if j == 1:
+                        widget.setValue(self.fit.parameters[i])
+
+                    if j == 2:
+                        widget.setText("+- {0:.6e}".format(self.fit.parameters_err[i]))
+
+    def calc_equation(self):
+        ncols = self.fit_params_layout.columnCount()
+
+        for i in range(len(self.fit.parameters)):
+            for j in range(1, ncols):
+                widget = self.fit_params_layout.itemAtPosition(i, j).widget()
+
+                if widget:
+                    if j == 1:
+                        self.fit.parameters[i] = widget.value()
+
+        self.fit.finished.emit()  # updating the plot

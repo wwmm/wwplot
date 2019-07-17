@@ -143,10 +143,9 @@ class ApplicationWindow(QObject):
 
                 self.plot.axes.legend()
 
-                if t.fit.ready:
-                    fit_y = t.fit.fit_function(t.fit.output, t.model.data_x)
+                fit_y = t.fit.fit_function(t.fit.parameters, t.model.data_x)
 
-                    self.plot.plot(t.model.data_x, fit_y, 'r-')
+                self.plot.plot(t.model.data_x, fit_y, n)
         else:
             self.plot.set_margins(0.0)
 

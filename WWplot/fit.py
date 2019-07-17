@@ -17,15 +17,13 @@ class Fit(QObject):
         self.x, self.xerr = [], []
         self.y, self.yerr = [], []
 
-        self.initial_P = []
-        self.output, self.output_err = [], []
+        self.parameters = []
+        self.output, self.parameters_err = [], []
 
         self.fit_function = None
 
         self.myglobals = dict(globals())
         self.myglobals["__builtins__"] = {}
-
-        print(self.myglobals)
 
     def init_function(self, equation_str):
         self.ready = False
@@ -39,10 +37,10 @@ class Fit(QObject):
             if equation_str.count(test_str) > 0:
                 n_free = n_free + 1
 
-        self.initial_P = []
+        self.parameters = []
 
         for n in range(0, n_free):
-            self.initial_P.append(1)
+            self.parameters.append(1)
 
         self.fit_function = lambda P, x: eval(equation_str, self.myglobals, locals())
 
@@ -55,15 +53,15 @@ class Fit(QObject):
             self.fit_data = scipy.odr.RealData(x, y)
 
     def run(self):
-        odr = scipy.odr.ODR(self.fit_data, self.model, maxit=self.maxit, beta0=self.initial_P)
+        odr = scipy.odr.ODR(self.fit_data, self.model, maxit=self.maxit, beta0=self.parameters)
 
         out = odr.run()
 
         out.pprint()
 
-        self.output_err = sqrt(diag(out.cov_beta))
+        self.parameters_err = sqrt(diag(out.cov_beta))
 
-        self.output = out.beta
+        self.parameters = out.beta
 
         self.ready = True
 
