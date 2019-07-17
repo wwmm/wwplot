@@ -22,6 +22,11 @@ class Fit(QObject):
 
         self.fit_function = None
 
+        self.myglobals = dict(globals())
+        self.myglobals["__builtins__"] = {}
+
+        print(self.myglobals)
+
     def init_function(self, equation_str):
         self.ready = False
 
@@ -39,7 +44,7 @@ class Fit(QObject):
         for n in range(0, n_free):
             self.initial_P.append(1)
 
-        self.fit_function = lambda P, x: eval(equation_str)
+        self.fit_function = lambda P, x: eval(equation_str, self.myglobals, locals())
 
         self.model = scipy.odr.Model(self.fit_function)
 
