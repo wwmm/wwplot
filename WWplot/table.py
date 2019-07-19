@@ -11,17 +11,19 @@ from PySide2.QtWidgets import (QFileDialog, QFrame, QGraphicsDropShadowEffect,
                                QGridLayout, QHeaderView, QLabel, QLineEdit,
                                QPushButton, QSizePolicy, QTableView)
 
-from fit import Fit
-from model import Model
+from WWplot.fit import Fit
+from WWplot.model import Model
 
 
 class Table(QObject):
     def __init__(self):
         QObject.__init__(self)
 
+        self.module_path = os.path.dirname(__file__)
+
         loader = QUiLoader()
 
-        self.main_widget = loader.load("ui/table.ui")
+        self.main_widget = loader.load(self.module_path + "/ui/table.ui")
 
         self.table_view = self.main_widget.findChild(QTableView, "table_view")
         button_add_row = self.main_widget.findChild(QPushButton, "button_add_row")

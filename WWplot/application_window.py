@@ -1,29 +1,30 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 from PySide2.QtCore import QFile, QObject, Qt
-from PySide2.QtGui import QColor, QFontDatabase
+from PySide2.QtGui import QColor
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import (QFrame, QGraphicsDropShadowEffect, QLineEdit,
                                QPushButton, QTabWidget, QVBoxLayout)
-
-from plot import Plot
-from table import Table
+from WWplot.plot import Plot
+from WWplot.table import Table
 
 
 class ApplicationWindow(QObject):
     def __init__(self):
         QObject.__init__(self)
 
+        self.module_path = os.path.dirname(__file__)
+
         self.do_histogram = False
         self.show_grid = True
 
         self.tables = []
 
-        self.add_fonts()
-
         # loading widgets from designer file
 
-        self.window = QUiLoader().load("ui/application_window.ui")
+        self.window = QUiLoader().load(self.module_path + "/ui/application_window.ui")
 
         plot_frame = self.window.findChild(QFrame, "plot_frame")
         plot_settings_frame = self.window.findChild(QFrame, "plot_settings_frame")
@@ -57,7 +58,7 @@ class ApplicationWindow(QObject):
 
         # custom stylesheet
 
-        style_file = QFile("ui/custom.css")
+        style_file = QFile(self.module_path + "/ui/custom.css")
         style_file.open(QFile.ReadOnly)
 
         self.window.setStyleSheet(style_file.readAll().data().decode("utf-8"))
@@ -72,10 +73,6 @@ class ApplicationWindow(QObject):
         button_add_tab.setGraphicsEffect(self.button_shadow())
 
         self.window.show()
-
-    def add_fonts(self):
-        if QFontDatabase.addApplicationFont("ui/MaterialIcons-Regular.ttf") == -1:
-            print("failed to add font ui/MaterialIcons-Regular")
 
     def button_shadow(self):
         effect = QGraphicsDropShadowEffect(self.window)
