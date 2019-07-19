@@ -4,11 +4,12 @@ import os
 
 import numpy as np
 from PySide2.QtCore import QEvent, QObject, Qt
-from PySide2.QtGui import QColor, QGuiApplication, QKeySequence
+from PySide2.QtGui import (QColor, QDoubleValidator, QGuiApplication,
+                           QKeySequence)
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import (QFileDialog, QFrame, QGraphicsDropShadowEffect,
-                               QGridLayout, QHeaderView, QLineEdit,
-                               QPushButton, QTableView)
+                               QGridLayout, QHeaderView, QLabel, QLineEdit,
+                               QPushButton, QSizePolicy, QTableView)
 
 from fit import Fit
 from model import Model
@@ -226,22 +227,66 @@ class Table(QObject):
     def init_fit_output_layout(self):
         ncols = self.fit_params_layout.columnCount()
         nrows = self.fit_params_layout.rowCount()
+        nparams = len(self.fit.parameters)
 
         for i in range(nrows):
             for j in range(ncols):
-                widget = self.fit_params_layout.itemAtPosition(i, j).widget()
+                item = self.fit_params_layout.itemAtPosition(i, j)
 
-                if widget:
-                    if i > len(self.fit.parameters) - 1:
-                        widget.setVisible(False)
-                    else:
-                        widget.setVisible(True)
+                if item:
+                    widget = item.widget()
 
-                        if j == 1:
-                            widget.setValue(self.fit.parameters[i])
+                    if widget:
+                        if i > nparams - 1:
+                            widget.setVisible(False)
+                        else:
+                            widget.setVisible(True)
 
-                        if j == 2:
-                            widget.setText("+- 0")
+                            if j == 1:
+                                widget.setText(str(self.fit.parameters[i]))
+
+                            if j == 2:
+                                widget.setText("+- 0")
+
+        if nparams > nrows:
+            first_idx = 0
+
+            if nrows > 1:
+                first_idx = nrows
+
+            for n in range(first_idx, nparams):
+                size_policy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+                size_policy.setHorizontalStretch(0)
+                size_policy.setVerticalStretch(0)
+
+                p_label = QLabel("P[" + str(n) + "]")
+                p_label.setAlignment(Qt.AlignJustify | Qt.AlignVCenter)
+                p_label.setSizePolicy(size_policy)
+
+                self.fit_params_layout.addWidget(p_label, n, 0)
+
+                size_policy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+                size_policy.setHorizontalStretch(1)
+                size_policy.setVerticalStretch(0)
+
+                validator = QDoubleValidator()
+                validator.setDecimals(1)
+
+                p_value = QLineEdit()
+                p_value.setValidator(validator)
+                p_value.setText(str(self.fit.parameters[i]))
+                p_value.setSizePolicy(size_policy)
+
+                self.fit_params_layout.addWidget(p_value, n, 1)
+
+                size_policy = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Fixed)
+                size_policy.setHorizontalStretch(0)
+                size_policy.setVerticalStretch(0)
+
+                error_label = QLabel("+- 0")
+                error_label.setSizePolicy(size_policy)
+
+                self.fit_params_layout.addWidget(error_label, n, 2)
 
     def init_fit_params(self):
         self.fit.init_function(self.equation.displayText())
@@ -253,24 +298,30 @@ class Table(QObject):
 
         for i in range(len(self.fit.parameters)):
             for j in range(1, ncols):
-                widget = self.fit_params_layout.itemAtPosition(i, j).widget()
+                item = self.fit_params_layout.itemAtPosition(i, j)
 
-                if widget:
-                    if j == 1:
-                        widget.setValue(self.fit.parameters[i])
+                if item:
+                    widget = item.widget()
 
-                    if j == 2:
-                        widget.setText("+- {0:.6e}".format(self.fit.parameters_err[i]))
+                    if widget:
+                        if j == 1:
+                            widget.setText(str(self.fit.parameters[i]))
+
+                        if j == 2:
+                            widget.setText("+- {0:.6e}".format(self.fit.parameters_err[i]))
 
     def calc_equation(self):
         ncols = self.fit_params_layout.columnCount()
 
         for i in range(len(self.fit.parameters)):
             for j in range(1, ncols):
-                widget = self.fit_params_layout.itemAtPosition(i, j).widget()
+                item = self.fit_params_layout.itemAtPosition(i, j)
 
-                if widget:
-                    if j == 1:
-                        self.fit.parameters[i] = widget.value()
+                if item:
+                    widget = item.widget()
+
+                    if widget:
+                        if j == 1:
+                            self.fit.parameters[i] = float(widget.text())
 
         self.fit.finished.emit()  # updating the plot

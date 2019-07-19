@@ -40,7 +40,7 @@ class Fit(QObject):
         self.parameters = []
 
         for n in range(0, n_free):
-            self.parameters.append(1)
+            self.parameters.append(1.0)
 
         self.fit_function = lambda P, x: eval(equation_str, self.myglobals, locals())
 
