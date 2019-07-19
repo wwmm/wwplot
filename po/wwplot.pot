@@ -1,0 +1,39 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the wwplot package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: wwplot\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-07-19 20:30-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/com.github.wwmm.wwplot.desktop.in:3
+msgid "WWplot"
+msgstr ""
+
+#: data/com.github.wwmm.wwplot.desktop.in:4
+msgid "Plotting Tool"
+msgstr ""
+
+#: data/com.github.wwmm.wwplot.desktop.in:5
+msgid "Plotting Tool for Experimental Physics Classes"
+msgstr ""
+
+#: data/com.github.wwmm.wwplot.desktop.in:6
+msgid "plot;graph;experiment;laboratory;"
+msgstr ""
+
+#. Translators: This is an icon name, don't translate!
+#: data/com.github.wwmm.wwplot.desktop.in:10
+msgid "wwplot"
+msgstr ""
