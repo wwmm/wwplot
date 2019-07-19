@@ -6,8 +6,9 @@ project('wwplot',
 pymod = import('python')
 i18n_mod = import('i18n')
 
-message('Checking dependencies')
-py3 = pymod.find_installation('python3', modules:['numpy'])
+required_modules = ['numpy']
+
+py3 = pymod.find_installation('python3', modules:required_modules)
 
 gtk3 = dependency('gtk+-3.0', version: '>= 3.18')
 pygobj = dependency('pygobject-3.0')
