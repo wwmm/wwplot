@@ -6,13 +6,12 @@ project('wwplot',
 pymod = import('python')
 i18n_mod = import('i18n')
 
-required_modules = ['numpy']
+required_modules = ['PySide2','numpy','scipy']
 
 py3 = pymod.find_installation('python3', modules:required_modules)
 
-gtk3 = dependency('gtk+-3.0', version: '>= 3.18')
-pygobj = dependency('pygobject-3.0')
-pycairo = dependency('py3cairo')
+message('python version: ' + py3.language_version())
+message('module install path: ' + py3.get_install_dir())
 
 prefix = get_option('prefix')
 bindir = join_paths(prefix, get_option('bindir'))
