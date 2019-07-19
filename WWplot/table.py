@@ -246,7 +246,7 @@ class Table(QObject):
                                 widget.setText(str(self.fit.parameters[i]))
 
                             if j == 2:
-                                widget.setText("+- 0")
+                                widget.setText("Error = +- 0")
 
         if nparams > nrows:
             first_idx = 0
@@ -255,36 +255,37 @@ class Table(QObject):
                 first_idx = nrows
 
             for n in range(first_idx, nparams):
-                size_policy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-                size_policy.setHorizontalStretch(0)
-                size_policy.setVerticalStretch(0)
+                size_policy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+                size_policy1.setHorizontalStretch(0)
+                size_policy1.setVerticalStretch(0)
 
                 p_label = QLabel("P[" + str(n) + "]")
                 p_label.setAlignment(Qt.AlignJustify | Qt.AlignVCenter)
-                p_label.setSizePolicy(size_policy)
+                p_label.setSizePolicy(size_policy1)
 
                 self.fit_params_layout.addWidget(p_label, n, 0)
 
-                size_policy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-                size_policy.setHorizontalStretch(1)
-                size_policy.setVerticalStretch(0)
+                size_policy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+                size_policy2.setHorizontalStretch(1)
+                size_policy2.setVerticalStretch(0)
 
                 validator = QDoubleValidator()
-                validator.setDecimals(1)
+                validator.setDecimals(6)
+                validator.setNotation(QDoubleValidator.StandardNotation)
 
                 p_value = QLineEdit()
                 p_value.setValidator(validator)
                 p_value.setText(str(self.fit.parameters[i]))
-                p_value.setSizePolicy(size_policy)
+                p_value.setSizePolicy(size_policy2)
 
                 self.fit_params_layout.addWidget(p_value, n, 1)
 
-                size_policy = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Fixed)
-                size_policy.setHorizontalStretch(0)
-                size_policy.setVerticalStretch(0)
+                size_policy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+                size_policy3.setHorizontalStretch(0)
+                size_policy3.setVerticalStretch(0)
 
-                error_label = QLabel("+- 0")
-                error_label.setSizePolicy(size_policy)
+                error_label = QLabel("Error = +- 0")
+                error_label.setSizePolicy(size_policy3)
 
                 self.fit_params_layout.addWidget(error_label, n, 2)
 
@@ -305,10 +306,10 @@ class Table(QObject):
 
                     if widget:
                         if j == 1:
-                            widget.setText(str(self.fit.parameters[i]))
+                            widget.setText("{0:.6e}".format(self.fit.parameters[i]))
 
                         if j == 2:
-                            widget.setText("+- {0:.6e}".format(self.fit.parameters_err[i]))
+                            widget.setText("Error = +- {0:.6e}".format(self.fit.parameters_err[i]))
 
     def calc_equation(self):
         ncols = self.fit_params_layout.columnCount()

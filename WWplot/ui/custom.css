@@ -198,8 +198,16 @@ QFrame {
   padding: 2px;
 }
 
-QFrame#fit_frame {
+QFrame#fit_frame,
+QFrame#plot_settings_frame {
   background-color: #eceff1;
+}
+
+QFrame#plot_settings_frame > QLabel {
+  color: rgba(0, 0, 0, 0.42);
+  position: absolute;
+  top: 0;
+  text-align: initial;
 }
 
 /*
@@ -208,6 +216,7 @@ QFrame#fit_frame {
 
 QLabel {
   background-color: transparent;
+  font-weight: normal;
 }
 
 /*

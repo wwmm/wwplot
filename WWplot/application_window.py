@@ -26,6 +26,7 @@ class ApplicationWindow(QObject):
         self.window = QUiLoader().load("ui/application_window.ui")
 
         plot_frame = self.window.findChild(QFrame, "plot_frame")
+        plot_settings_frame = self.window.findChild(QFrame, "plot_settings_frame")
         self.plot_layout = self.window.findChild(QVBoxLayout, "plot_layout")
         self.tab_widget = self.window.findChild(QTabWidget, "tab_widget")
         self.xtitle = self.window.findChild(QLineEdit, "x_axis_title")
@@ -67,6 +68,7 @@ class ApplicationWindow(QObject):
 
         self.tab_widget.setGraphicsEffect(self.card_shadow())
         plot_frame.setGraphicsEffect(self.card_shadow())
+        plot_settings_frame.setGraphicsEffect(self.card_shadow())
         button_add_tab.setGraphicsEffect(self.button_shadow())
 
         self.window.show()
