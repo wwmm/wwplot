@@ -1,25 +1,24 @@
 # WWplot
 
-A simple plotting tool for experimental physics classes. It is being developed at [Cefet-NI](http://www.cefet-rj.br/index.php/nova-iguacu).
+A simple plotting tool for experimental physics classes. It is being developed for the courses I give at
+[Cefet-NI](http://www.cefet-rj.br/index.php/nova-iguacu).
 
-![](images/linear_fit.png)
-![](images/gaussian_distribution.png)
-![](images/nonlinear_fit.png) 
+![](images/wwplot.png)
 
 Features:
 
-- XY and histogram plot
+- XY plot with error bars
 - Linear and nonlinear fit
-- Import and export table in TSV format (tab separated values) 
+- Import and export table in TSV format (tab separated values)
 
 Required libraries:
 
-- Python 3 with Numpy, Scipy, PyGobject 3, cairocffi, Matplotlib
-- Gtk 3.18 or above
+- Python 3 with Numpy, Scipy, PySide2, Matplotlib
+- Qt 5 or above(on Arch Linux this means the packages qt5-base and qt5-declarative)
 
 After installing the required libraries execute the main.py script in a
 terminal:
 
-	python main.py
+    python main.py
 
-I develop and test this software on Linux. I am not sure if it runs on Windows. But as only cross-platform libraries are being used it should be possible to make an windows executable.
+I develop and test this software on Linux. It should be able to run on other operational systems but I did not test.
