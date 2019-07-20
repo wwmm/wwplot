@@ -40,7 +40,7 @@ class Plot(FigureCanvasQTAgg):
         self.toolbar.setSizePolicy(size_policy)
 
         self.markers = ("o", "s", "v", "P", "*", "D", "x", ">")
-        self.colors = ("b", "g", "r", "c", "m", "y", "k")
+        self.colors = ("#00bcd4", "#f44336", "#4caf50", "#ff9800", "#607d8b", "#673ab7", "#795548")
 
         self.mouse_left_pressed = False
 
@@ -54,14 +54,15 @@ class Plot(FigureCanvasQTAgg):
                                            interactive=False)
 
     def plot(self, x, y, marker_idx):
-        line_obj, = self.axes.plot(x, y, self.colors[marker_idx] + "-")
+        line_obj, = self.axes.plot(x, y, color=self.colors[marker_idx], linestyle="-")
 
         return line_obj
 
     def errorbar(self, x, x_err, y, y_err, marker_idx, legenda):
-        myfmt = self.colors[marker_idx] + self.markers[marker_idx]
-
-        line_obj, caplines, barlinecols = self.axes.errorbar(x, y, yerr=y_err, xerr=x_err, fmt=myfmt, label=legenda,
+        line_obj, caplines, barlinecols = self.axes.errorbar(x, y, yerr=y_err, xerr=x_err,
+                                                             marker=self.markers[marker_idx],
+                                                             color=self.colors[marker_idx], linestyle="None",
+                                                             label=legenda,
                                                              clip_on=True, capsize=5)
 
         return line_obj, caplines, barlinecols
