@@ -4,6 +4,7 @@ from matplotlib import rcParams
 from matplotlib.backends.backend_qt5agg import (FigureCanvasQTAgg,
                                                 NavigationToolbar2QT)
 from matplotlib.figure import Figure
+from matplotlib.widgets import RectangleSelector
 from PySide2.QtWidgets import QSizePolicy
 
 rcParams["font.family"] = "sans-serif"
@@ -40,6 +41,17 @@ class Plot(FigureCanvasQTAgg):
 
         self.markers = ("o", "s", "v", "P", "*", "D", "x", ">")
         self.colors = ("b", "g", "r", "c", "m", "y", "k")
+
+        self.mouse_left_pressed = False
+
+        self.rectangle = RectangleSelector(self.axes, self.rectangle_callback,
+                                           drawtype='box', useblit=True,
+                                           button=[1],  # only left button
+                                           minspanx=5, minspany=5,
+                                           spancoords='pixels',
+                                           rectprops=dict(facecolor='#ffc400', edgecolor='black',
+                                                          alpha=0.2, fill=True),
+                                           interactive=False)
 
     def plot(self, x, y, marker_idx):
         line_obj, = self.axes.plot(x, y, self.colors[marker_idx] + "-")
@@ -86,3 +98,12 @@ class Plot(FigureCanvasQTAgg):
         self.fig.tight_layout()
 
         self.draw_idle()
+
+    def rectangle_callback(self, press_event, release_event):
+        print(press_event)
+        print(release_event)
+
+        x1, y1 = press_event.xdata, press_event.ydata
+        x2, y2 = release_event.xdata, release_event.ydata
+
+        print("(%3.2f, %3.2f) --> (%3.2f, %3.2f)" % (x1, y1, x2, y2))

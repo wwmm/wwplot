@@ -27,7 +27,6 @@ class Table(QObject):
 
         self.table_view = self.main_widget.findChild(QTableView, "table_view")
         button_add_row = self.main_widget.findChild(QPushButton, "button_add_row")
-        button_remove_row = self.main_widget.findChild(QPushButton, "button_remove_row")
         button_import = self.main_widget.findChild(QPushButton, "button_import")
         button_export = self.main_widget.findChild(QPushButton, "button_export")
         button_fit = self.main_widget.findChild(QPushButton, "button_fit")
@@ -37,17 +36,17 @@ class Table(QObject):
         self.legend = self.main_widget.findChild(QLineEdit, "legend_name")
         self.fit_params_layout = self.main_widget.findChild(QGridLayout, "fit_params_layout")
 
+        self.model = Model()
+
         button_add_row.clicked.connect(self.add_row)
-        button_remove_row.clicked.connect(self.remove_selected_rows)
         button_import.clicked.connect(self.import_data)
         button_export.clicked.connect(self.export_data)
         button_fit.clicked.connect(self.run_fit)
         button_calc.clicked.connect(self.calc_equation)
         self.equation.returnPressed.connect(self.init_fit_params)
+        self.model.dataChanged.connect(self.data_changed)
 
         self.table_view.installEventFilter(self)
-
-        self.model = Model()
 
         self.table_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table_view.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
@@ -56,7 +55,6 @@ class Table(QObject):
         # effects
 
         button_add_row.setGraphicsEffect(self.button_shadow())
-        button_remove_row.setGraphicsEffect(self.button_shadow())
         button_import.setGraphicsEffect(self.button_shadow())
         button_export.setGraphicsEffect(self.button_shadow())
         button_fit.setGraphicsEffect(self.button_shadow())
@@ -65,6 +63,7 @@ class Table(QObject):
 
         # fit
 
+        self.show_fit_curve = False
         self.fit = Fit()
 
         self.init_fit_params()
@@ -162,6 +161,9 @@ class Table(QObject):
 
         return QObject.eventFilter(self, obj, event)
 
+    def data_changed(self):
+        self.show_fit_curve = False
+
     def add_row(self):
         self.model.append_row()
 
@@ -221,6 +223,8 @@ class Table(QObject):
             self.init_fit_params()
 
             self.fit.set_data(self.model.data_x, self.model.data_y, self.model.data_xerr, self.model.data_yerr)
+
+            self.show_fit_curve = True
 
             self.fit.run()
 
@@ -327,4 +331,5 @@ class Table(QObject):
                         if j == 1:
                             self.fit.parameters[i] = float(widget.text())
 
+        self.show_fit_curve = True
         self.fit.finished.emit()  # updating the plot
