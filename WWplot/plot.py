@@ -36,7 +36,7 @@ class Plot(FigureCanvasQTAgg):
         self.setSizePolicy(size_policy)
 
         self.markers = ("o", "s", "v", "P", "*", "D", "x", ">")
-        self.colors = ("#00bcd4", "#f44336", "#4caf50", "#ff9800", "#607d8b", "#673ab7", "#795548")
+        self.colors = ("#2196f3", "#f44336", "#4caf50", "#ff9800", "#607d8b", "#673ab7", "#795548")
 
         self.mouse_left_pressed = False
 
@@ -92,16 +92,19 @@ class Plot(FigureCanvasQTAgg):
     def redraw_canvas(self):
         self.axes.relim()
         self.axes.autoscale_view(tight=True)
+
         self.fig.tight_layout()
+
+        self.axes.legend().set_draggable(True)  # has to be called after tight_layout
 
         self.draw_idle()
 
     def rectangle_callback(self, press_event, release_event):
-        x1, y1 = press_event.xdata, press_event.ydata
-        x2, y2 = release_event.xdata, release_event.ydata
+        x1_data, y1_data = press_event.xdata, press_event.ydata
+        x2_data, y2_data = release_event.xdata, release_event.ydata
 
-        self.axes.set_xlim(x1, x2)
-        self.axes.set_ylim(y1, y2)
+        self.axes.set_xlim(x1_data, x2_data)
+        self.axes.set_ylim(y1_data, y2_data)
 
         self.draw_idle()
 

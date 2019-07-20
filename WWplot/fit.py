@@ -8,7 +8,7 @@ from PySide2.QtCore import QObject, Signal
 class Fit(QObject):
     finished = Signal()
 
-    def __init__(self, maxit=100):
+    def __init__(self, maxit=1000):
         QObject.__init__(self)
 
         self.maxit = maxit
@@ -48,7 +48,7 @@ class Fit(QObject):
 
     def set_data(self, x, y, xerr=None, yerr=None):
         if xerr is not None and yerr is not None:
-            self.fit_data = scipy.odr.RealData(x, y, sx=xerr, sy=yerr)
+            self.fit_data = scipy.odr.RealData(x, y, sx=fabs(xerr), sy=fabs(yerr))
         else:
             self.fit_data = scipy.odr.RealData(x, y)
 

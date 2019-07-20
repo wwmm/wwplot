@@ -222,8 +222,6 @@ class Table(QObject):
 
     def run_fit(self):
         if self.model.data_x.size > 1:
-            self.init_fit_params()
-
             self.fit.set_data(self.model.data_x, self.model.data_y, self.model.data_xerr, self.model.data_yerr)
 
             self.show_fit_curve = True
@@ -285,6 +283,7 @@ class Table(QObject):
                 p_value.setValidator(validator)
                 p_value.setText(str(self.fit.parameters[i]))
                 p_value.setSizePolicy(size_policy2)
+                p_value.returnPressed.connect(self.calc_equation)
 
                 self.fit_params_layout.addWidget(p_value, n, 1)
 
