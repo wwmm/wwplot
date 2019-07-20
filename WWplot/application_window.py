@@ -2,11 +2,11 @@
 
 import os
 
-from PySide2.QtCore import QFile, QObject, Qt
+from PySide2.QtCore import QFile, QObject
 from PySide2.QtGui import QColor
 from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import (QFrame, QGraphicsDropShadowEffect, QLineEdit,
-                               QPushButton, QTabWidget, QVBoxLayout)
+from PySide2.QtWidgets import (QFileDialog, QFrame, QGraphicsDropShadowEffect,
+                               QLineEdit, QPushButton, QTabWidget)
 from WWplot.plot import Plot
 from WWplot.table import Table
 
@@ -24,15 +24,23 @@ class ApplicationWindow(QObject):
 
         # loading widgets from designer file
 
-        self.window = QUiLoader().load(self.module_path + "/ui/application_window.ui")
+        loader = QUiLoader()
+
+        # print(loader.availableWidgets())
+
+        loader.registerCustomWidget(Plot)
+
+        self.window = loader.load(self.module_path + "/ui/application_window.ui")
 
         plot_frame = self.window.findChild(QFrame, "plot_frame")
         plot_settings_frame = self.window.findChild(QFrame, "plot_settings_frame")
-        self.plot_layout = self.window.findChild(QVBoxLayout, "plot_layout")
+        self.plot = self.window.findChild(Plot, "plot")
         self.tab_widget = self.window.findChild(QTabWidget, "tab_widget")
         self.xtitle = self.window.findChild(QLineEdit, "x_axis_title")
         self.ytitle = self.window.findChild(QLineEdit, "y_axis_title")
         button_add_tab = self.window.findChild(QPushButton, "button_add_tab")
+        button_reset_zoom = self.window.findChild(QPushButton, "reset_zoom")
+        button_save_image = self.window.findChild(QPushButton, "save_image")
 
         # signal connection
 
@@ -40,17 +48,12 @@ class ApplicationWindow(QObject):
         self.xtitle.returnPressed.connect(lambda: self.update_plot())
         self.ytitle.returnPressed.connect(lambda: self.update_plot())
         button_add_tab.clicked.connect(self.add_tab)
+        button_reset_zoom.clicked.connect(lambda: self.update_plot())
+        button_save_image.clicked.connect(self.save_image)
 
         # init plot class
 
-        self.plot = Plot(self.window)
-
-        self.plot.setMinimumSize(640, 480)
         self.plot.set_grid(self.show_grid)
-
-        self.plot_layout.setAlignment(Qt.AlignTop)
-        self.plot_layout.addWidget(self.plot)
-        self.plot_layout.addWidget(self.plot.toolbar)
 
         # 1 tab by default
 
@@ -71,6 +74,8 @@ class ApplicationWindow(QObject):
         plot_frame.setGraphicsEffect(self.card_shadow())
         plot_settings_frame.setGraphicsEffect(self.card_shadow())
         button_add_tab.setGraphicsEffect(self.button_shadow())
+        button_reset_zoom.setGraphicsEffect(self.button_shadow())
+        button_save_image.setGraphicsEffect(self.button_shadow())
 
         self.window.show()
 
@@ -150,3 +155,14 @@ class ApplicationWindow(QObject):
             self.plot.set_margins(0.0)
 
         self.plot.redraw_canvas()
+
+    def save_image(self):
+        home = os.path.expanduser("~")
+
+        file_types = "PNG (*.png);; JPEG (*.jpg);; PDF (*.pdf);; SVG (*.svg)"
+
+        path = QFileDialog.getSaveFileName(self.window, "Save Image",  home +
+                                           "/image.png", file_types, "PNG (*.png)")[0]
+
+        if path != "":
+            self.plot.save_image(path)

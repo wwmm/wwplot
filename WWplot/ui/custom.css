@@ -181,6 +181,7 @@ QScrollBar::sub-line {
 */
 
 QLineEdit {
+  color: rgba(0, 0, 0, 0.6);
   background: transparent;
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
@@ -206,43 +207,18 @@ QFrame {
   padding: 2px;
 }
 
+QFrame#table_cfg_frame,
 QFrame#fit_frame,
 QFrame#plot_settings_frame {
   background-color: #eceff1;
 }
 
-QFrame#plot_settings_frame > QLabel {
-  color: rgba(0, 0, 0, 0.42);
-  position: absolute;
-  top: 0;
-  text-align: initial;
-}
-
 /*
-  QLabel
+  QLabel. It derives from QFrame so it has to comee after it
 */
 
 QLabel {
+  color: rgba(0, 0, 0, 0.6);
   background-color: transparent;
   font-weight: normal;
-}
-
-/*
-  QDoubleSpinBox
-*/
-
-QDoubleSpinBox {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-  outline: 0;
-}
-
-/*
-  QScrollArea
-*/
-
-QScrollArea,
-QScrollArea > QWidget > QWidget {
-  background-color: transparent;
 }

@@ -32,6 +32,7 @@ class Table(QObject):
         button_fit = self.main_widget.findChild(QPushButton, "button_fit")
         button_calc = self.main_widget.findChild(QPushButton, "button_calc")
         fit_frame = self.main_widget.findChild(QFrame, "fit_frame")
+        table_cfg_frame = self.main_widget.findChild(QFrame, "table_cfg_frame")
         self.equation = self.main_widget.findChild(QLineEdit, "equation")
         self.legend = self.main_widget.findChild(QLineEdit, "legend_name")
         self.fit_params_layout = self.main_widget.findChild(QGridLayout, "fit_params_layout")
@@ -60,6 +61,7 @@ class Table(QObject):
         button_fit.setGraphicsEffect(self.button_shadow())
         button_calc.setGraphicsEffect(self.button_shadow())
         fit_frame.setGraphicsEffect(self.card_shadow())
+        table_cfg_frame.setGraphicsEffect(self.card_shadow())
 
         # fit
 

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from matplotlib import rcParams
-from matplotlib.backends.backend_qt5agg import (FigureCanvasQTAgg,
-                                                NavigationToolbar2QT)
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from matplotlib.widgets import RectangleSelector
 from PySide2.QtWidgets import QSizePolicy
@@ -35,9 +34,6 @@ class Plot(FigureCanvasQTAgg):
         size_policy.setVerticalStretch(0)
 
         self.setSizePolicy(size_policy)
-
-        self.toolbar = NavigationToolbar2QT(self, parent)
-        self.toolbar.setSizePolicy(size_policy)
 
         self.markers = ("o", "s", "v", "P", "*", "D", "x", ">")
         self.colors = ("#00bcd4", "#f44336", "#4caf50", "#ff9800", "#607d8b", "#673ab7", "#795548")
@@ -101,10 +97,13 @@ class Plot(FigureCanvasQTAgg):
         self.draw_idle()
 
     def rectangle_callback(self, press_event, release_event):
-        print(press_event)
-        print(release_event)
-
         x1, y1 = press_event.xdata, press_event.ydata
         x2, y2 = release_event.xdata, release_event.ydata
 
-        print("(%3.2f, %3.2f) --> (%3.2f, %3.2f)" % (x1, y1, x2, y2))
+        self.axes.set_xlim(x1, x2)
+        self.axes.set_ylim(y1, y2)
+
+        self.draw_idle()
+
+    def save_image(self, path):
+        self.fig.savefig(path)
