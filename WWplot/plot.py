@@ -63,10 +63,19 @@ class Plot(FigureCanvasQTAgg):
 
         return line_obj, caplines, barlinecols
 
-    def hist(self, x):
-        obj = self.axes.hist(x, facecolor=self.colors[0], alpha=0.8, density=True)
+    def hist(self, x, marker_idx, legenda):
+        """
+        https://docs.scipy.org/doc/numpy/reference/generated/numpy.histogram_bin_edges.html#numpy.histogram_bin_edges
 
-        return obj
+        auto : Maximum of the ‘sturges’ and ‘fd’ estimators. Provides good all around performance.
+        """
+
+        n, bins, patches = self.axes.hist(x, bins="auto", facecolor=self.colors[marker_idx], label=legenda, alpha=0.5,
+                                          density=True, rwidth=0.85)
+
+        # last bin element has to be removed so it has the same size as n
+
+        return n, bins[:-1]
 
     def set_xlabel(self, value):
         self.axes.set_xlabel(value)

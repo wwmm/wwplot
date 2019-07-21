@@ -34,32 +34,19 @@ QPushButton:pressed {
   Button add row
 */
 
-QPushButton#button_add_row {
+QPushButton#button_add_row,
+QPushButton#button_add_tab {
   background-color: #1565c0;
 }
 
-QPushButton#button_add_row:hover {
+QPushButton#button_add_row:hover,
+QPushButton#button_add_tab:hover {
   background-color: #1976d2;
 }
 
-QPushButton#button_add_row:pressed {
+QPushButton#button_add_row:pressed,
+QPushButton#button_add_tab:pressed {
   background-color: #1e88e5;
-}
-
-/*
-  Button remove row
-*/
-
-QPushButton#button_remove_row {
-  background-color: #c62828;
-}
-
-QPushButton#button_remove_row:hover {
-  background-color: #d32f2f;
-}
-
-QPushButton#button_remove_row:pressed {
-  background-color: #e53935;
 }
 
 QTableView {
@@ -166,6 +153,10 @@ QScrollBar::handle {
   min-height: 0px;
   border-radius: 4px;
   background-color: #cfd8dc;
+}
+
+QScrollBar::handle:vertical {
+  min-height: 25px;
 }
 
 QScrollBar::add-line {

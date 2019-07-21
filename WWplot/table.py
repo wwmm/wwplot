@@ -3,7 +3,7 @@
 import os
 
 import numpy as np
-from PySide2.QtCore import QEvent, QObject, Qt
+from PySide2.QtCore import QEvent, QObject, Qt, Signal
 from PySide2.QtGui import (QColor, QDoubleValidator, QGuiApplication,
                            QKeySequence)
 from PySide2.QtUiTools import QUiLoader
@@ -16,10 +16,14 @@ from WWplot.model import Model
 
 
 class Table(QObject):
+    chart_type_changed = Signal()
+
     def __init__(self):
         QObject.__init__(self)
 
         self.do_histogram = False
+        self.hist_x = np.array([])
+        self.hist_count = np.array([])
 
         self.module_path = os.path.dirname(__file__)
 
@@ -193,7 +197,7 @@ class Table(QObject):
         path = QFileDialog.getOpenFileName(self.main_widget, "Open Table", home, "Tables (*.tsv)")[0]
 
         if path != "":
-            table = np.genfromtxt(path, delimiter='\t')
+            table = np.genfromtxt(path, delimiter="\t")
 
             if len(table.shape) == 2:
                 nrows, ncols = table.shape
@@ -219,16 +223,19 @@ class Table(QObject):
         path = QFileDialog.getSaveFileName(self.main_widget, "Save Table",  home, "Tables (*.tsv)")[0]
 
         if path != "":
-            if not path.endswith('.tsv'):
-                path += '.tsv'
+            if not path.endswith(".tsv"):
+                path += ".tsv"
 
             np.savetxt(path,
                        np.transpose([self.model.data_x, self.model.data_xerr, self.model.data_y, self.model.data_yerr]),
-                       delimiter="\t", fmt='%1.6e')
+                       delimiter="\t", fmt="%1.6e")
 
     def run_fit(self):
         if self.model.data_x.size > 1:
-            self.fit.set_data(self.model.data_x, self.model.data_y, self.model.data_xerr, self.model.data_yerr)
+            if not self.do_histogram:
+                self.fit.set_data(self.model.data_x, self.model.data_y, self.model.data_xerr, self.model.data_yerr)
+            else:
+                self.fit.set_data(self.hist_x, self.hist_count)
 
             self.show_fit_curve = True
 
@@ -349,9 +356,19 @@ class Table(QObject):
                 self.table_view.setColumnHidden(3, False)
 
                 self.do_histogram = False
+
+                self.equation.setText("P[0]*x + P[1]")
+
+                self.init_fit_params()
             else:
                 self.table_view.setColumnHidden(1, True)
                 self.table_view.setColumnHidden(2, True)
                 self.table_view.setColumnHidden(3, True)
 
                 self.do_histogram = True
+
+                self.equation.setText("(1.0 / (P[0] * sqrt(2 * pi))) * exp(- (x - P[1])**2 / (2 * P[0]**2))")
+
+                self.init_fit_params()
+
+            self.chart_type_changed.emit()

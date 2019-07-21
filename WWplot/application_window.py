@@ -104,6 +104,7 @@ class ApplicationWindow(QObject):
         table.model.dataChanged.connect(self.data_changed)
         table.legend.returnPressed.connect(lambda: self.update_plot())
         table.fit.finished.connect(lambda: self.update_plot())
+        table.chart_type_changed.connect(lambda: self.update_plot())
 
         self.tables.append(table)
 
@@ -143,15 +144,23 @@ class ApplicationWindow(QObject):
 
             if not t.do_histogram:
                 self.plot.errorbar(t.model.data_x, t.model.data_xerr, t.model.data_y, t.model.data_yerr, n, legend)
+
+                self.plot.axes.legend()
+
+                if t.show_fit_curve:
+                    fit_y = t.fit.fit_function(t.fit.parameters, t.model.data_x)
+
+                    self.plot.plot(t.model.data_x, fit_y, n)
             else:
-                self.plot.hist(t.model.data_x)
+                hist_values, bins = self.plot.hist(t.model.data_x, n, legend)
 
-            self.plot.axes.legend()
+                t.hist_x = bins
+                t.hist_count = hist_values
 
-            if t.show_fit_curve:
-                fit_y = t.fit.fit_function(t.fit.parameters, t.model.data_x)
+                if t.show_fit_curve:
+                    fit_y = t.fit.fit_function(t.fit.parameters, bins)
 
-                self.plot.plot(t.model.data_x, fit_y, n)
+                    self.plot.plot(bins, fit_y, n)
 
         self.plot.redraw_canvas()
 
