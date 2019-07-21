@@ -64,7 +64,7 @@ class Plot(FigureCanvasQTAgg):
         return line_obj, caplines, barlinecols
 
     def hist(self, x):
-        obj = self.axes.hist(x, facecolor="green", alpha=0.8, density=True)
+        obj = self.axes.hist(x, facecolor=self.colors[0], alpha=0.8, density=True)
 
         return obj
 

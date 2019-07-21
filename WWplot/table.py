@@ -9,8 +9,8 @@ from PySide2.QtGui import (QColor, QDoubleValidator, QGuiApplication,
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import (QFileDialog, QFrame, QGraphicsDropShadowEffect,
                                QGridLayout, QHeaderView, QLabel, QLineEdit,
-                               QPushButton, QSizePolicy, QTableView)
-
+                               QPushButton, QRadioButton, QSizePolicy,
+                               QTableView)
 from WWplot.fit import Fit
 from WWplot.model import Model
 
@@ -18,6 +18,8 @@ from WWplot.model import Model
 class Table(QObject):
     def __init__(self):
         QObject.__init__(self)
+
+        self.do_histogram = False
 
         self.module_path = os.path.dirname(__file__)
 
@@ -36,6 +38,8 @@ class Table(QObject):
         self.equation = self.main_widget.findChild(QLineEdit, "equation")
         self.legend = self.main_widget.findChild(QLineEdit, "legend_name")
         self.fit_params_layout = self.main_widget.findChild(QGridLayout, "fit_params_layout")
+        self.radio_xy = self.main_widget.findChild(QRadioButton, "radio_xy")
+        self.radio_histogram = self.main_widget.findChild(QRadioButton, "radio_histogram")
 
         self.model = Model()
 
@@ -46,6 +50,8 @@ class Table(QObject):
         button_calc.clicked.connect(self.calc_equation)
         self.equation.returnPressed.connect(self.init_fit_params)
         self.model.dataChanged.connect(self.data_changed)
+        self.radio_xy.toggled.connect(self.on_chart_type_toggled)
+        self.radio_histogram.toggled.connect(self.on_chart_type_toggled)
 
         self.table_view.installEventFilter(self)
 
@@ -334,3 +340,18 @@ class Table(QObject):
 
         self.show_fit_curve = True
         self.fit.finished.emit()  # updating the plot
+
+    def on_chart_type_toggled(self, state):
+        if state:
+            if self.radio_xy.isChecked():
+                self.table_view.setColumnHidden(1, False)
+                self.table_view.setColumnHidden(2, False)
+                self.table_view.setColumnHidden(3, False)
+
+                self.do_histogram = False
+            else:
+                self.table_view.setColumnHidden(1, True)
+                self.table_view.setColumnHidden(2, True)
+                self.table_view.setColumnHidden(3, True)
+
+                self.do_histogram = True

@@ -197,6 +197,10 @@ QLineEdit {
   text-align: start;
 }
 
+QLineEdit#legend_name {
+  margin-left: 0;
+}
+
 /*
   QFrame
 */
@@ -221,4 +225,28 @@ QLabel {
   color: rgba(0, 0, 0, 0.6);
   background-color: transparent;
   font-weight: normal;
+}
+
+/*
+  QRadioButton
+*/
+
+QRadioButton {
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+QRadioButton::indicator {
+  background-color: #ffffff;
+  width: 12px;
+  height: 12px;
+}
+
+QRadioButton::indicator:checked {
+  background-color: #00838f;
+  border: 2px solid white;
+}
+
+QRadioButton::indicator::unchecked {
+  border: 2px solid #cfd8dc;
 }

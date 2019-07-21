@@ -17,7 +17,6 @@ class ApplicationWindow(QObject):
 
         self.module_path = os.path.dirname(__file__)
 
-        self.do_histogram = False
         self.show_grid = True
 
         self.tables = []
@@ -134,25 +133,25 @@ class ApplicationWindow(QObject):
         self.plot.set_xlabel(self.xtitle.displayText())
         self.plot.set_ylabel(self.ytitle.displayText())
 
-        if not self.do_histogram:
-            self.plot.set_margins(0.1)
+        self.plot.set_margins(0.1)
 
-            for t, n in zip(self.tables, range(len(self.tables))):
-                legend = t.legend.displayText()
+        for t, n in zip(self.tables, range(len(self.tables))):
+            legend = t.legend.displayText()
 
-                if legend == "":
-                    legend = "table " + str(n)
+            if legend == "":
+                legend = "table " + str(n)
 
+            if not t.do_histogram:
                 self.plot.errorbar(t.model.data_x, t.model.data_xerr, t.model.data_y, t.model.data_yerr, n, legend)
+            else:
+                self.plot.hist(t.model.data_x)
 
-                self.plot.axes.legend()
+            self.plot.axes.legend()
 
-                if t.show_fit_curve:
-                    fit_y = t.fit.fit_function(t.fit.parameters, t.model.data_x)
+            if t.show_fit_curve:
+                fit_y = t.fit.fit_function(t.fit.parameters, t.model.data_x)
 
-                    self.plot.plot(t.model.data_x, fit_y, n)
-        else:
-            self.plot.set_margins(0.0)
+                self.plot.plot(t.model.data_x, fit_y, n)
 
         self.plot.redraw_canvas()
 
