@@ -4,4 +4,4 @@
 
 ### Added
 
--
+- Histogram plot

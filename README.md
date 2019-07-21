@@ -3,17 +3,18 @@
 A simple plotting tool for experimental physics classes. It is being developed for the courses I give at
 [Cefet-NI](http://www.cefet-rj.br/index.php/nova-iguacu).
 
-![](images/wwplot.png)
+![](images/wwplot_xy.png)
+![](images/wwplot_histogram.png)
 
 Features:
 
-- XY plot with error bars
+- XY plot with error bars and histograms
 - Linear and nonlinear fit
 - Import and export table in TSV format (tab separated values)
 
 Required libraries:
 
-- Python 3 with Numpy, Scipy, PySide2, Matplotlib
+- Python 3 with Numpy, Scipy, PySide2, Matplotlib 3
 - Qt 5 or above(on Arch Linux this means the packages qt5-base and qt5-declarative)
 
 After installing the required libraries execute the main.py script in a

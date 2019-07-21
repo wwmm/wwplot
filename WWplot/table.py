@@ -367,7 +367,7 @@ class Table(QObject):
 
                 self.do_histogram = True
 
-                self.equation.setText("(1.0 / (P[0] * sqrt(2 * pi))) * exp(- (x - P[1])**2 / (2 * P[0]**2))")
+                self.equation.setText("P[0] * (1.0 / (P[1] * sqrt(2 * pi))) * exp(- (x - P[2])**2 / (2 * P[1]**2))")
 
                 self.init_fit_params()
 
