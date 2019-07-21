@@ -4,6 +4,7 @@ from matplotlib import rcParams
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from matplotlib.widgets import RectangleSelector
+from PySide2.QtCore import Signal
 from PySide2.QtWidgets import QSizePolicy
 
 rcParams["font.family"] = "sans-serif"
@@ -17,6 +18,7 @@ rcParams["markers.fillstyle"] = "none"
 
 
 class Plot(FigureCanvasQTAgg):
+    mouse_motion = Signal(float, float)
 
     def __init__(self, parent=None):
         self.fig = Figure()
@@ -38,8 +40,6 @@ class Plot(FigureCanvasQTAgg):
         self.markers = ("o", "s", "v", "P", "*", "D", "x", ">")
         self.colors = ("#2196f3", "#f44336", "#4caf50", "#ff9800", "#607d8b", "#673ab7", "#795548")
 
-        self.mouse_left_pressed = False
-
         self.rectangle = RectangleSelector(self.axes, self.rectangle_callback,
                                            drawtype='box', useblit=True,
                                            button=[1],  # only left button
@@ -48,6 +48,8 @@ class Plot(FigureCanvasQTAgg):
                                            rectprops=dict(facecolor='#ffc400', edgecolor='black',
                                                           alpha=0.2, fill=True),
                                            interactive=False)
+
+        self.fig.canvas.mpl_connect('motion_notify_event', self.on_mouse_motion)
 
     def plot(self, x, y, marker_idx):
         line_obj, = self.axes.plot(x, y, color=self.colors[marker_idx], linestyle="-")
@@ -119,3 +121,8 @@ class Plot(FigureCanvasQTAgg):
 
     def save_image(self, path):
         self.fig.savefig(path)
+
+    def on_mouse_motion(self, event):
+        x_data, y_data = event.xdata, event.ydata
+
+        self.mouse_motion.emit(x_data, y_data)

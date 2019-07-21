@@ -6,7 +6,7 @@ from PySide2.QtCore import QFile, QObject
 from PySide2.QtGui import QColor
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import (QFileDialog, QFrame, QGraphicsDropShadowEffect,
-                               QLineEdit, QPushButton, QTabWidget)
+                               QLabel, QLineEdit, QPushButton, QTabWidget)
 from WWplot.plot import Plot
 from WWplot.table import Table
 
@@ -40,6 +40,7 @@ class ApplicationWindow(QObject):
         button_add_tab = self.window.findChild(QPushButton, "button_add_tab")
         button_reset_zoom = self.window.findChild(QPushButton, "reset_zoom")
         button_save_image = self.window.findChild(QPushButton, "save_image")
+        self.mouse_xy_label = self.window.findChild(QLabel, "mouse_xy")
 
         # signal connection
 
@@ -49,6 +50,8 @@ class ApplicationWindow(QObject):
         button_add_tab.clicked.connect(self.add_tab)
         button_reset_zoom.clicked.connect(lambda: self.update_plot())
         button_save_image.clicked.connect(self.save_image)
+        self.plot.mouse_motion.connect(
+            lambda x, y: self.mouse_xy_label.setText("x = {0:.6f}, y = {1:.6f}".format(x, y)))
 
         # init plot class
 
