@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+[0.0.7]
+
+### Added
+
+- Added a button to reset the fit
+
 [0.0.6]
 
 ### Added

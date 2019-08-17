@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>671</width>
-    <height>528</height>
+    <height>344</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -90,8 +90,8 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="2" column="1" alignment="Qt::AlignTop">
-       <widget class="QPushButton" name="button_fit">
+      <item row="0" column="1">
+       <widget class="QPushButton" name="button_calc">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -99,7 +99,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>optimize</string>
+         <string>calculate</string>
         </property>
        </widget>
       </item>
@@ -116,11 +116,8 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <layout class="QGridLayout" name="fit_params_layout"/>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="button_calc">
+      <item row="2" column="1" alignment="Qt::AlignTop">
+       <widget class="QPushButton" name="button_fit">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -128,9 +125,25 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>calculate</string>
+         <string>optimize</string>
         </property>
        </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="button_reset_fit">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>reset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" rowspan="2">
+       <layout class="QGridLayout" name="fit_params_layout"/>
       </item>
      </layout>
     </widget>

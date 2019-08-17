@@ -37,6 +37,7 @@ class Table(QObject):
         button_export = self.main_widget.findChild(QPushButton, "button_export")
         button_fit = self.main_widget.findChild(QPushButton, "button_fit")
         button_calc = self.main_widget.findChild(QPushButton, "button_calc")
+        button_reset_fit = self.main_widget.findChild(QPushButton, "button_reset_fit")
         fit_frame = self.main_widget.findChild(QFrame, "fit_frame")
         table_cfg_frame = self.main_widget.findChild(QFrame, "table_cfg_frame")
         self.equation = self.main_widget.findChild(QLineEdit, "equation")
@@ -52,6 +53,7 @@ class Table(QObject):
         button_export.clicked.connect(self.export_data)
         button_fit.clicked.connect(self.run_fit)
         button_calc.clicked.connect(self.calc_equation)
+        button_reset_fit.clicked.connect(self.reset_fit)
         self.equation.returnPressed.connect(self.init_fit_params)
         self.model.dataChanged.connect(self.data_changed)
         self.radio_xy.toggled.connect(self.on_chart_type_toggled)
@@ -70,6 +72,7 @@ class Table(QObject):
         button_export.setGraphicsEffect(self.button_shadow())
         button_fit.setGraphicsEffect(self.button_shadow())
         button_calc.setGraphicsEffect(self.button_shadow())
+        button_reset_fit.setGraphicsEffect(self.button_shadow())
         fit_frame.setGraphicsEffect(self.card_shadow())
         table_cfg_frame.setGraphicsEffect(self.card_shadow())
 
@@ -346,6 +349,13 @@ class Table(QObject):
                             self.fit.parameters[i] = float(widget.text())
 
         self.show_fit_curve = True
+        self.fit.finished.emit()  # updating the plot
+
+    def reset_fit(self):
+        self.show_fit_curve = False
+
+        self.init_fit_params()
+
         self.fit.finished.emit()  # updating the plot
 
     def on_chart_type_toggled(self, state):
