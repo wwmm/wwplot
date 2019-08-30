@@ -7,8 +7,6 @@ from matplotlib.widgets import RectangleSelector
 from PySide2.QtCore import Signal
 from PySide2.QtWidgets import QSizePolicy
 
-rcParams["font.family"] = "sans-serif"
-rcParams["font.sans-serif"] = ["Roboto"]
 rcParams["font.size"] = 14
 rcParams["legend.fontsize"] = "small"
 rcParams["figure.titlesize"] = "medium"
