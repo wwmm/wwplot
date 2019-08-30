@@ -50,9 +50,8 @@ QPushButton#button_add_tab:pressed {
 
 QTableView {
   color: rgba(0, 0, 0, 0.87);
-  background-color: transparent;
   border: none;
-  selection-background-color: #82b1ff;
+  selection-background-color: transparent;
   line-height: 1.6;
   font-size: 16px;
   font-weight: normal;
@@ -79,13 +78,16 @@ QTableView QTableCornerButton::section {
 }
 
 QTableView::item {
-  background-color: transparent;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 2px;
   margin: 3px 3px;
   line-height: 1.6;
   font-size: 16px;
   font-weight: normal;
+}
+
+QTableView::item:selected {
+  background-color: #82b1ff;
 }
 
 /*
