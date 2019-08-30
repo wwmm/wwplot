@@ -16,7 +16,6 @@ QPushButton {
   text-transform: uppercase;
   text-decoration: none;
   text-indent: 0px;
-  font-family: Roboto, sans-serif;
   height: 36px;
   line-height: 36px;
   outline: 0;
@@ -56,7 +55,6 @@ QTableView {
   selection-background-color: #82b1ff;
   line-height: 1.6;
   font-size: 16px;
-  font-family: Roboto, sans-serif;
   font-weight: normal;
 }
 
@@ -71,7 +69,6 @@ QTableView QHeaderView::section {
   border: none;
   vertical-align: middle;
   line-height: 1.6;
-  font-family: Roboto, sans-serif;
   font-weight: normal;
   font-size: 16px;
 }
@@ -88,7 +85,6 @@ QTableView::item {
   margin: 3px 3px;
   line-height: 1.6;
   font-size: 16px;
-  font-family: Roboto, sans-serif;
   font-weight: normal;
 }
 
@@ -116,7 +112,6 @@ QTabBar::tab {
   color: #ffffff;
   /* padding: 6px; */
   text-transform: uppercase;
-  font-family: Roboto, sans-serif;
 }
 
 QTabBar::tab:hover {
@@ -182,7 +177,6 @@ QLineEdit {
   margin-right: 6 px;
   padding: 0;
   font-size: 16px;
-  font-family: Roboto, sans-serif;
   text-transform: none;
   text-indent: 0px;
   text-align: start;
