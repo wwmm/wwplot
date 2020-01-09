@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+[0.0.8]
+
+### Added
+
+- Improved table editing. I also removed a QT warning.
+
 [0.0.7]
 
 ### Added
