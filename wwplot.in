@@ -5,6 +5,7 @@
 # import locale
 import sys
 
+from PySide2.QtCore import QCoreApplication, Qt
 from PySide2.QtWidgets import QApplication
 from WWplot.application_window import ApplicationWindow
 
@@ -12,6 +13,8 @@ from WWplot.application_window import ApplicationWindow
 # gettext.textdomain('@PROJECT_NAME@')
 # locale.bindtextdomain('@PROJECT_NAME@', '@LOCALEDIR@')
 # locale.textdomain('@PROJECT_NAME@')
+
+QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
 
 APP = QApplication(sys.argv)
 AW = ApplicationWindow()

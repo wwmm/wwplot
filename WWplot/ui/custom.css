@@ -175,8 +175,6 @@ QLineEdit {
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   outline: 0;
   margin: 0;
-  margin-left: 6 px;
-  margin-right: 6 px;
   padding: 0;
   font-size: 16px;
   text-transform: none;
