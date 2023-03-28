@@ -38,14 +38,17 @@ class Plot(FigureCanvasQTAgg):
         self.markers = ("o", "s", "v", "P", "*", "D", "x", ">")
         self.colors = ("#2196f3", "#f44336", "#4caf50", "#ff9800", "#607d8b", "#673ab7", "#795548")
 
-        self.rectangle = RectangleSelector(self.axes, self.rectangle_callback,
-                                           drawtype='box', useblit=True,
+        self.rectangle = RectangleSelector(self.axes, self.rectangle_callback, useblit=True,
                                            button=[1],  # only left button
                                            minspanx=5, minspany=5,
                                            spancoords='pixels',
-                                           rectprops=dict(facecolor='#ffc400', edgecolor='black',
-                                                          alpha=0.2, fill=True),
                                            interactive=False)
+
+        # self.rectangle.artists[0].set_facecolor('#ffc400')
+        # self.rectangle.artists[0].set_edgecolor('black')
+
+        # rectprops=dict(facecolor='#ffc400', edgecolor='black',
+        #   alpha=0.2, fill=True),
 
         self.fig.canvas.mpl_connect('motion_notify_event', self.on_mouse_motion)
 
@@ -88,9 +91,9 @@ class Plot(FigureCanvasQTAgg):
 
     def set_grid(self, value):
         if value:
-            self.axes.grid(b=value, linestyle="--")
+            self.axes.grid(visible=value, linestyle="--")
         else:
-            self.axes.grid(b=value)
+            self.axes.grid(visible=value)
 
     def set_margins(self, value):
         self.axes.margins(value)

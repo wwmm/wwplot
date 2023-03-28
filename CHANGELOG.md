@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+[0.0.9]
+
+### Fixed
+
+- Fixed a crash with matplotlib 3.7
+
 [0.0.8]
 
 ### Added
