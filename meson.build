@@ -6,7 +6,7 @@ project('wwplot',
 pymod = import('python')
 i18n_mod = import('i18n')
 
-required_modules = ['PySide2','numpy','scipy']
+required_modules = ['PySide6','numpy','scipy']
 
 py3 = pymod.find_installation('python3', modules:required_modules)
 
