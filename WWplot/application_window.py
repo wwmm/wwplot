@@ -2,10 +2,10 @@
 
 import os
 
-from PySide2.QtCore import QFile, QObject
-from PySide2.QtGui import QColor
-from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import (QFileDialog, QFrame, QGraphicsDropShadowEffect,
+from PySide6.QtCore import QFile, QObject
+from PySide6.QtGui import QColor
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtWidgets import (QFileDialog, QFrame, QGraphicsDropShadowEffect,
                                QLabel, QLineEdit, QPushButton, QTabWidget)
 from WWplot.plot import Plot
 from WWplot.table import Table

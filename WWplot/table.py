@@ -3,11 +3,11 @@
 import os
 
 import numpy as np
-from PySide2.QtCore import QEvent, QObject, Qt, Signal
-from PySide2.QtGui import (QColor, QDoubleValidator, QGuiApplication,
-                           QKeySequence)
-from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import (QFileDialog, QFrame, QGraphicsDropShadowEffect,
+from PySide6.QtCore import QEvent, QObject, Qt, Signal
+from PySide6.QtGui import (QColor, QDoubleValidator, QGuiApplication,
+                           QKeySequence,QKeyEvent)
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtWidgets import (QFileDialog, QFrame, QGraphicsDropShadowEffect,
                                QGridLayout, QHeaderView, QLabel, QLineEdit,
                                QPushButton, QRadioButton, QSizePolicy,
                                QTableView)
@@ -105,7 +105,7 @@ class Table(QObject):
 
     def eventFilter(self, obj, event):
         if event.type() == QEvent.KeyPress:
-            if event.key() == Qt.Key_Delete:
+            if QKeyEvent(event).key() == Qt.Key_Delete:
                 self.remove_selected_rows()
 
                 return True

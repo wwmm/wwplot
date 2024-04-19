@@ -14,7 +14,7 @@
       "strings": false
     },
     "editor.parameterHints.enabled": true,
-    "editor.wordBasedSuggestions": true,
+    "editor.wordBasedSuggestions": "matchingDocuments",
     "editor.tabSize": 4,
     "less.lint.duplicateProperties": "error",
     "less.lint.emptyRules": "error",

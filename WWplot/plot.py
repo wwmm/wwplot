@@ -4,8 +4,8 @@ from matplotlib import rcParams
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from matplotlib.widgets import RectangleSelector
-from PySide2.QtCore import Signal
-from PySide2.QtWidgets import QSizePolicy
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QSizePolicy
 
 rcParams["font.size"] = 14
 rcParams["legend.fontsize"] = "small"

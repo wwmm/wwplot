@@ -2,7 +2,7 @@
 
 import scipy.odr
 from numpy import *
-from PySide2.QtCore import QObject, Signal
+from PySide6.QtCore import QObject, Signal
 
 
 class Fit(QObject):
