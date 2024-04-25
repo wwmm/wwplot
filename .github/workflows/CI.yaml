@@ -55,6 +55,7 @@ jobs:
       - name: creating the executable
         run: |
           Xvfb :0 -screen 0 1024x768x16 &
+          DISPLAY=:0.0 wine python -c "import os;pythonpath = os.getenv('PYTHONPATH','');print(os.getenv('PYTHONPATH'))"
           DISPLAY=:0.0 wine cmd < gen_win_exe.bat
           killall Xvfb
 
@@ -62,17 +63,5 @@ jobs:
         uses: actions/upload-artifact@v4.3.1
         with:
           name: wwplot-git-${{ env.GITHUB_HEAD_SHA }}-x86_64.exe
-          path: dist
+          path: dist/wwplot.exe
           if-no-files-found: error
-      
-      # on a pull_request event in github actions, the tests are not run on the head branch of the PR, rather they are run on the merge commit of head merged into the base branch
-      # this means the latest commit in github actions, which is used for build artifact names is a commit that does not exist in the repository
-      # so on pull requests we create a user-friendly string to use in place of the merge commit sha, otherwise we just use the normal git HEAD sha.
-      # - id: get_commit_desc
-      #   run: | 
-      #     if [[ ${{ github.event_name }} == 'pull_request' ]]; then
-      #       echo "github_commit_desc=merge-${{ env.GITHUB_PR_HEAD_SHA }}-into-${{ env.GITHUB_PR_BASE_SHA }}" >> $GITHUB_OUTPUT
-      #     else
-      #       echo "github_commit_desc=${{ env.GITHUB_HEAD_SHA }}" >> $GITHUB_OUTPUT
-      #     fi
-      
