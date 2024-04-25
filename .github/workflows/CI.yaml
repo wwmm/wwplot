@@ -50,12 +50,11 @@ jobs:
           killall Xvfb
 
       - name: installing dependencies
-        run: wine ~/.wine/drive_c/users/runner/AppData/Local/Programs/Python/Python312/python.exe -m pip install pyside6 numpy scipy pyinstaller
+        run: wine ~/.wine/drive_c/users/runner/AppData/Local/Programs/Python/Python312/python.exe -m pip install pyside6 numpy scipy matplotlib pyinstaller
 
       - name: creating the executable
         run: |
           Xvfb :0 -screen 0 1024x768x16 &
-          # DISPLAY=:0.0 wine cmd < gen_win_exe.bat
           DISPLAY=:0.0 wine ~/.wine/drive_c/users/runner/AppData/Local/Programs/Python/Python312/Scripts/pyinstaller.exe wwplot.in \
              --onefile --hidden-import=numpy.random.common --hidden-import=numpy.random.bounded_integers \
              --hidden-import=numpy.random.common --hidden-import=numpy.random.entropy --hidden-import=PySide6.QtXml \
@@ -67,4 +66,5 @@ jobs:
         with:
           name: wwplot-git-${{ env.GITHUB_HEAD_SHA }}-x86_64.exe
           path: dist/wwplot.exe
+          compression-level: 0
           if-no-files-found: error
