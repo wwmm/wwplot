@@ -50,7 +50,10 @@ jobs:
           killall Xvfb
 
       - name: installing dependencies
-        run: wine ~/.wine/drive_c/users/runner/AppData/Local/Programs/Python/Python312/python.exe -m pip install pyside6 numpy scipy
+        run: wine ~/.wine/drive_c/users/runner/AppData/Local/Programs/Python/Python312/python.exe -m pip install pyside6 numpy scipy pyinstaller
+
+      - name: creating the executable
+        run: wine cmd < gen_win_exe.bat
       
       # on a pull_request event in github actions, the tests are not run on the head branch of the PR, rather they are run on the merge commit of head merged into the base branch
       # this means the latest commit in github actions, which is used for build artifact names is a commit that does not exist in the repository

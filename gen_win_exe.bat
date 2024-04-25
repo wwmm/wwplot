@@ -1,4 +1,4 @@
-C:\users\wallace\AppData\Local\Programs\Python\Python312\Scripts\pyinstaller wwplot.in ^
+C:\users\runner\AppData\Local\Programs\Python\Python312\Scripts\pyinstaller wwplot.in ^
 --onefile ^
 --hidden-import=numpy.random.common ^
 --hidden-import=numpy.random.bounded_integers ^
