@@ -29,7 +29,7 @@ jobs:
         run: echo "GITHUB_HEAD_SHA=$(git log --pretty=format:'%h' -1)" >> $GITHUB_ENV
 
       - name: install packages
-        run: suto apt-get install -y wine winetricks wget
+        run: sudo apt-get install -y wine winetricks wget
       
       - name: configure wine
         run: winetricks -q win10
