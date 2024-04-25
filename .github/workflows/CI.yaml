@@ -27,18 +27,7 @@ jobs:
 
       - name: Get latest commit
         run: echo "GITHUB_HEAD_SHA=$(git log --pretty=format:'%h' -1)" >> $GITHUB_ENV
-      
-      # on a pull_request event in github actions, the tests are not run on the head branch of the PR, rather they are run on the merge commit of head merged into the base branch
-      # this means the latest commit in github actions, which is used for build artifact names is a commit that does not exist in the repository
-      # so on pull requests we create a user-friendly string to use in place of the merge commit sha, otherwise we just use the normal git HEAD sha.
-      - id: get_commit_desc
-        run: | 
-          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
-            echo "github_commit_desc=merge-${{ env.GITHUB_PR_HEAD_SHA }}-into-${{ env.GITHUB_PR_BASE_SHA }}" >> $GITHUB_OUTPUT
-          else
-            echo "github_commit_desc=${{ env.GITHUB_HEAD_SHA }}" >> $GITHUB_OUTPUT
-          fi
-      
+
       -name: install packages
         run: apt-get install wine winetricks wget
       
@@ -50,4 +39,15 @@ jobs:
 
       -name: installing Python on wine
         run: wine python-3.12.3-amd64.exe /quiet /log log.txt
+      
+      # on a pull_request event in github actions, the tests are not run on the head branch of the PR, rather they are run on the merge commit of head merged into the base branch
+      # this means the latest commit in github actions, which is used for build artifact names is a commit that does not exist in the repository
+      # so on pull requests we create a user-friendly string to use in place of the merge commit sha, otherwise we just use the normal git HEAD sha.
+      - id: get_commit_desc
+        run: | 
+          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
+            echo "github_commit_desc=merge-${{ env.GITHUB_PR_HEAD_SHA }}-into-${{ env.GITHUB_PR_BASE_SHA }}" >> $GITHUB_OUTPUT
+          else
+            echo "github_commit_desc=${{ env.GITHUB_HEAD_SHA }}" >> $GITHUB_OUTPUT
+          fi
       
