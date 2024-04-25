@@ -35,12 +35,12 @@ jobs:
           sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
           sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
           sudo apt-get update
-          sudo apt-get install -y --install-recommends winehq-stable winetricks wget xvfb
+          sudo apt-get install -y --install-recommends winehq-stable winetricks wget
           #sudo apt-get install -y wine winetricks wget xvfb
           #sudo apt-get install wine32
       
-      - name: start xvfb
-        run: Xvfb :0 -screen 0 1024x768x16 &
+      # - name: start xvfb
+        # run: Xvfb :0 -screen 0 1024x768x16 &
 
       - name: configure wine
         run: winetricks -q win10
@@ -49,7 +49,8 @@ jobs:
         run: wget https://www.python.org/ftp/python/3.12.3/python-3.12.3-amd64.exe
 
       - name: installing Python on wine
-        run: DISPLAY=:0.0 wine python-3.12.3-amd64.exe /quiet /log log.txt
+        uses: coactions/setup-xvfb@v1
+        run: wine python-3.12.3-amd64.exe /quiet /log log.txt
       
       # on a pull_request event in github actions, the tests are not run on the head branch of the PR, rather they are run on the merge commit of head merged into the base branch
       # this means the latest commit in github actions, which is used for build artifact names is a commit that does not exist in the repository
