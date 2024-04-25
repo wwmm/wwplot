@@ -55,7 +55,7 @@ jobs:
       - name: creating the executable
         run: |
           Xvfb :0 -screen 0 1024x768x16 &
-          DISPLAY=:0.0 wine python -c "import os;pythonpath = os.getenv('PYTHONPATH','');print(os.getenv('PYTHONPATH'))"
+          DISPLAY=:0.0 wine ~/.wine/drive_c/users/runner/AppData/Local/Programs/Python/Python312/python.exe -c "import os;pythonpath = os.getenv('PYTHONPATH','');print(os.getenv('PYTHONPATH'))"
           DISPLAY=:0.0 wine cmd < gen_win_exe.bat
           killall Xvfb
 
