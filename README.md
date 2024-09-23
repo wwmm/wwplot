@@ -14,8 +14,8 @@ Features:
 
 Required libraries:
 
-- Python 3 with Numpy, Scipy, PySide2, Matplotlib 3
-- Qt 5 or above(on Arch Linux this means the packages qt5-base and qt5-declarative)
+- Python 3 with Numpy, Scipy, PySide6, Matplotlib 3
+- Qt 6 or above(on Arch Linux this means the packages qt6-base and qt5-declarative)
 
 After installing the required libraries execute the main.py script in a
 terminal:
