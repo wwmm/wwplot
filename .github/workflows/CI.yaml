@@ -38,7 +38,9 @@ jobs:
           sudo apt-get install -y --install-recommends winehq-stable winetricks wget xvfb
       
       - name: configure wine
-        run: winetricks -q win10
+        run: |
+          winetricks -q win10
+          winetricks --force ucrtbase2019
 
       - name: Download Python
         run: wget https://www.python.org/ftp/python/3.12.3/python-3.12.3-amd64.exe
@@ -56,9 +58,7 @@ jobs:
         run: |
           Xvfb :0 -screen 0 1024x768x16 &
           DISPLAY=:0.0 wine ~/.wine/drive_c/users/runner/AppData/Local/Programs/Python/Python312/Scripts/pyinstaller.exe wwplot.in \
-             --onefile --hidden-import=numpy.random.common --hidden-import=numpy.random.bounded_integers \
-             --hidden-import=numpy.random.common --hidden-import=numpy.random.entropy --hidden-import=PySide6.QtXml \
-             --hidden-import=matplotlib --add-data="WWplot/ui;WWplot/ui"
+             --onefile --hidden-import=PySide6.QtXml --hidden-import=matplotlib --add-data="WWplot/ui;WWplot/ui"
           killall Xvfb
 
       - name: Upload Package Archive
