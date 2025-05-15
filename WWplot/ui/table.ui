@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>671</width>
-    <height>344</height>
+    <height>387</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -47,13 +47,13 @@
       </size>
      </property>
      <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAsNeeded</enum>
+      <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
      </property>
      <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+      <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContentsOnFirstShow</enum>
      </property>
      <property name="textElideMode">
-      <enum>Qt::ElideNone</enum>
+      <enum>Qt::TextElideMode::ElideNone</enum>
      </property>
      <property name="showGrid">
       <bool>false</bool>
@@ -67,8 +67,11 @@
      <property name="cornerButtonEnabled">
       <bool>true</bool>
      </property>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>120</number>
+     </attribute>
      <attribute name="horizontalHeaderStretchLastSection">
-      <bool>false</bool>
+      <bool>true</bool>
      </attribute>
      <attribute name="verticalHeaderVisible">
       <bool>true</bool>
@@ -84,10 +87,10 @@
       </sizepolicy>
      </property>
      <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+      <enum>QFrame::Shape::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+      <enum>QFrame::Shadow::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="1">
@@ -109,14 +112,14 @@
          <string notr="true">P[0]*x + P[1]</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="placeholderText">
          <string notr="true"/>
         </property>
        </widget>
       </item>
-      <item row="2" column="1" alignment="Qt::AlignTop">
+      <item row="2" column="1" alignment="Qt::AlignmentFlag::AlignTop">
        <widget class="QPushButton" name="button_fit">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -157,14 +160,14 @@
       </sizepolicy>
      </property>
      <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+      <enum>QFrame::Shape::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+      <enum>QFrame::Shadow::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
+       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
       </property>
       <property name="spacing">
        <number>12</number>
@@ -181,7 +184,7 @@
          <string>Chart Type</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -271,10 +274,10 @@
          </size>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::StrongFocus</enum>
+         <enum>Qt::FocusPolicy::StrongFocus</enum>
         </property>
         <property name="alignment">
-         <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+         <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
         </property>
         <property name="placeholderText">
          <string>name</string>
@@ -293,7 +296,7 @@
          <string>Legend</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
